@@ -1,6 +1,6 @@
 # Hey hey, I'm Lucas 👋
 
-## I am a Technical Program Manager & Data Scientist. 
+## I'm a Product Manager & Data Scientist.
 
 Contact me at:
 [![Gmail](https://img.shields.io/badge/-GMAIL-D14836?style=flat&logo=gmail&logoColor=white)](mailto:chathamworks@gmail.com)
