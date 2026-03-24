@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Lucas Chatham - Habits</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text-muted: #7d8590;
+    --green: #2EE05A;
+    --yellow: #F0B429;
+    --red: #F85149;
+    --cat-header: #1c2128;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased;
+  }
+
+  .header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; background: var(--bg); z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .header h1 { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
+  .header-intro {
+    padding: 20px 16px 16px;
+  }
+  .header-intro .sub { color: var(--text-muted); font-size: 13px; line-height: 1.6; max-width: 480px; }
+  .sync-badge { display: inline-block; font-size: 12px; color: var(--text-muted); margin-top: 12px; letter-spacing: 0.3px; line-height: 1.5; }
+  .sync-badge .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+  .sync-badge .dot.fresh { background: var(--green); }
+  .sync-badge .dot.stale { background: var(--yellow); }
+  .sync-badge .dot.dead { background: var(--red); }
+
+  .cards {
+    display: flex; gap: 10px; padding: 16px;
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+  }
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 18px; min-width: 130px; flex-shrink: 0;
+  }
+  .card .v { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; font-variant-numeric: tabular-nums; }
+  .card .l { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+  .fb {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 4px; padding: 6px 16px 8px; max-width: 320px;
+  }
+  .fb button {
+    background: var(--surface); border: 1px solid var(--border); color: var(--text-muted);
+    border-radius: 6px; font-size: 11px; font-weight: 600;
+    cursor: pointer; transition: all 0.15s ease;
+    display: flex; align-items: center; justify-content: center;
+    padding: 6px 4px; text-align: center; line-height: 1;
+    min-height: 32px;
+  }
+  .fb button:hover { color: var(--text); border-color: var(--border); background: var(--surface); }
+  .fb button.on {
+    color: var(--text); border-color: var(--green); background: rgba(46,224,90,0.15);
+  }
+  .fb button:active { transform: scale(0.97); }
+
+  .hm-wrap { padding: 4px 0; overflow: auto; -webkit-overflow-scrolling: touch; }
+  table { border-collapse: separate; border-spacing: 2px; font-size: 11px; }
+
+  table th.name {
+    font-weight: 500; color: var(--text-muted); padding: 2px 8px 2px 16px;
+    white-space: nowrap; position: sticky; left: 0; background: var(--bg); z-index: 10;
+    text-align: left; max-width: 180px; overflow: hidden; text-overflow: ellipsis;
+    font-size: 12px;
+  }
+
+  /* Slim category dividers */
+  .cat td {
+    background: var(--cat-header); font-weight: 600; font-size: 9px;
+    text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted);
+    padding: 6px 16px 4px; position: sticky; left: 0; z-index: 10;
+  }
+
+  /* Week labels */
+  .week-label {
+    font-size: 9px; color: var(--text-muted); font-weight: 500;
+    padding: 2px 0; text-align: center; vertical-align: bottom;
+    height: 60px; white-space: nowrap; position: relative;
+  }
+  .week-label .wt {
+    display: block; position: absolute; bottom: 16px; left: 50%;
+    transform: translateX(-50%) rotate(-90deg);
+    transform-origin: center center;
+    white-space: nowrap; font-size: 9px;
+  }
+
+  td.week-sep { border-left: 1px solid var(--border); }
+  td.today-sep { position: relative; }
+  td.today-sep::before {
+    content: ''; position: absolute; left: -1px; top: 12px; bottom: 0;
+    width: 2px; background: var(--red);
+  }
+  .today-label {
+    position: absolute; top: 0; left: -1px;
+    transform: translateX(-50%);
+    font-size: 8px; font-weight: 700; color: var(--red);
+    text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap;
+  }
+
+  .row-num {
+    font-size: 10px; color: var(--text-muted); text-align: right;
+    padding: 0 6px 0 8px; white-space: nowrap; font-variant-numeric: tabular-nums;
+    position: sticky; left: 0; background: var(--bg); z-index: 9;
+    border-left: 3px solid transparent;
+  }
+
+  .domain-leg {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px;
+    padding: 8px 16px; font-size: 10px; color: var(--text-muted);
+  }
+  .domain-leg .dl { display: flex; align-items: center; gap: 4px; }
+  .domain-leg .db { width: 3px; height: 10px; border-radius: 1px; }
+  .tt .tt-domain { font-size: 10px; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .sq, .num {
+    min-width: 30px; height: 14px; border-radius: 3px;
+    cursor: pointer; transition: transform 0.1s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sq:hover, .num:hover { transform: scale(1.4); z-index: 5; }
+  .sq.done, .num.done { background: var(--green); }
+  .sq.close, .num.close { background: var(--yellow); }
+  .sq.miss, .num.miss { background: var(--red); }
+  .sq.nd, .num.nd { background: #13161b; }
+  .num {
+    font-size: 8px; font-weight: 700; color: rgba(255,255,255,0.95);
+    white-space: nowrap; padding: 0 2px;
+    font-variant-numeric: tabular-nums; letter-spacing: -0.3px;
+  }
+  .num.nd { color: transparent; }
+
+  .stat-left {
+    font-size: 11px; padding: 2px 10px 2px 4px; text-align: right;
+    white-space: nowrap; font-weight: 500; font-variant-numeric: tabular-nums;
+  }
+
+  .tt {
+    display: none; position: fixed; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 14px; font-size: 13px; z-index: 1000;
+    pointer-events: none; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    max-width: 260px; backdrop-filter: blur(8px);
+  }
+  .tt.vis { display: block; }
+  .tt .th { font-weight: 700; font-size: 14px; }
+  .tt .td { color: var(--text-muted); font-size: 12px; margin-top: 1px; }
+  .tt .tv { margin-top: 6px; font-size: 16px; font-weight: 800; letter-spacing: -0.3px; }
+  .tt .ts { margin-top: 3px; font-size: 12px; font-weight: 500; }
+
+  .leg {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 16px 20px; font-size: 11px; color: var(--text-muted);
+  }
+  .lc { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
+  td.c { padding: 0; }
+
+
+.jump-nav { display: flex; gap: 6px; }
+.jump-nav button {
+  background: var(--surface); border: 1px solid var(--border); color: var(--text-muted);
+  border-radius: 20px; font-size: 11px; font-weight: 600; padding: 4px 14px;
+  cursor: pointer; transition: all 0.15s;
+}
+.jump-nav button:hover { color: var(--text); border-color: var(--text-muted); }
+
+.week-carousel {
+  display: flex; gap: 12px; padding: 12px 16px;
+  overflow-x: auto; scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.week-carousel::-webkit-scrollbar { display: none; }
+
+.week-card {
+  flex: 0 0 85vw; max-width: 400px;
+  scroll-snap-align: center;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 20px;
+  transition: transform 0.2s;
+}
+
+.week-card .week-title {
+  margin-bottom: 16px;
+}
+.week-card .week-title .week-num {
+  font-size: 20px; font-weight: 800; letter-spacing: -0.3px;
+  color: var(--text); display: block;
+}
+.week-card .week-title .week-date {
+  font-size: 13px; font-weight: 500; color: var(--green);
+  letter-spacing: 0.2px; margin-top: 2px; display: block;
+}
+
+.week-card .photo-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 16px;
+}
+.week-card .photo-grid img {
+  width: 100%; aspect-ratio: 3/4; object-fit: cover;
+  border-radius: 8px; background: #13161b;
+}
+.week-card .photo-placeholder {
+  width: 100%; aspect-ratio: 3/4;
+  border-radius: 8px; background: #13161b;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); font-size: 11px;
+}
+
+.week-card .metrics {
+  display: flex; flex-direction: column; gap: 12px;
+}
+.week-card .metric-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 0; border-top: 1px solid var(--border);
+}
+.week-card .metric-label {
+  font-size: 11px; color: var(--text-muted); text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.week-card .metric-value {
+  font-size: 22px; font-weight: 800; letter-spacing: -0.5px;
+  font-variant-numeric: tabular-nums;
+}
+.week-card .metric-delta {
+  font-size: 12px; font-weight: 600; margin-left: 6px;
+}
+.week-card .metric-delta.positive { color: var(--green); }
+.week-card .metric-delta.negative { color: var(--red); }
+.week-card .metric-delta.neutral { color: var(--text-muted); }
+.week-card .metric-source {
+  font-size: 9px; color: var(--text-muted); font-style: italic;
+}
+
+.week-card .sparkline { margin-left: auto; }
+.week-card .sparkline svg { display: block; }
+
+.carousel-nav {
+  display: flex; align-items: center; gap: 0; position: relative;
+}
+.carousel-nav .week-carousel { flex: 1; }
+.carousel-arrow {
+  flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text-muted); font-size: 16px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s; z-index: 2; margin: 0 4px;
+}
+.carousel-arrow:hover { color: var(--text); border-color: var(--text-muted); }
+.carousel-arrow:disabled { opacity: 0.2; cursor: default; }
+@media (max-width: 480px) {
+  .carousel-arrow { width: 28px; height: 28px; font-size: 14px; margin: 0 2px; }
+}
+
+.carousel-dots {
+  display: flex; justify-content: center; gap: 6px;
+  padding: 8px 16px 16px;
+}
+.carousel-dots .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--border); transition: background 0.2s;
+}
+.carousel-dots .dot.active { background: var(--text); }
+
+.trend-chart {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 16px 20px; margin-bottom: 12px;
+}
+.trend-chart .chart-title {
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 4px;
+}
+.trend-chart .chart-value {
+  font-size: 28px; font-weight: 800; letter-spacing: -0.5px;
+  font-variant-numeric: tabular-nums;
+}
+.trend-chart .chart-unit {
+  font-size: 12px; color: var(--text-muted); font-weight: 500;
+}
+.trend-chart svg {
+  width: 100%; height: 80px; margin-top: 12px; display: block;
+}
+.trend-chart .chart-labels {
+  display: flex; justify-content: space-between;
+  font-size: 9px; color: var(--text-muted); margin-top: 4px;
+}
+
+  @media (max-width: 480px) {
+    .header { padding: 10px 12px; }
+    .header h1 { font-size: 16px; }
+    .header-intro { padding: 16px 12px 12px; }
+    .week-card .week-title .week-num { font-size: 18px; }
+    .cards { padding: 12px; gap: 8px; }
+    .card { padding: 12px 14px; min-width: 110px; border-radius: 10px; }
+    .card .v { font-size: 24px; }
+    .fb { gap: 3px; padding: 4px 12px 6px; max-width: 280px; }
+    .fb button { font-size: 10px; min-height: 28px; padding: 5px 2px; }
+    table th.name { max-width: 140px; font-size: 11px; padding-left: 12px; }
+    .sq, .num { min-width: 26px; height: 12px; }
+    .num { font-size: 7px; }
+    .week-label { height: 52px; }
+    .week-label .wt { font-size: 8px; }
+    .week-card { flex: 0 0 90vw; padding: 16px; }
+    .week-card .metric-value { font-size: 20px; }
+    .trend-chart .chart-value { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Lucas Chatham</h1>
+  <div class="jump-nav">
+    <button onclick="document.getElementById('habits-section').scrollIntoView({behavior:'smooth'})">Habits</button>
+    <button onclick="document.getElementById('body-section').scrollIntoView({behavior:'smooth'})">Body</button>
+  </div>
+</div>
+<div class="header-intro">
+  <div class="sub">Public accountability. Raw data from <a href="https://streaksapp.com" style="color:var(--text);text-decoration:underline" target="_blank">Streaks</a>, synced daily. No edits, no filtering.</div>
+  <div class="sync-badge" id="sync-badge"></div>
+</div>
+<div id="habits-section">
+<div class="cards" id="cards"></div>
+<div class="fb" id="fb"></div>
+<div style="padding: 8px 16px 0; font-size: 11px; color: var(--text-muted); letter-spacing: 0.2px;"><span style="color:var(--green)">&#9679;</span> Hit target <span style="color:var(--yellow)">&#9679;</span> Close <span style="color:var(--red)">&#9679;</span> Missed <span style="color:var(--text-muted)">&#9679;</span> No data</div>
+<div class="domain-leg" id="domain-leg"></div>
+<div class="hm-wrap" id="hm"></div>
+</div>
+<div id="body-section" style="padding: 24px 16px 8px; border-top: 1px solid var(--border); margin-top: 8px;">
+  <h2 style="font-size: 18px; font-weight: 700; letter-spacing: -0.3px;">Weekly Check-in</h2>
+  <p style="color: var(--text-muted); font-size: 12px; margin-top: 4px;">Weekly snapshots. Swipe to browse weeks.</p>
+</div>
+<div class="carousel-nav">
+  <button class="carousel-arrow" id="carousel-prev" aria-label="Previous week">&#8249;</button>
+  <div class="week-carousel" id="week-carousel"></div>
+  <button class="carousel-arrow" id="carousel-next" aria-label="Next week">&#8250;</button>
+</div>
+<div class="carousel-dots" id="carousel-dots"></div>
+<div style="padding: 24px 16px 8px; border-top: 1px solid var(--border); margin-top: 8px;">
+  <h2 style="font-size: 18px; font-weight: 700; letter-spacing: -0.3px;">Trends</h2>
+  <p style="color: var(--text-muted); font-size: 12px; margin-top: 4px;">Key metrics over time.</p>
+</div>
+<div id="trends-section" style="padding: 8px 16px 32px;"></div>
+<div class="tt" id="tt"><div class="th"></div><div class="tt-domain"></div><div class="td"></div><div class="tv"></div><div class="ts"></div></div>
+<script>
+const D = {"habits": [{"name": "\ud83d\udecf\ufe0f Sleep >7 Hrs", "category": "Uncategorized", "order": 0, "completions": [-1], "done": 0, "missed": 0, "logged": 0, "numeric": true, "unit": "hours", "target": 7.0, "values": [null]}, {"name": "\u2600\ufe0f 15m Sunlight", "category": "Uncategorized", "order": 1, "completions": [-1], "done": 0, "missed": 0, "logged": 0, "numeric": true, "unit": "seconds", "target": 600.0, "values": [null]}, {"name": "\ud83c\udfcb\ufe0f Strength Train 30m", "category": "Uncategorized", "order": 2, "completions": [-1], "done": 0, "missed": 0, "logged": 0, "numeric": true, "unit": "kcal", "target": 500.0, "values": [null]}, {"name": "\u2600\ufe0f AM Protocols: \ud83e\udea5\ud83d\udc8a\ud83e\uddfc", "category": "Uncategorized", "order": 3, "completions": [-1], "done": 0, "missed": 0, "logged": 0}, {"name": "\u2696\ufe0f Weekly KPI Checkin", "category": "Uncategorized", "order": 20, "completions": [-1], "done": 0, "missed": 0, "logged": 0}, {"name": "\ud83c\udfaf Do 3 Top Priority Tasks", "category": "Uncategorized", "order": 5, "completions": [-1], "done": 0, "missed": 0, "logged": 0}, {"name": "\ud83d\udce5 Process Inboxes 2x 20m", "category": "Uncategorized", "order": 6, "completions": [-1], "done": 0, "missed": 0, "logged": 0}, {"name": "\ud83e\uddfe 1 Social Media Post", "category": "Uncategorized", "order": 7, "completions": [-1], "done": 0, "missed": 0, "logged": 0}, {"name": "\ud83e\uddd8\u200d\u2642\ufe0f Meditate 20min", "category": "Uncategorized", "order": 9, "completions": [-1], "done": 0, "missed": 0, "logged": 0}, {"name": "\ud83d\udcbb Commit >5 Code Commits", "category": "Uncategorized", "order": 10, "completions": [-1], "done": 0, "missed": 0, "logged": 0}, {"name": "\ud83c\udfa7 Deep Work Task 90m", "category": "Uncategorized", "order": 11, "completions": [-1], "done": 0, "missed": 0, "logged": 0}, {"name": "\ud83d\udcb0 Update Financial Dashboard 5min", "category": "Uncategorized", "order": 13, "completions": [-1], "done": 0, "missed": 0, "logged": 0}, {"name": "\ud83e\udd5b Eat 180g+ Protein", "category": "Uncategorized", "order": 14, "completions": [-1], "done": 0, "missed": 0, "logged": 0, "numeric": true, "unit": "grams", "target": 180.0, "values": [null]}, {"name": "\ud83d\udca7Drink 100oz Water", "category": "Day", "order": 4, "completions": [-1], "done": 0, "missed": 0, "logged": 0, "numeric": true, "unit": "floz_us", "target": 100.0, "values": [null]}, {"name": "\ud83c\udf7d\ufe0f Eat <2500 Kcal", "category": "Uncategorized", "order": 15, "completions": [-1], "done": 0, "missed": 0, "logged": 0, "numeric": true, "unit": "kcal", "target": 2500.0, "values": [null]}, {"name": "\ud83d\udcca <15min Social Media", "category": "Uncategorized", "order": 12, "completions": [-1], "done": 0, "missed": 0, "logged": 0}, {"name": "\ud83d\udcdd Brain Dump", "category": "Uncategorized", "order": 18, "completions": [-1], "done": 0, "missed": 0, "logged": 0}, {"name": "\ud83d\udcd6 Read Book to Sleep", "category": "Uncategorized", "order": 19, "completions": [-1], "done": 0, "missed": 0, "logged": 0}, {"name": "\ud83c\udf19 PM Protocols: \ud83e\udea5\ud83e\uddf5\ud83d\udc8a\ud83e\uddfc", "category": "Uncategorized", "order": 17, "completions": [-1], "done": 0, "missed": 0, "logged": 0}, {"name": "\ud83e\udd1d 3 Warm/Cold Outreaches", "category": "Uncategorized", "order": 8, "completions": [-1], "done": 0, "missed": 0, "logged": 0}, {"name": "\ud83d\udeb6 Walk 10k Steps", "category": "Uncategorized", "order": 16, "completions": [-1], "done": 0, "missed": 0, "logged": 0}, {"name": "\ud83d\udc69\u200d\u2764\ufe0f\u200d\ud83d\udc69 Relationship Checkin", "category": "Uncategorized", "order": 21, "completions": [-1], "done": 0, "missed": 0, "logged": 0}, {"name": "\ud83e\udec0 150min Zone 2", "category": "Uncategorized", "order": 22, "completions": [-1], "done": 0, "missed": 0, "logged": 0}], "dates": ["2026-03-23"]};
+(function(){
+  const {habits, dates} = D;
+
+  // Sync badge: show last data date + freshness indicator
+  (function renderSyncBadge() {
+    const badge = document.getElementById('sync-badge');
+    if (!badge || !dates.length) return;
+    const lastDate = dates[dates.length - 1];
+    const last = new Date(lastDate + 'T12:00:00');
+    const now = new Date();
+    const diffDays = Math.floor((now - last) / 86400000);
+    const statusClass = diffDays <= 1 ? 'fresh' : diffDays <= 3 ? 'stale' : 'dead';
+    const formatted = last.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    badge.innerHTML = '<span class="dot ' + statusClass + '"></span>Last data sync: ' + formatted;
+  })();
+
+  // Daybreaker protocol domains
+  const DOMAINS = {
+    'Sleep':         '#8B5CF6',
+    'Nutrition':     '#F97316',
+    'Movement':      '#06B6D4',
+    'Prescriptions': '#EC4899',
+    'Aesthetics':    '#D946EF',
+    'Therapies':     '#14B8A6',
+    'Environment':   '#84CC16',
+    'Genetics':      '#F59E0B',
+    'Performance':   '#60A5FA'
+  };
+
+  // Map habit names to domains (partial match on start of name)
+  const HABIT_DOMAIN = {
+    'Sleep':           'Sleep',
+    'Sunlight':        'Environment',
+    'Strength Train':  'Movement',
+    'AM Protocols':    'Prescriptions',
+    'Water':           'Nutrition',
+    'Top Priority':    'Performance',
+    'Process Inbox':   'Performance',
+    '1 Social Media':  'Performance',
+    'Outreach':        'Performance',
+    'Walk 10k':        'Movement',
+    'Meditate':        'Therapies',
+    'Commit':          'Performance',
+    'Deep Work':       'Performance',
+    '<15min Social':   'Performance',
+    'Financial':       'Performance',
+    'Protein':         'Nutrition',
+    'Kcal':            'Nutrition',
+    'PM Protocols':    'Prescriptions',
+    'Brain Dump':      'Therapies',
+    'Read Book':       'Performance',
+    'Wkly Checkin':    'Performance',
+    'Relationship':    'Therapies',
+    'Zone 2':          'Movement'
+  };
+
+  function getDomain(habitName) {
+    // Strip leading emoji
+    const clean = habitName.replace(/^[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{200D}\u{20E3}\u{E0020}-\u{E007F}\s]+/u, '');
+    for (const [key, domain] of Object.entries(HABIT_DOMAIN)) {
+      if (clean.startsWith(key) || clean.includes(key)) return domain;
+    }
+    return null;
+  }
+
+  function getDomainColor(habitName) {
+    const d = getDomain(habitName);
+    return d ? DOMAINS[d] : null;
+  }
+
+  // Render domain legend
+  (function renderDomainLegend() {
+    const leg = document.getElementById('domain-leg');
+    if (!leg) return;
+    Object.entries(DOMAINS).forEach(([name, color]) => {
+      const el = document.createElement('span');
+      el.className = 'dl';
+      el.innerHTML = '<span class="db" style="background:' + color + '"></span>' + name;
+      leg.appendChild(el);
+    });
+  })();
+
+  function getWeekMonday(dateStr) {
+    const d = new Date(dateStr + 'T12:00:00');
+    const day = d.getDay();
+    d.setDate(d.getDate() - (day === 0 ? 6 : day - 1));
+    return d;
+  }
+
+  // Streak skipping trailing no-data
+  function getStreak(c) {
+    let s = 0, started = false;
+    for (let i = c.length - 1; i >= 0; i--) {
+      if (c[i] === -1 && !started) continue;
+      started = true;
+      if (c[i] === 1) s++;
+      else break;
+    }
+    return s;
+  }
+
+  // Trend: second half vs first half
+  function getTrend(h) {
+    const mid = Math.floor(dates.length / 2);
+    let r = {d:0,l:0}, p = {d:0,l:0};
+    for (let i = 0; i < dates.length; i++) {
+      if (h.completions[i] === -1) continue;
+      const b = i >= mid ? r : p;
+      b.l++; if (h.completions[i] === 1) b.d++;
+    }
+    return { recent: r.l>0?r.d/r.l:0, prior: p.l>0?p.d/p.l:0, delta: (r.l>0?r.d/r.l:0)-(p.l>0?p.d/p.l:0) };
+  }
+
+  // Stats
+  const pc = p => p >= 70 ? 'var(--green)' : p >= 40 ? 'var(--yellow)' : 'var(--red)';
+
+  // Days tracked
+  const daysTracked = dates.length;
+
+  // This week so far (current Mon-today)
+  const todayIdx = dates.length - 1;
+  const todayDate = new Date(dates[todayIdx] + 'T12:00:00');
+  const todayDay = todayDate.getDay();
+  const monOffset = todayDay === 0 ? 6 : todayDay - 1;
+  const thisWeekStart = Math.max(0, todayIdx - monOffset);
+  let twD = 0;
+  const twDays = todayIdx - thisWeekStart + 1;
+  const twTotal = twDays * habits.length;
+  for (let i = thisWeekStart; i <= todayIdx; i++) {
+    habits.forEach(h => {
+      if (h.completions[i] === 1) { twD++; }
+    });
+  }
+  const thisWeekPct = twTotal > 0 ? Math.round(twD / twTotal * 100) : 0;
+
+  // Last week (previous Mon-Sun)
+  const lastWeekEnd = thisWeekStart - 1;
+  const lastWeekStart = Math.max(0, lastWeekEnd - 6);
+  let lwD = 0;
+  const lwDays = lastWeekEnd >= 0 ? lastWeekEnd - lastWeekStart + 1 : 0;
+  const lwTotal = lwDays * habits.length;
+  if (lastWeekEnd >= 0) {
+    for (let i = lastWeekStart; i <= lastWeekEnd; i++) {
+      habits.forEach(h => {
+        if (h.completions[i] === 1) { lwD++; }
+      });
+    }
+  }
+  const lastWeekPct = lwTotal > 0 ? Math.round(lwD / lwTotal * 100) : 0;
+  const trendDelta = thisWeekPct - lastWeekPct;
+  const trendStr = (trendDelta >= 0 ? '+' : '') + trendDelta + '%';
+  const trendColor = trendDelta > 0 ? 'var(--green)' : trendDelta < 0 ? 'var(--red)' : 'var(--yellow)';
+
+  document.getElementById('cards').innerHTML =
+    '<div class="card"><div class="v" style="color:var(--text)">'+daysTracked+'</div><div class="l">Days Tracked</div></div>' +
+    '<div class="card"><div class="v" style="color:'+pc(thisWeekPct)+'">'+thisWeekPct+'%</div><div class="l">This Week So Far</div></div>' +
+    '<div class="card"><div class="v" style="color:'+trendColor+'">'+trendStr+'</div><div class="l">Weekly Trend</div></div>';
+
+  // Performance-based filters
+  const fb = document.getElementById('fb');
+  let activeFilter = 'all';
+
+
+  const shortDesc = {
+    all: 'Last 90 days',
+    week: 'Last 7 days',
+    weeklyavg: 'YTD by week',
+    streaks: 'Longest first',
+    improving: 'Trending better',
+    struggling: 'Below 50%'
+  };
+
+  function addFilter(label, key) {
+    const b = document.createElement('button');
+    b.className = key === 'all' ? 'on' : '';
+    b.textContent = label;
+    b.title = shortDesc[key] || '';
+    b.onclick = () => {
+      activeFilter = key; render();
+      fb.querySelectorAll('button').forEach(x => x.classList.remove('on'));
+      b.classList.add('on');
+    };
+    fb.appendChild(b);
+  }
+  addFilter('All', 'all');
+  addFilter('Week', 'week');
+  addFilter('On Fire', 'streaks');
+  addFilter('Trending', 'improving');
+  addFilter('Struggling', 'struggling');
+  addFilter('Wk Avg', 'weeklyavg');
+
+  function getCat(h) {
+    const n = h.name.toLowerCase();
+    if (n.includes('weekly') || n.includes('wkly') || n.includes('check-in') || n.includes('checkin') || n.includes('zone 2')) return 'weekly';
+    return 'daily';
+  }
+
+  // Sort by app order (position in Streaks app)
+  function appSort(list) {
+    return list.sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
+  }
+
+  // Tooltip
+  const tt = document.getElementById('tt');
+  function stt(ev, h, di) {
+    tt.querySelector('.th').textContent = h.name;
+    const domEl = tt.querySelector('.tt-domain');
+    const dom = getDomain(h.name);
+    if (dom) { domEl.textContent = dom; domEl.style.color = DOMAINS[dom]; domEl.style.display = 'block'; }
+    else { domEl.style.display = 'none'; }
+    tt.querySelector('.td').textContent = dates[di];
+    const vE = tt.querySelector('.tv'), sE = tt.querySelector('.ts');
+    if (h.numeric && h.values && h.values[di] !== null) {
+      vE.textContent = fmtVal(h.values[di], h.unit) + ' of ' + fmtVal(h.target, h.unit) + ' target';
+      vE.style.color = h.completions[di] === 1 ? 'var(--green)' : h.values[di] / h.target >= 0.75 ? 'var(--yellow)' : 'var(--red)';
+      vE.style.display = 'block';
+    } else { vE.style.display = 'none'; }
+    const s = h.completions[di];
+    sE.textContent = s === 1 ? 'Completed' : s === 0 ? 'Missed' : 'No data';
+    sE.style.color = s === 1 ? 'var(--green)' : s === 0 ? 'var(--red)' : 'var(--text-muted)';
+    const r = ev.target.getBoundingClientRect();
+    let left = r.left + r.width/2, top = r.top - 85;
+    if (top < 10) top = r.bottom + 8;
+    if (left + 130 > window.innerWidth) left = window.innerWidth - 140;
+    if (left < 10) left = 10;
+    tt.style.left = left+'px'; tt.style.top = top+'px';
+    tt.classList.add('vis');
+  }
+  function htt() { tt.classList.remove('vis'); }
+
+  function cc(h, di) {
+    const s = h.completions[di];
+    if (s === -1) return 'nd';
+    if (s === 1) return 'done';
+    if (h.numeric && h.values && h.values[di] !== null && h.target && h.values[di] / h.target >= 0.75) return 'close';
+    return 'miss';
+  }
+
+  function fmtVal(v, unit) {
+    if (unit === 'kcal') return Math.round(v).toLocaleString();
+    if (unit === 'grams') return Math.round(v) + 'g';
+    if (unit === 'floz_us') return Math.round(v) + 'oz';
+    if (unit === 'hours') return v.toFixed(1) + 'h';
+    if (unit === 'seconds') return Math.round(v / 60) + 'm';
+    return Math.round(v);
+  }
+
+  function fmtCompact(v, unit) {
+    if (unit === 'kcal') return v >= 1000 ? (v/1000).toFixed(1)+'k' : Math.round(v);
+    if (unit === 'grams') return Math.round(v);
+    if (unit === 'floz_us') return Math.round(v);
+    if (unit === 'hours') return v.toFixed(1);
+    if (unit === 'seconds') return Math.round(v/60);
+    return Math.round(v);
+  }
+
+  function render() {
+    const container = document.getElementById('hm');
+    const t = document.createElement('table');
+
+    // Weekly avg mode: group by ISO weeks, YTD only
+    const isWeeklyAvg = activeFilter === 'weeklyavg';
+    let weekGroups = []; // [{label, indices: [di, ...]}]
+
+    // REVERSED: most recent dates first (left side of screen)
+    let visIdx;
+    if (isWeeklyAvg) {
+      const ytdStart = dates.findIndex(d => d >= '2026-01-01');
+      // Build week groups
+      let curWeek = null;
+      for (let i = ytdStart; i < dates.length; i++) {
+        const mon = getWeekMonday(dates[i]);
+        const ms = mon.toISOString().slice(0, 10);
+        if (!curWeek || curWeek.key !== ms) {
+          curWeek = { key: ms, label: mon.toLocaleDateString('en-US', {month:'short', day:'numeric'}), indices: [] };
+          weekGroups.push(curWeek);
+        }
+        curWeek.indices.push(i);
+      }
+      weekGroups.reverse();
+      visIdx = null; // not used in weekly avg mode
+    } else if (activeFilter === 'week') {
+      visIdx = [];
+      for (let i = dates.length - 1; i >= Math.max(0, dates.length - 7); i--) visIdx.push(i);
+    } else {
+      visIdx = [];
+      for (let i = dates.length - 1; i >= 0; i--) visIdx.push(i);
+    }
+
+    // Week boundaries (for daily views)
+    const weeks = [];
+    let weekSet = new Set();
+    if (!isWeeklyAvg) {
+      let lastMon = '';
+      visIdx.forEach((di, vi) => {
+        const mon = getWeekMonday(dates[di]);
+        const ms = mon.toISOString().slice(0, 10);
+        if (ms !== lastMon) {
+          weeks.push({ vi: vi, label: mon.toLocaleDateString('en-US', {month:'short', day:'numeric'}) });
+          lastMon = ms;
+        }
+      });
+      weekSet = new Set(weeks.map(w => w.vi));
+    }
+
+    // Find experiment start position in visIdx for red line
+    const startIdx = dates.indexOf('2026-03-23');
+    let startVi = -1;
+    if (!isWeeklyAvg && visIdx && startIdx >= 0) {
+      startVi = visIdx.indexOf(startIdx);
+    }
+    const startSet = new Set();
+    if (startVi >= 0) startSet.add(startVi);
+
+    // Header row
+    const hRow = document.createElement('tr');
+    const numH = document.createElement('th'); // # column spacer
+    numH.className = 'row-num';
+    numH.textContent = '#';
+    hRow.appendChild(numH);
+    hRow.appendChild(document.createElement('th')); // name spacer
+    // Week % header (far left, after name)
+    const wpH = document.createElement('td');
+    wpH.className = 'stat-left';
+    wpH.style.color = 'var(--text-muted)';
+    wpH.textContent = 'Week %';
+    hRow.appendChild(wpH);
+
+    if (isWeeklyAvg) {
+      weekGroups.forEach((wg, wi) => {
+        const td = document.createElement('td');
+        td.className = 'week-label';
+        if (wi > 0) td.classList.add('week-sep');
+        const span = document.createElement('span');
+        span.className = 'wt';
+        span.textContent = wg.label;
+        td.appendChild(span);
+        hRow.appendChild(td);
+      });
+    } else {
+      let wi = 0;
+      for (let i = 0; i < visIdx.length; i++) {
+        const td = document.createElement('td');
+        td.className = 'week-label';
+        if (weekSet.has(i) && i > 0) td.classList.add('week-sep');
+        if (startSet.has(i)) {
+          td.classList.add('today-sep');
+          const tl = document.createElement('span');
+          tl.className = 'today-label';
+          tl.textContent = 'Start';
+          td.appendChild(tl);
+        }
+        if (wi < weeks.length && weeks[wi].vi === i) {
+          const span = document.createElement('span');
+          span.className = 'wt';
+          span.textContent = weeks[wi].label;
+          td.appendChild(span);
+          const nextStart = wi + 1 < weeks.length ? weeks[wi + 1].vi : visIdx.length;
+          td.colSpan = nextStart - i;
+          i += td.colSpan - 1;
+          wi++;
+        }
+        hRow.appendChild(td);
+      }
+    }
+    t.appendChild(hRow);
+
+    // Filter habits (all rows always visible)
+    let visible;
+
+    switch (activeFilter) {
+      case 'streaks':
+        visible = [...habits].sort((a,b) => getStreak(b.completions) - getStreak(a.completions));
+        break;
+      case 'improving':
+        visible = [...habits].sort((a,b) => getTrend(b).delta - getTrend(a).delta);
+        break;
+      case 'struggling':
+        visible = [...habits].sort((a,b) => {
+          const aR = a.logged > 0 ? a.done/a.logged : 1;
+          const bR = b.logged > 0 ? b.done/b.logged : 1;
+          return aR - bR;
+        });
+        break;
+      default:
+        visible = [...habits];
+    }
+
+    const useGroups = activeFilter === 'all' || activeFilter === 'week' || activeFilter === 'weeklyavg';
+
+    let rowNum = 0;
+    function renderRow(h) {
+      rowNum++;
+      const row = document.createElement('tr');
+      const numTd = document.createElement('td');
+      numTd.className = 'row-num';
+      const dc = getDomainColor(h.name);
+      if (dc) numTd.style.borderLeftColor = dc;
+      numTd.textContent = rowNum;
+      row.appendChild(numTd);
+      const nth = document.createElement('th');
+      nth.className = 'name'; nth.textContent = h.name; nth.title = h.name;
+      row.appendChild(nth);
+
+      // Week % (last 7 days completion rate), placed far left after name
+      let wkD = 0;
+      const wkTotal = Math.min(7, dates.length);
+      for (let i = Math.max(0, dates.length - 7); i < dates.length; i++) {
+        if (h.completions[i] === 1) { wkD++; }
+      }
+      const wpTd = document.createElement('td');
+      wpTd.className = 'stat-left';
+      const wkPct = wkTotal > 0 ? Math.round(wkD / wkTotal * 100) : -1;
+      wpTd.textContent = wkPct >= 0 ? wkPct + '%' : '';
+      wpTd.style.color = wkPct >= 70 ? 'var(--green)' : wkPct >= 40 ? 'var(--yellow)' : wkPct >= 0 ? 'var(--red)' : 'var(--text-muted)';
+      row.appendChild(wpTd);
+
+      const isNum = h.numeric && h.values;
+
+      if (isWeeklyAvg) {
+        // Weekly avg: one cell per week group
+        weekGroups.forEach((wg, wi) => {
+          const td = document.createElement('td');
+          td.className = 'c';
+          if (wi > 0) td.classList.add('week-sep');
+
+          let wDone = 0;
+          const wTotal = wg.indices.length;
+          wg.indices.forEach(di => {
+            if (h.completions[di] === 1) { wDone++; }
+          });
+
+          const inner = document.createElement('div');
+          inner.className = 'sq';
+          if (wTotal === 0) {
+            inner.classList.add('nd');
+          } else {
+            const rate = wDone / wTotal;
+            inner.classList.add(rate >= 0.7 ? 'done' : rate >= 0.4 ? 'close' : 'miss');
+          }
+          // Tooltip for weekly avg
+          inner.addEventListener('mouseenter', e => {
+            tt.querySelector('.th').textContent = h.name;
+            const domEl2 = tt.querySelector('.tt-domain');
+            const dom2 = getDomain(h.name);
+            if (dom2) { domEl2.textContent = dom2; domEl2.style.color = DOMAINS[dom2]; domEl2.style.display = 'block'; }
+            else { domEl2.style.display = 'none'; }
+            tt.querySelector('.td').textContent = wg.label + ' week';
+            const vE = tt.querySelector('.tv'), sE = tt.querySelector('.ts');
+            if (wTotal > 0) {
+              vE.textContent = wDone + '/' + wTotal + ' days';
+              vE.style.color = wDone/wTotal >= 0.7 ? 'var(--green)' : wDone/wTotal >= 0.4 ? 'var(--yellow)' : 'var(--red)';
+              vE.style.display = 'block';
+            } else { vE.style.display = 'none'; }
+            sE.textContent = wTotal > 0 ? Math.round(wDone/wTotal*100) + '% that week' : 'No data';
+            sE.style.color = wTotal > 0 ? (wDone/wTotal >= 0.7 ? 'var(--green)' : 'var(--yellow)') : 'var(--text-muted)';
+            const r = e.target.getBoundingClientRect();
+            let left = r.left + r.width/2, top = r.top - 85;
+            if (top < 10) top = r.bottom + 8;
+            if (left + 130 > window.innerWidth) left = window.innerWidth - 140;
+            if (left < 10) left = 10;
+            tt.style.left = left+'px'; tt.style.top = top+'px';
+            tt.classList.add('vis');
+          });
+          inner.addEventListener('mouseleave', htt);
+          inner.addEventListener('touchstart', e => {
+            e.preventDefault();
+            inner.dispatchEvent(new Event('mouseenter'));
+            setTimeout(htt, 2500);
+          });
+          td.appendChild(inner);
+          row.appendChild(td);
+        });
+      } else {
+        // Daily view
+        visIdx.forEach((di, vi) => {
+          const td = document.createElement('td');
+          td.className = 'c';
+          if (weekSet.has(vi) && vi > 0) td.classList.add('week-sep');
+          if (startSet.has(vi)) td.classList.add('today-sep');
+
+          if (isNum && h.values[di] !== null) {
+            const inner = document.createElement('div');
+            inner.className = 'num ' + cc(h, di);
+            inner.textContent = fmtCompact(h.values[di], h.unit);
+            inner.addEventListener('mouseenter', e => stt(e, h, di));
+            inner.addEventListener('mouseleave', htt);
+            inner.addEventListener('touchstart', e => { e.preventDefault(); stt(e, h, di); setTimeout(htt, 2500); });
+            td.appendChild(inner);
+          } else {
+            const inner = document.createElement('div');
+            inner.className = 'sq ' + cc(h, di);
+            inner.addEventListener('mouseenter', e => stt(e, h, di));
+            inner.addEventListener('mouseleave', htt);
+            inner.addEventListener('touchstart', e => { e.preventDefault(); stt(e, h, di); setTimeout(htt, 2500); });
+            td.appendChild(inner);
+          }
+          row.appendChild(td);
+        });
+      }
+
+      t.appendChild(row);
+    }
+
+    if (useGroups) {
+      const grouped = {};
+      visible.forEach(h => { const c = getCat(h); if (!grouped[c]) grouped[c]=[]; grouped[c].push(h); });
+      const order = ['daily','weekly'];
+      const labels = {daily:'Daily', weekly:'Weekly'};
+
+      order.forEach(gc => {
+        if (!grouped[gc] || !grouped[gc].length) return;
+        appSort(grouped[gc]);
+        const cr = document.createElement('tr'); cr.className = 'cat';
+        const cth = document.createElement('td');
+        cth.colSpan = (isWeeklyAvg ? weekGroups.length : visIdx.length) + 3;
+        cth.textContent = labels[gc];
+        cr.appendChild(cth);
+        t.appendChild(cr);
+        grouped[gc].forEach(renderRow);
+      });
+    } else {
+      const filterLabels = { streaks:'On Fire (Active Streaks)', improving:'Trending Up', struggling:'Needs Work (<50%)' };
+      if (visible.length > 0) {
+        const cr = document.createElement('tr'); cr.className = 'cat';
+        const cth = document.createElement('td');
+        cth.colSpan = (isWeeklyAvg ? weekGroups.length : visIdx.length) + 3;
+        cth.textContent = filterLabels[activeFilter] || '';
+        cr.appendChild(cth);
+        t.appendChild(cr);
+        visible.forEach(renderRow);
+      }
+    }
+
+    if (visible.length === 0) {
+      const er = document.createElement('tr');
+      const etd = document.createElement('td');
+      etd.colSpan = (isWeeklyAvg ? weekGroups.length : visIdx.length) + 3;
+      etd.style.cssText = 'padding:32px 16px;text-align:center;color:var(--text-muted);font-size:13px;';
+      etd.textContent = activeFilter==='improving' ? 'No habits trending up right now' :
+                         activeFilter==='struggling' ? 'No habits below 50% with enough data' :
+                         activeFilter==='streaks' ? 'No active streaks' : 'No habits to show';
+      er.appendChild(etd);
+      t.appendChild(er);
+    }
+
+    container.innerHTML = '';
+    container.appendChild(t);
+
+  }
+
+  render();
+})();
+</script>
+<script>
+// Weekly body transformation data (manually entered)
+const BODY = {
+  weeks: [
+    {
+      label: 'Week 1',
+      date: '2026-03-23',
+      photos: ['./public/photos/week1/front.jpg', './public/photos/week1/left.jpg', './public/photos/week1/right.jpg'],
+      weight: 202,
+      weightSource: 'Withings Smart Scale',
+      bodyFat: 13.7,
+      bodyFatSource: 'Withings Smart Scale',
+      vo2max: 40,
+      vo2maxSource: 'Apple Watch',
+      hrv: 91,
+      hrvSource: 'Apple Watch',
+      gripR: 168,
+      gripL: 161,
+      gripSource: 'Dynamometer',
+      bpSys: 139,
+      bpDia: 89,
+      bpSource: 'Cuff',
+      pef: 494,
+      fev1: 5.06,
+      spiroSource: 'Spirometer',
+    }
+  ]
+};
+
+// Render weekly carousel
+(function renderCarousel() {
+  const container = document.getElementById('week-carousel');
+  const dotsContainer = document.getElementById('carousel-dots');
+  if (!container || !BODY.weeks.length) return;
+
+  const activeWeeks = BODY.weeks.filter(w => w.weight !== null || w.bodyFat !== null || w.vo2max !== null || w.hrv !== null || w.gripR !== null || w.pef !== null || w.fev1 !== null || w.photos.length > 0);
+  
+  if (activeWeeks.length === 0) {
+    container.innerHTML = '<div class="week-card">' +
+      '<div class="week-title"><span class="week-num">Week 1</span><span class="week-date">Starting Point</span></div>' +
+      '<div class="photo-grid">' +
+        '<div class="photo-placeholder">Front</div>' +
+        '<div class="photo-placeholder">Left</div>' +
+        '<div class="photo-placeholder">Right</div>' +
+      '</div>' +
+      '<div class="metrics">' +
+        '<div class="metric-row"><div><div class="metric-label">Weight</div><div class="metric-source">Withings Smart Scale</div></div><div class="metric-value" style="color:var(--text-muted)">\u2014</div></div>' +
+        '<div class="metric-row"><div><div class="metric-label">Body Fat</div><div class="metric-source">Withings Smart Scale</div></div><div class="metric-value" style="color:var(--text-muted)">\u2014</div></div>' +
+        '<div class="metric-row"><div><div class="metric-label">VO2 Max Est.</div><div class="metric-source">Apple Watch</div></div><div class="metric-value" style="color:var(--text-muted)">\u2014</div></div>' +
+        '<div class="metric-row"><div><div class="metric-label">HRV</div><div class="metric-source">Apple Watch</div></div><div class="metric-value" style="color:var(--text-muted)">\u2014</div></div>' +
+        '<div class="metric-row"><div><div class="metric-label">Grip Strength</div><div class="metric-source">Dynamometer</div></div><div class="metric-value" style="color:var(--text-muted)">\u2014</div></div>' +
+        '<div class="metric-row"><div><div class="metric-label">Blood Pressure</div><div class="metric-source">Cuff</div></div><div class="metric-value" style="color:var(--text-muted)">\u2014</div></div>' +
+        '<div class="metric-row"><div><div class="metric-label">PEF</div><div class="metric-source">Spirometer</div></div><div class="metric-value" style="color:var(--text-muted)">\u2014</div></div>' +
+        '<div class="metric-row"><div><div class="metric-label">FEV1</div><div class="metric-source">Spirometer</div></div><div class="metric-value" style="color:var(--text-muted)">\u2014</div></div>' +
+      '</div></div>';
+    return;
+  }
+
+  const week1 = BODY.weeks[0];
+  
+  activeWeeks.forEach((w, i) => {
+    const card = document.createElement('div');
+    card.className = 'week-card';
+    
+    const weightDelta = (i > 0 && w.weight && week1.weight) ? w.weight - week1.weight : null;
+    const bfDelta = (i > 0 && w.bodyFat && week1.bodyFat) ? w.bodyFat - week1.bodyFat : null;
+    const vo2Delta = (i > 0 && w.vo2max && week1.vo2max) ? w.vo2max - week1.vo2max : null;
+    const hrvDelta = (i > 0 && w.hrv && week1.hrv) ? w.hrv - week1.hrv : null;
+    const gripRDelta = (i > 0 && w.gripR && week1.gripR) ? w.gripR - week1.gripR : null;
+    const gripLDelta = (i > 0 && w.gripL && week1.gripL) ? w.gripL - week1.gripL : null;
+    const bpSysDelta = (i > 0 && w.bpSys && week1.bpSys) ? w.bpSys - week1.bpSys : null;
+    const pefDelta = (i > 0 && w.pef && week1.pef) ? w.pef - week1.pef : null;
+    const fev1Delta = (i > 0 && w.fev1 && week1.fev1) ? w.fev1 - week1.fev1 : null;
+    
+    function deltaHTML(val, unit, invert) {
+      if (val === null) return '';
+      const sign = val > 0 ? '+' : '';
+      const cls = val === 0 ? 'neutral' : (invert ? (val < 0 ? 'positive' : 'negative') : (val > 0 ? 'positive' : 'negative'));
+      return '<span class="metric-delta ' + cls + '">' + sign + val.toFixed(1) + unit + '</span>';
+    }
+    
+    function sparklineSVG(metric, upToIndex) {
+      const values = BODY.weeks.slice(0, upToIndex + 1).map(wk => wk[metric]).filter(v => v !== null);
+      if (values.length < 2) return '';
+      const min = Math.min(...values); const max = Math.max(...values);
+      const range = max - min || 1;
+      const w = 60; const h = 24;
+      const points = values.map((v, j) => {
+        const x = (j / (values.length - 1)) * w;
+        const y = h - ((v - min) / range) * h;
+        return x + ',' + y;
+      }).join(' ');
+      return '<div class="sparkline"><svg width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '">' +
+        '<polyline points="' + points + '" fill="none" stroke="var(--green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+        '</svg></div>';
+    }
+
+    let photosHTML = '';
+    if (w.photos.length > 0) {
+      photosHTML = '<div class="photo-grid">' + w.photos.map(p => '<img src="' + p + '" alt="Week ' + (i+1) + ' progress photo" loading="lazy">').join('') + '</div>';
+    } else {
+      photosHTML = '<div class="photo-grid"><div class="photo-placeholder">Front</div><div class="photo-placeholder">Left</div><div class="photo-placeholder">Right</div></div>';
+    }
+
+    const weekIdx = BODY.weeks.indexOf(w);
+    
+    const humanDate = new Date(w.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    card.innerHTML = '<div class="week-title"><span class="week-num">' + w.label + '</span><span class="week-date">' + humanDate + '</span></div>' +
+      photosHTML +
+      '<div class="metrics">' +
+        '<div class="metric-row"><div><div class="metric-label">Weight</div><div class="metric-source">' + (w.weightSource || 'Self-reported') + '</div></div><div style="display:flex;align-items:baseline">' + (w.weight ? '<span class="metric-value">' + w.weight + '</span><span class="chart-unit"> lbs</span>' + deltaHTML(weightDelta, '', true) : '<span class="metric-value" style="color:var(--text-muted)">\u2014</span>') + sparklineSVG('weight', weekIdx) + '</div></div>' +
+        '<div class="metric-row"><div><div class="metric-label">Body Fat</div><div class="metric-source">' + (w.bodyFatSource || 'Self-reported') + '</div></div><div style="display:flex;align-items:baseline">' + (w.bodyFat ? '<span class="metric-value">' + w.bodyFat + '</span><span class="chart-unit">%</span>' + deltaHTML(bfDelta, '%', true) : '<span class="metric-value" style="color:var(--text-muted)">\u2014</span>') + sparklineSVG('bodyFat', weekIdx) + '</div></div>' +
+        '<div class="metric-row"><div><div class="metric-label">VO2 Max Est.</div><div class="metric-source">' + (w.vo2maxSource || 'Apple Watch') + '</div></div><div style="display:flex;align-items:baseline">' + (w.vo2max ? '<span class="metric-value">' + w.vo2max + '</span><span class="chart-unit"> mL/kg/min</span>' + deltaHTML(vo2Delta, '', false) : '<span class="metric-value" style="color:var(--text-muted)">\u2014</span>') + sparklineSVG('vo2max', weekIdx) + '</div></div>' +
+        '<div class="metric-row"><div><div class="metric-label">HRV</div><div class="metric-source">' + (w.hrvSource || 'Apple Watch') + '</div></div><div style="display:flex;align-items:baseline">' + (w.hrv ? '<span class="metric-value">' + w.hrv + '</span><span class="chart-unit"> ms</span>' + deltaHTML(hrvDelta, '', false) : '<span class="metric-value" style="color:var(--text-muted)">\u2014</span>') + sparklineSVG('hrv', weekIdx) + '</div></div>' +
+        '<div class="metric-row"><div><div class="metric-label">Grip Strength</div><div class="metric-source">' + (w.gripSource || 'Dynamometer') + '</div></div><div style="display:flex;align-items:baseline">' + (w.gripR ? '<span class="metric-value">' + w.gripR + '/' + w.gripL + '</span><span class="chart-unit"> lbs R/L</span>' : '<span class="metric-value" style="color:var(--text-muted)">\u2014</span>') + '</div></div>' +
+        '<div class="metric-row"><div><div class="metric-label">Blood Pressure</div><div class="metric-source">' + (w.bpSource || 'Cuff') + '</div></div><div style="display:flex;align-items:baseline">' + (w.bpSys ? '<span class="metric-value">' + w.bpSys + '/' + w.bpDia + '</span><span class="chart-unit"> mmHg</span>' + deltaHTML(bpSysDelta, '', true) : '<span class="metric-value" style="color:var(--text-muted)">\u2014</span>') + sparklineSVG('bpSys', weekIdx) + '</div></div>' +
+        '<div class="metric-row"><div><div class="metric-label">PEF</div><div class="metric-source">' + (w.spiroSource || 'Spirometer') + '</div></div><div style="display:flex;align-items:baseline">' + (w.pef ? '<span class="metric-value">' + w.pef + '</span><span class="chart-unit"> L/m</span>' + deltaHTML(pefDelta, '', false) : '<span class="metric-value" style="color:var(--text-muted)">\u2014</span>') + sparklineSVG('pef', weekIdx) + '</div></div>' +
+        '<div class="metric-row"><div><div class="metric-label">FEV1</div><div class="metric-source">' + (w.spiroSource || 'Spirometer') + '</div></div><div style="display:flex;align-items:baseline">' + (w.fev1 ? '<span class="metric-value">' + w.fev1 + '</span><span class="chart-unit"> L</span>' + deltaHTML(fev1Delta, '', false) : '<span class="metric-value" style="color:var(--text-muted)">\u2014</span>') + sparklineSVG('fev1', weekIdx) + '</div></div>' +
+      '</div>';
+    
+    container.appendChild(card);
+  });
+
+  // Arrow navigation
+  const prevBtn = document.getElementById('carousel-prev');
+  const nextBtn = document.getElementById('carousel-next');
+
+  function getCardWidth() {
+    return container.firstElementChild ? container.firstElementChild.offsetWidth + 12 : 0;
+  }
+
+  function getCurrentIdx() {
+    const cw = getCardWidth();
+    return cw > 0 ? Math.round(container.scrollLeft / cw) : 0;
+  }
+
+  function updateArrows() {
+    const idx = getCurrentIdx();
+    const total = container.children.length;
+    prevBtn.disabled = idx <= 0;
+    nextBtn.disabled = idx >= total - 1;
+  }
+
+  prevBtn.addEventListener('click', () => {
+    const cw = getCardWidth();
+    container.scrollBy({ left: -cw, behavior: 'smooth' });
+  });
+
+  nextBtn.addEventListener('click', () => {
+    const cw = getCardWidth();
+    container.scrollBy({ left: cw, behavior: 'smooth' });
+  });
+
+  if (activeWeeks.length > 1) {
+    activeWeeks.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'dot' + (i === 0 ? ' active' : '');
+      dotsContainer.appendChild(dot);
+    });
+  }
+
+  container.addEventListener('scroll', () => {
+    const idx = getCurrentIdx();
+    dotsContainer.querySelectorAll('.dot').forEach((d, i) => {
+      d.classList.toggle('active', i === idx);
+    });
+    updateArrows();
+  });
+
+  updateArrows();
+})();
+
+// Render trend charts
+(function renderTrends() {
+  const container = document.getElementById('trends-section');
+  if (!container) return;
+
+  const metrics = [
+    { key: 'weight', title: 'Weight', unit: 'lbs', color: 'var(--green)' },
+    { key: 'bodyFat', title: 'Body Fat', unit: '%', color: 'var(--yellow)' },
+    { key: 'vo2max', title: 'VO2 Max Est.', unit: 'mL/kg/min', color: '#58a6ff' },
+    { key: 'hrv', title: 'HRV', unit: 'ms', color: '#8B5CF6' },
+    { key: 'gripR', title: 'Grip Strength (Right)', unit: 'lbs', color: '#06B6D4' },
+    { key: 'gripL', title: 'Grip Strength (Left)', unit: 'lbs', color: '#0891B2' },
+    { key: 'bpSys', title: 'Blood Pressure (Systolic)', unit: 'mmHg', color: '#EC4899' },
+    { key: 'pef', title: 'PEF (Peak Expiratory Flow)', unit: 'L/m', color: '#F97316' },
+    { key: 'fev1', title: 'FEV1', unit: 'L', color: '#14B8A6' }
+  ];
+
+  metrics.forEach(m => {
+    const values = BODY.weeks.map(w => ({ date: w.date, value: w[m.key] })).filter(d => d.value !== null);
+    
+    const chart = document.createElement('div');
+    chart.className = 'trend-chart';
+    
+    if (values.length === 0) {
+      chart.innerHTML = '<div class="chart-title">' + m.title + '</div>' +
+        '<div class="chart-value" style="color:var(--text-muted)">\u2014</div>' +
+        '<div class="chart-unit">No data yet</div>';
+      container.appendChild(chart);
+      return;
+    }
+
+    const latest = values[values.length - 1];
+    
+    let svgHTML = '';
+    if (values.length >= 2) {
+      const min = Math.min(...values.map(v => v.value));
+      const max = Math.max(...values.map(v => v.value));
+      const range = max - min || 1;
+      const padding = range * 0.1;
+      const w = 300; const h = 80;
+      
+      const points = values.map((v, i) => {
+        const x = values.length === 1 ? w/2 : (i / (values.length - 1)) * w;
+        const y = h - ((v.value - (min - padding)) / (range + padding * 2)) * h;
+        return x.toFixed(1) + ',' + y.toFixed(1);
+      });
+      
+      const areaPoints = points.join(' ') + ' ' + w + ',' + h + ' 0,' + h;
+      
+      // Week marker lines
+      const weekLines = values.map((v, i) => {
+        const x = values.length === 1 ? w/2 : (i / (values.length - 1)) * w;
+        return '<line x1="' + x.toFixed(1) + '" y1="0" x2="' + x.toFixed(1) + '" y2="' + h + '" stroke="var(--border)" stroke-width="1" stroke-dasharray="2,3" vector-effect="non-scaling-stroke"/>';
+      }).join('');
+
+      svgHTML = '<svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none">' +
+        '<defs><linearGradient id="grad-' + m.key + '" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0%" stop-color="' + m.color + '" stop-opacity="0.2"/>' +
+        '<stop offset="100%" stop-color="' + m.color + '" stop-opacity="0"/>' +
+        '</linearGradient></defs>' +
+        weekLines +
+        '<polygon points="' + areaPoints + '" fill="url(#grad-' + m.key + ')"/>' +
+        '<polyline points="' + points.join(' ') + '" fill="none" stroke="' + m.color + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>' +
+        values.map((v, i) => {
+          const x = values.length === 1 ? w/2 : (i / (values.length - 1)) * w;
+          const y = h - ((v.value - (min - padding)) / (range + padding * 2)) * h;
+          return '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="3" fill="' + m.color + '" stroke="var(--surface)" stroke-width="1.5" vector-effect="non-scaling-stroke"/>';
+        }).join('') +
+        '</svg>';
+    }
+
+    chart.innerHTML = '<div class="chart-title">' + m.title + '</div>' +
+      '<div style="display:flex;align-items:baseline;gap:6px">' +
+        '<span class="chart-value">' + latest.value + '</span>' +
+        '<span class="chart-unit">' + m.unit + '</span>' +
+      '</div>' +
+      svgHTML +
+      (values.length >= 1 ? '<div class="chart-labels">' + values.map((v, i) => '<span>W' + (i + 1) + '</span>').join('') + '</div>' : '');
+    
+    container.appendChild(chart);
+  });
+})();
+</script>
+<div style="padding: 24px 16px 8px; border-top: 1px solid var(--border); margin-top: 8px;">
+  <h2 style="font-size: 18px; font-weight: 700; letter-spacing: -0.3px;">Personal Bests</h2>
+  <p style="color: var(--text-muted); font-size: 12px; margin-top: 4px;">Quarterly assessment benchmarks. Tested and tracked over time.</p>
+</div>
+<div id="pbs-section" style="padding: 8px 16px 32px;"></div>
+<script>
+(function renderPBs() {
+  const pbs = [
+    { title: '3RM Bench Press', desc: 'Barbell flat bench, 3 rep max', unit: 'lbs', color: '#F97316',
+      entries: [{ date: '2026-03-04', value: 245 }] },
+    { title: '3RM DB Bench Press', desc: 'Dumbbell flat bench, 3 rep max each hand', unit: 'lbs ea', color: '#F59E0B',
+      entries: [{ date: '2026-03-04', value: 100 }] },
+    { title: 'DB Flat Bench (1RM)', desc: 'Dumbbell flat bench, 1 rep max each hand', unit: 'lbs', color: '#D97706',
+      entries: [{ date: '2026-03-23', value: 120 }] },
+    { title: 'Standing DB Press (each)', desc: 'Standing dumbbell overhead press, one arm at a time', unit: 'lbs', color: '#8B5CF6',
+      entries: [{ date: '2026-03-23', value: 70 }] },
+    { title: 'Pull-ups', desc: 'Overhand grip, dead hang, chin over bar, no kip', unit: 'reps', color: '#06B6D4',
+      entries: [{ date: '2026-03-04', value: 20 }, { date: '2026-03-23', value: 14 }] },
+    { title: 'Push-ups (60s)', desc: 'Max push-ups in 60 seconds, chest to floor', unit: 'reps', color: '#2EE05A',
+      entries: [{ date: '2026-03-04', value: 50 }, { date: '2026-03-23', value: 37 }] },
+    { title: 'Dips (@ BW)', desc: 'Parallel bar dips at bodyweight, full lockout', unit: 'reps', color: '#EC4899',
+      entries: [{ date: '2026-03-23', value: 15 }] },
+    { title: 'Vertical Jump', desc: 'Standing vertical leap, feet together, no step', unit: 'inches', color: '#60A5FA',
+      entries: [{ date: '2026-03-04', value: 25.5 }] },
+    { title: "Farmer's Carry (BW)", desc: 'Carry bodyweight total (split across hands), max time', unit: 'sec', color: '#14B8A6',
+      entries: [{ date: '2026-03-04', value: 55 }] },
+    { title: 'Dead Hang', desc: 'Passive hang from pull-up bar, overhand grip, max time', unit: 'sec', color: '#0891B2',
+      entries: [{ date: '2026-03-04', value: 98 }] },
+    { title: 'Reaction Time', desc: 'Visual stimulus reaction test, lower is better', unit: 'ms', color: '#A855F7',
+      entries: [{ date: '2026-03-04', value: 302 }] },
+    { title: 'Single Leg Balance R (eyes closed)', desc: 'Stand on right leg, eyes closed, max time', unit: 'sec', color: '#F43F5E',
+      entries: [{ date: '2026-03-04', value: 31 }] },
+    { title: 'Single Leg Balance L (eyes closed)', desc: 'Stand on left leg, eyes closed, max time', unit: 'sec', color: '#E11D48',
+      entries: [{ date: '2026-03-04', value: 33 }] },
+  ];
+  const container = document.getElementById('pbs-section');
+  if (!container) return;
+
+  pbs.forEach(pb => {
+    const values = pb.entries.filter(e => e.value !== null);
+    const chart = document.createElement('div');
+    chart.className = 'trend-chart';
+
+    const latest = values[values.length - 1];
+
+    let svgHTML = '';
+    if (values.length >= 2) {
+      const min = Math.min(...values.map(v => v.value));
+      const max = Math.max(...values.map(v => v.value));
+      const range = max - min || 1;
+      const padding = range * 0.1;
+      const w = 300, h = 80;
+
+      const points = values.map((v, i) => {
+        const x = values.length === 1 ? w / 2 : (i / (values.length - 1)) * w;
+        const y = h - ((v.value - (min - padding)) / (range + padding * 2)) * h;
+        return x.toFixed(1) + ',' + y.toFixed(1);
+      });
+
+      const areaPoints = points.join(' ') + ' ' + w + ',' + h + ' 0,' + h;
+
+      const weekLines = values.map((v, i) => {
+        const x = values.length === 1 ? w / 2 : (i / (values.length - 1)) * w;
+        return '<line x1="' + x.toFixed(1) + '" y1="0" x2="' + x.toFixed(1) + '" y2="' + h + '" stroke="var(--border)" stroke-width="1" stroke-dasharray="2,3" vector-effect="non-scaling-stroke"/>';
+      }).join('');
+
+      svgHTML = '<svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none">' +
+        '<defs><linearGradient id="grad-pb-' + pb.title.replace(/[^a-z0-9]/gi, '') + '" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0%" stop-color="' + pb.color + '" stop-opacity="0.2"/>' +
+        '<stop offset="100%" stop-color="' + pb.color + '" stop-opacity="0"/>' +
+        '</linearGradient></defs>' +
+        weekLines +
+        '<polygon points="' + areaPoints + '" fill="url(#grad-pb-' + pb.title.replace(/[^a-z0-9]/gi, '') + ')"/>' +
+        '<polyline points="' + points.join(' ') + '" fill="none" stroke="' + pb.color + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>' +
+        values.map((v, i) => {
+          const x = values.length === 1 ? w / 2 : (i / (values.length - 1)) * w;
+          const y = h - ((v.value - (min - padding)) / (range + padding * 2)) * h;
+          return '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="3" fill="' + pb.color + '" stroke="var(--surface)" stroke-width="1.5" vector-effect="non-scaling-stroke"/>';
+        }).join('') +
+        '</svg>';
+    }
+
+    function fmtDate(d) {
+      var dt = new Date(d + 'T12:00:00');
+      return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }
+    chart.innerHTML = '<div class="chart-title">' + pb.title + '</div>' +
+      (pb.desc ? '<div style="font-size:11px;color:var(--text-muted);margin-top:2px;">' + pb.desc + '</div>' : '') +
+      '<div style="display:flex;align-items:baseline;gap:6px;margin-top:4px">' +
+        '<span class="chart-value">' + latest.value + '</span>' +
+        '<span class="chart-unit">' + pb.unit + '</span>' +
+      '</div>' +
+      svgHTML +
+      '<div class="chart-labels">' + values.map(v => '<span>' + fmtDate(v.date) + '</span>').join('') + '</div>';
+
+    container.appendChild(chart);
+  });
+})();
+</script>
+</body></html>
