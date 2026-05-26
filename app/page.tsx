@@ -5,23 +5,17 @@ type IconProps = {
 const links = [
   {
     title: "LinkedIn",
-    description: "Career, company updates, and ways to reach me.",
     href: "https://www.linkedin.com/in/lucaschatham/",
-    status: "Open profile",
     icon: LinkedInIcon,
   },
   {
     title: "Newsletter",
-    description: "Notes on what I am building, learning, and thinking through.",
     href: null,
-    status: "Coming soon",
     icon: NewsletterIcon,
   },
   {
     title: "GitHub",
-    description: "Code, experiments, and public projects.",
     href: "https://github.com/lucaschatham",
-    status: "Open profile",
     icon: GitHubIcon,
   },
 ];
@@ -76,26 +70,18 @@ function LinkCard({ link }: { link: (typeof links)[number] }) {
   const Icon = link.icon;
   const content = (
     <>
-      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-neutral-200 bg-white text-neutral-900 shadow-sm dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-100">
+      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-neutral-200 bg-white text-neutral-900 shadow-sm dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-100">
         <Icon className="h-5 w-5" />
       </span>
-      <span className="min-w-0 flex-1">
-        <span className="block text-base font-medium text-neutral-950 dark:text-neutral-50">
-          {link.title}
-        </span>
-        <span className="mt-1 block text-sm leading-6 text-neutral-600 dark:text-neutral-400">
-          {link.description}
-        </span>
-      </span>
-      <span className="shrink-0 rounded-full border border-neutral-200 px-3 py-1 text-xs font-medium text-neutral-500 dark:border-neutral-800 dark:text-neutral-400">
-        {link.status}
+      <span className="block text-base font-medium text-neutral-950 dark:text-neutral-50">
+        {link.title}
       </span>
     </>
   );
 
   if (!link.href) {
     return (
-      <div className="flex min-h-24 items-center gap-4 rounded-2xl border border-dashed border-neutral-300 bg-neutral-50/80 p-4 opacity-85 dark:border-neutral-800 dark:bg-neutral-900/50">
+      <div className="flex min-h-20 items-center gap-4 rounded-2xl border border-dashed border-neutral-300 bg-neutral-50/80 p-4 opacity-85 dark:border-neutral-800 dark:bg-neutral-900/50">
         {content}
       </div>
     );
@@ -103,7 +89,7 @@ function LinkCard({ link }: { link: (typeof links)[number] }) {
 
   return (
     <a
-      className="group flex min-h-24 items-center gap-4 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700 dark:focus:ring-neutral-100 dark:focus:ring-offset-neutral-950"
+      className="group flex min-h-20 items-center gap-4 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700 dark:focus:ring-neutral-100 dark:focus:ring-offset-neutral-950"
       href={link.href}
       rel="noreferrer"
       target="_blank"
