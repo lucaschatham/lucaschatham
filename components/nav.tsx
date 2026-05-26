@@ -1,11 +1,5 @@
 import Link from "next/link";
 
-const links = [
-  { href: "/blog", label: "Blog" },
-  { href: "/projects", label: "Projects" },
-  { href: "/about", label: "About" },
-];
-
 export function Nav() {
   return (
     <nav className="flex items-center justify-between py-6">
@@ -15,17 +9,14 @@ export function Nav() {
       >
         Lucas Chatham
       </Link>
-      <div className="flex gap-6">
-        {links.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className="text-sm text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 min-h-[44px] flex items-center"
-          >
-            {link.label}
-          </Link>
-        ))}
-      </div>
+      <Link
+        href="https://www.linkedin.com/in/lucaschatham/"
+        className="flex min-h-11 items-center rounded-full border border-neutral-200 px-4 text-sm font-medium text-neutral-700 transition hover:border-neutral-300 hover:text-neutral-950 dark:border-neutral-800 dark:text-neutral-300 dark:hover:border-neutral-700 dark:hover:text-neutral-50"
+        rel="noreferrer"
+        target="_blank"
+      >
+        Connect
+      </Link>
     </nav>
   );
 }
