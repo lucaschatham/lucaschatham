@@ -117,8 +117,12 @@ export default function Home() {
   return (
     <div className="flex min-h-[calc(100vh-180px)] flex-col justify-center py-8">
       <section className="mb-10">
-        <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-3xl bg-neutral-950 text-xl font-semibold text-white shadow-sm dark:bg-neutral-100 dark:text-neutral-950">
-          LC
+        <div className="mb-8 overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-100 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+          <img
+            alt="Lucas Chatham"
+            className="h-80 w-full object-cover object-[center_34%] sm:h-[28rem]"
+            src="/images/lucas-portrait-clean.jpg"
+          />
         </div>
         <p className="mb-3 text-sm font-medium uppercase tracking-[0.2em] text-neutral-500 dark:text-neutral-500">
           lucaschatham.com
