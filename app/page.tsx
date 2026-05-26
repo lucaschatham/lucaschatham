@@ -70,10 +70,10 @@ function LinkCard({ link }: { link: (typeof links)[number] }) {
   const Icon = link.icon;
   const content = (
     <>
-      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-neutral-200 bg-white text-neutral-900 shadow-sm dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-100">
-        <Icon className="h-5 w-5" />
+      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-neutral-200 bg-white text-neutral-900 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-100">
+        <Icon className="h-4 w-4" />
       </span>
-      <span className="block text-base font-medium text-neutral-950 dark:text-neutral-50">
+      <span className="block text-sm font-medium text-neutral-950 dark:text-neutral-50">
         {link.title}
       </span>
     </>
@@ -81,7 +81,7 @@ function LinkCard({ link }: { link: (typeof links)[number] }) {
 
   if (!link.href) {
     return (
-      <div className="flex min-h-20 items-center gap-4 rounded-2xl border border-dashed border-neutral-300 bg-neutral-50/80 p-4 opacity-85 dark:border-neutral-800 dark:bg-neutral-900/50">
+      <div className="flex min-h-14 items-center gap-3 rounded-lg border border-dashed border-neutral-300 bg-neutral-50/70 px-3 opacity-80 dark:border-neutral-800 dark:bg-transparent">
         {content}
       </div>
     );
@@ -89,7 +89,7 @@ function LinkCard({ link }: { link: (typeof links)[number] }) {
 
   return (
     <a
-      className="group flex min-h-20 items-center gap-4 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700 dark:focus:ring-neutral-100 dark:focus:ring-offset-neutral-950"
+      className="group flex min-h-14 items-center gap-3 rounded-lg border border-neutral-200 bg-white px-3 transition hover:border-neutral-300 hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 dark:border-neutral-800 dark:bg-transparent dark:hover:border-neutral-700 dark:hover:bg-neutral-900/50 dark:focus:ring-neutral-100 dark:focus:ring-offset-neutral-950"
       href={link.href}
       rel="noreferrer"
       target="_blank"
@@ -101,27 +101,29 @@ function LinkCard({ link }: { link: (typeof links)[number] }) {
 
 export default function Home() {
   return (
-    <div className="flex min-h-[calc(100vh-180px)] flex-col justify-center py-8">
-      <section className="mb-10">
-        <div className="mb-8 w-44 overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-100 shadow-sm dark:border-neutral-800 dark:bg-neutral-900 sm:w-56">
+    <div className="py-4 sm:py-6">
+      <section className="mb-8 flex flex-col gap-6 sm:flex-row sm:items-end">
+        <div className="w-36 shrink-0 overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900 sm:w-44">
           <img
             alt="Lucas Chatham"
             className="aspect-[3/4] w-full object-cover object-top"
             src="/images/lucas-portrait-clean.jpg"
           />
         </div>
-        <p className="mb-3 text-sm font-medium uppercase tracking-[0.2em] text-neutral-500 dark:text-neutral-500">
-          lucaschatham.com
-        </p>
-        <h1 className="max-w-xl text-4xl font-semibold leading-tight tracking-tight text-neutral-950 dark:text-neutral-50 sm:text-5xl">
-          Lucas Chatham
-        </h1>
-        <p className="mt-4 max-w-xl text-base leading-7 text-neutral-600 dark:text-neutral-400 sm:text-lg">
-          A simple hub for my work, writing, code, and updates.
-        </p>
+        <div className="max-w-md pb-1">
+          <p className="mb-3 text-sm font-medium uppercase tracking-[0.2em] text-neutral-500 dark:text-neutral-500">
+            lucaschatham.com
+          </p>
+          <h1 className="text-4xl font-semibold leading-tight tracking-tight text-neutral-950 dark:text-neutral-50 sm:text-5xl">
+            Lucas Chatham
+          </h1>
+          <p className="mt-4 text-base leading-7 text-neutral-600 dark:text-neutral-400 sm:text-lg">
+            A simple hub for my work, writing, code, and updates.
+          </p>
+        </div>
       </section>
 
-      <section aria-label="Primary links" className="grid gap-3">
+      <section aria-label="Primary links" className="grid w-full max-w-xs gap-2">
         {links.map((link) => (
           <LinkCard key={link.title} link={link} />
         ))}
