@@ -173,7 +173,6 @@ button:focus-visible,
   aspect-ratio: 5 / 6;
   object-fit: cover;
   object-position: center 18%;
-  filter: contrast(1.05) saturate(.78) brightness(.96);
 }
 
 .man {

@@ -153,11 +153,9 @@ export function Portrait() {
     <figure className="stage">
       <img
         src="/images/lucas-portrait-clean.jpg"
-        srcSet="/images/lucas-portrait-clean-430.jpg 430w, /images/lucas-portrait-clean-860.jpg 860w, /images/lucas-portrait-clean.jpg 1200w"
-        sizes="(max-width: 430px) calc(100vw - 44px), 386px"
         alt="Portrait of Lucas Chatham"
-        width="1200"
-        height="1800"
+        width="724"
+        height="1086"
         fetchPriority="high"
         decoding="async"
       />

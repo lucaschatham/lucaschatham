@@ -37,8 +37,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: portraitUrl,
-        width: 1200,
-        height: 1500,
+        width: 724,
+        height: 1086,
         alt: "Lucas Chatham",
       },
     ],
