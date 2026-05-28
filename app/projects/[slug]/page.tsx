@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getPost, getPosts } from "@/lib/content";
 import { MDXContent } from "@/components/mdx";
+import { ManifestPage } from "@/components/manifest";
 import type { Metadata } from "next";
 import { SITE_URL } from "@/lib/constants";
 
@@ -36,24 +37,26 @@ export default async function ProjectPage({ params }: Props) {
   if (!project) notFound();
 
   return (
-    <article>
-      <header className="mb-8">
-        <h1 className="text-3xl font-semibold tracking-tight mb-2">
-          {project.frontmatter.title}
-        </h1>
-        <p className="text-neutral-500">{project.frontmatter.description}</p>
-        {project.frontmatter.url && (
-          <a
-            href={project.frontmatter.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block mt-3 text-sm text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors"
-          >
-            Visit {new URL(project.frontmatter.url).hostname} &rarr;
-          </a>
-        )}
-      </header>
-      <MDXContent source={project.content} />
-    </article>
+    <ManifestPage active="projects">
+      <article className="content-shell">
+        <header className="mb-8">
+          <h1 className="text-3xl font-semibold tracking-tight mb-2">
+            {project.frontmatter.title}
+          </h1>
+          <p className="text-[var(--mute)]">{project.frontmatter.description}</p>
+          {project.frontmatter.url && (
+            <a
+              href={project.frontmatter.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block mt-3 text-sm text-[var(--mute)] transition-colors hover:text-[var(--cream)]"
+            >
+              Visit {new URL(project.frontmatter.url).hostname} &rarr;
+            </a>
+          )}
+        </header>
+        <MDXContent source={project.content} />
+      </article>
+    </ManifestPage>
   );
 }
