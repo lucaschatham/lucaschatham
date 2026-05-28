@@ -143,8 +143,10 @@ export function Hero() {
         I build technology to help you live healthier, longer. I write a weekly
         newsletter about the latest health advances in science.
         <br />
-        I'm a Maker at heart. Wood, metal, the dance floor- whatever the medium,
-        you'll catch me cutting shapes.
+        I'm a Maker at heart.
+        <br />
+        Wood, metal, the dance floor- whatever the medium, you'll catch me
+        cutting shapes.
       </p>
     </section>
   );
