@@ -141,9 +141,10 @@ export function Hero() {
       </Link>
       <p className="tag">
         I build technology to help you live healthier, longer. I write a weekly
-        newsletter about the latest health advances in science. I'm a Maker at
-        heart. Wood, metal, the dance floor- whatever the medium, you'll catch
-        me cutting shapes.
+        newsletter about the latest health advances in science.
+        <br />
+        I'm a Maker at heart. Wood, metal, the dance floor- whatever the medium,
+        you'll catch me cutting shapes.
       </p>
     </section>
   );
