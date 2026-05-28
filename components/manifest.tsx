@@ -142,7 +142,8 @@ export function Hero() {
       <p className="tag">
         I build technology to help you live healthier, longer. I write a weekly
         newsletter about the latest health advances in science. I'm a Maker at
-        heart — wood, metal, the dance floor — you'll catch me cutting shapes.
+        heart. Wood, metal, the dance floor- whatever the medium, you'll catch
+        me cutting shapes.
       </p>
     </section>
   );
