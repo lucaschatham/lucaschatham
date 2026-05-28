@@ -3,11 +3,11 @@ import { getPosts } from "@/lib/content";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Blog",
+  title: "Essays",
   description: "Thoughts on technology, health, and building things.",
 };
 
-export default function BlogPage() {
+export default function EssaysPage() {
   const posts = getPosts("blog");
   const rows = posts.map((post, index) =>
     postToRow(post, "blog", index, posts.length)
