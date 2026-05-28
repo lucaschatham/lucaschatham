@@ -1,10 +1,14 @@
 import { ManifestPage, RowsSection, postToRow } from "@/components/manifest";
 import { getPosts } from "@/lib/content";
+import { SITE_URL } from "@/lib/constants";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Essays",
   description: "Thoughts on technology, health, and building things.",
+  alternates: {
+    canonical: `${SITE_URL}/essays`,
+  },
 };
 
 export default function EssaysPage() {

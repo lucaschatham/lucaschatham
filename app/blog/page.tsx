@@ -1,21 +1,5 @@
-import { ManifestPage, RowsSection, postToRow } from "@/components/manifest";
-import { getPosts } from "@/lib/content";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Blog",
-  description: "Thoughts on technology, health, and building things.",
-};
+import { permanentRedirect } from "next/navigation";
 
 export default function BlogPage() {
-  const posts = getPosts("blog");
-  const rows = posts.map((post, index) =>
-    postToRow(post, "blog", index, posts.length)
-  );
-
-  return (
-    <ManifestPage active="essays">
-      <RowsSection heading="essays" kicker="ALL" rows={rows} />
-    </ManifestPage>
-  );
+  permanentRedirect("/essays");
 }

@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
 import { ManifestPage } from "@/components/manifest";
+import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "About",
   description: "About Lucas Chatham.",
+  alternates: {
+    canonical: `${SITE_URL}/about`,
+  },
 };
 
 export default function AboutPage() {

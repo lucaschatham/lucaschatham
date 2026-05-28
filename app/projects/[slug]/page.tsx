@@ -28,6 +28,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: "article",
       url: `${SITE_URL}/projects/${slug}`,
     },
+    alternates: {
+      canonical: `${SITE_URL}/projects/${slug}`,
+    },
   };
 }
 

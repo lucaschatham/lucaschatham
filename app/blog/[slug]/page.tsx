@@ -29,6 +29,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       publishedTime: post.frontmatter.date,
       url: `${SITE_URL}/blog/${slug}`,
     },
+    alternates: {
+      canonical: `${SITE_URL}/blog/${slug}`,
+    },
   };
 }
 

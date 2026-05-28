@@ -7,6 +7,13 @@ import {
 } from "@/components/manifest";
 import { getPosts } from "@/lib/content";
 import { SITE_URL } from "@/lib/constants";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: SITE_URL,
+  },
+};
 
 const personSchema = {
   "@context": "https://schema.org",
