@@ -4,7 +4,6 @@ import type { Post } from "@/lib/content";
 type NavKey = "home" | "essays" | "projects";
 
 type Row = {
-  id: string;
   title: string;
   dek: string;
   href: string;
@@ -13,28 +12,24 @@ type Row = {
 
 const ESSAY_PLACEHOLDERS: Row[] = [
   {
-    id: "N° 04",
     title: "The death of the design hire",
     dek: "Why the team you're trying to build in 2026 doesn't exist",
     href: "#",
     meta: "May 23 · 12m",
   },
   {
-    id: "N° 03",
     title: "How to think about taste in the AI era",
     dek: "Why taste is the one thing automation cannot replicate",
     href: "#",
     meta: "May 09 · 9m",
   },
   {
-    id: "N° 02",
     title: "Notes from shipping four things in a month",
     dek: "What I learned moving fast without breaking taste",
     href: "#",
     meta: "Apr 28 · 6m",
   },
   {
-    id: "N° 01",
     title: "Who gets to build software now",
     dek: "The next decade belongs to the people who didn't think they were allowed",
     href: "#",
@@ -44,14 +39,9 @@ const ESSAY_PLACEHOLDERS: Row[] = [
 
 export function postToRow(
   post: Post,
-  basePath: "blog" | "projects",
-  index: number,
-  total: number
+  basePath: "blog" | "projects"
 ): Row {
-  const number = String(total - index).padStart(2, "0");
-
   return {
-    id: `N° ${number}`,
     title: post.frontmatter.title,
     dek: post.frontmatter.description,
     href: `/${basePath}/${post.slug}`,
@@ -59,11 +49,8 @@ export function postToRow(
   };
 }
 
-export function projectToRow(project: Post, index: number, total: number): Row {
-  const number = String(total - index).padStart(2, "0");
-
+export function projectToRow(project: Post): Row {
   return {
-    id: `P${number}`,
     title: project.frontmatter.title,
     dek: project.frontmatter.description,
     href: project.frontmatter.url ?? `/projects/${project.slug}`,
@@ -76,7 +63,7 @@ export function homeEssayRows(posts: Post[]): Row[] {
 
   const realRows = posts
     .slice(0, 4)
-    .map((post, index) => postToRow(post, "blog", index, posts.length));
+    .map((post) => postToRow(post, "blog"));
 
   return [...realRows, ...ESSAY_PLACEHOLDERS].slice(0, 4);
 }
@@ -188,7 +175,7 @@ export function RowsSection({
         <span className="n">{kicker}</span>
       </h2>
       {rows.map((row) => (
-        <ManifestRow key={`${row.id}-${row.href}-${row.title}`} row={row} />
+        <ManifestRow key={`${row.href}-${row.title}`} row={row} />
       ))}
       {allHref && allLabel && (
         <Link className="all" href={allHref}>
@@ -204,10 +191,6 @@ function ManifestRow({ row }: { row: Row }) {
   const isExternal = row.href.startsWith("http");
   const content = (
     <>
-      <div className="id">
-        <DocumentIcon />
-        {row.id}
-      </div>
       <div className="t">
         {row.title}
         <span className="s">{row.dek}</span>
@@ -295,14 +278,6 @@ function formatShortDate(dateString: string): string {
     month: "short",
     day: "2-digit",
   });
-}
-
-function DocumentIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13zM8 13h8v1.6H8V13zm0 3h8v1.6H8V16z" />
-    </svg>
-  );
 }
 
 function ArrowUpRightIcon() {

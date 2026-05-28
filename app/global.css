@@ -203,8 +203,8 @@ button:focus-visible,
 
 .r {
   display: grid;
-  grid-template-columns: 62px 1fr auto;
-  gap: 14px;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
   padding: 16px 6px;
   border-bottom: 1px solid var(--line);
   align-items: center;
@@ -230,25 +230,6 @@ button:focus-visible,
 .r:hover .arr {
   color: var(--accent);
   transform: translate(2px, -2px);
-}
-
-.r .id {
-  font-family: "Geist Mono", monospace;
-  font-size: 10px;
-  color: var(--accent);
-  font-weight: 600;
-  letter-spacing: .1em;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-
-.r .id svg {
-  width: 12px;
-  height: 12px;
-  flex-shrink: 0;
-  fill: currentColor;
-  opacity: .95;
 }
 
 .r .t {

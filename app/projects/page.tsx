@@ -13,9 +13,7 @@ export const metadata: Metadata = {
 
 export default function ProjectsPage() {
   const projects = getPosts("projects");
-  const rows = projects.map((project, index) =>
-    projectToRow(project, index, projects.length)
-  );
+  const rows = projects.map((project) => projectToRow(project));
 
   return (
     <ManifestPage active="projects">
