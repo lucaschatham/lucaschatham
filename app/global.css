@@ -5,13 +5,24 @@
 }
 
 :root {
-  --ink: #000;
-  --line: rgba(245, 243, 238, .10);
-  --cream: #f5f3ee;
-  --mute: rgba(245, 243, 238, .50);
-  --accent: #3aafff;
-  --accent-glow: rgba(58, 175, 255, .34);
-  --accent-dim: rgba(58, 175, 255, .14);
+  /* machined grayscale body */
+  --silver-100: #E8E8E6;   /* aluminium highlight · primary text */
+  --silver-200: #C9CBCD;
+  --gray-400: #9A9DA1;     /* faint labels */
+  --steel-500: #6B6E72;    /* muted text / mono labels */
+  --gunmetal-700: #3A3D42;
+  --charcoal-800: #222427;
+  --shadow-900: #121316;
+
+  --bg: #1A1C1F;           /* base field — warm near-black, NOT #000 */
+  --pulse: #CB3A2D;        /* THE red. one living thing per viewport */
+  --line: rgba(232, 232, 230, .08);  /* hairline panel-line divider */
+
+  /* legacy aliases kept so existing rules resolve */
+  --ink: var(--bg);
+  --cream: var(--silver-100);
+  --mute: var(--steel-500);
+  --accent: var(--pulse);  /* live-state usages only — see Task 2 */
   --good: #9be5b1;
 }
 
@@ -37,7 +48,7 @@ body {
 }
 
 .page {
-  max-width: 430px;
+  max-width: 520px;
   margin: 0 auto;
 }
 
@@ -50,7 +61,7 @@ button:focus-visible,
 [tabindex]:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
-  border-radius: 8px;
+  border-radius: 2px;
 }
 
 .nav {
@@ -60,7 +71,7 @@ button:focus-visible,
   gap: 6px;
   padding: max(14px, calc(env(safe-area-inset-top, 0) + 12px)) 16px 14px;
   border-bottom: 1px solid var(--line);
-  background: rgba(0, 0, 0, .88);
+  background: rgba(26, 28, 31, .85);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   font-family: "Geist Mono", monospace;
@@ -80,7 +91,7 @@ button:focus-visible,
   align-items: center;
   gap: 7px;
   padding: 8px 14px;
-  border-radius: 6px;
+  border-radius: 2px;
   transition: color .15s, background .15s, transform .12s;
 }
 
@@ -93,7 +104,7 @@ button:focus-visible,
 }
 
 .nav a.active {
-  color: var(--accent);
+  color: var(--silver-100);
 }
 
 .nav a .dot {
@@ -124,55 +135,82 @@ button:focus-visible,
   }
 }
 
-.hero {
-  padding: 56px 24px 0;
-  text-align: center;
+.mark {
+  display: grid;
+  grid-template-columns: repeat(3, 4px);
+  gap: 2px;
+  margin-right: 4px;
+  flex: none;
 }
 
-.hero .name {
-  display: block;
-  font-size: 60px;
-  font-weight: 200;
-  line-height: .94;
-  letter-spacing: -0.04em;
-  color: var(--cream);
-  text-decoration: none;
-  transition: opacity .15s;
+.mark .px {
+  width: 4px;
+  height: 4px;
+  background: var(--steel-500);
 }
 
-.hero .name:active {
-  opacity: .7;
+.mark .px.on {
+  background: var(--silver-100);
 }
 
-.hero .name b {
-  font-weight: 600;
-}
-
-.hero .tag {
-  margin: 22px auto 0;
-  max-width: 38ch;
-  font-size: 14.5px;
-  line-height: 1.55;
-  color: rgba(245, 243, 238, .78);
-  font-weight: 400;
-}
-
-.stage {
-  margin: 40px 22px;
+.hero-cine {
   position: relative;
-  border-radius: 20px;
+  width: 100%;
+  background: var(--shadow-900);
   overflow: hidden;
-  background: #0a0a0a;
-  box-shadow: 0 24px 60px -24px rgba(58, 175, 255, .12), 0 0 0 1px rgba(245, 243, 238, .04);
 }
 
-.stage img {
+.hero-cine img {
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 5 / 6;
+  aspect-ratio: 3 / 4;
   object-fit: cover;
-  object-position: center 18%;
+  object-position: center 10%;
+  filter: grayscale(1) contrast(1.04) brightness(.96);
+}
+
+.hero-cine .scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 78% at 50% 30%, transparent 36%, rgba(26, 28, 31, .5) 76%, var(--bg) 100%),
+    linear-gradient(to bottom, transparent 48%, rgba(26, 28, 31, .82) 86%, var(--bg) 100%);
+}
+
+.hero-cine .name {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  z-index: 1;
+  display: block;
+  font-size: 56px;
+  font-weight: 200;
+  line-height: .9;
+  letter-spacing: -0.04em;
+  color: var(--silver-100);
+  text-decoration: none;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, .5);
+  transition: opacity .15s;
+}
+
+.hero-cine .name b {
+  font-weight: 600;
+}
+
+.hero-cine .name:active {
+  opacity: .8;
+}
+
+.lede {
+  margin: 0;
+  padding: 26px 24px 8px;
+  max-width: 42ch;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: rgba(232, 232, 230, .72);
+  font-weight: 400;
 }
 
 .man {
@@ -198,7 +236,7 @@ button:focus-visible,
 }
 
 .man .h .n {
-  color: var(--accent);
+  color: var(--steel-500);
 }
 
 .r {
@@ -210,7 +248,7 @@ button:focus-visible,
   align-items: center;
   text-decoration: none;
   color: inherit;
-  border-radius: 8px;
+  border-radius: 2px;
   transition: background .15s, transform .12s;
   margin: 0 -6px;
 }
@@ -220,7 +258,7 @@ button:focus-visible,
 }
 
 .r:hover {
-  background: rgba(58, 175, 255, .04);
+  background: rgba(232, 232, 230, .03);
 }
 
 .r:active {
@@ -228,7 +266,7 @@ button:focus-visible,
 }
 
 .r:hover .arr {
-  color: var(--accent);
+  color: var(--silver-100);
   transform: translate(2px, -2px);
 }
 
@@ -292,7 +330,7 @@ button:focus-visible,
   margin-top: 18px;
   padding: 14px;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 2px;
   font-family: "Geist Mono", monospace;
   font-size: 10.5px;
   letter-spacing: .18em;
@@ -304,9 +342,9 @@ button:focus-visible,
 }
 
 .all:hover {
-  color: var(--accent);
-  border-color: var(--accent);
-  background: var(--accent-dim);
+  color: var(--silver-100);
+  border-color: var(--silver-200);
+  background: rgba(232, 232, 230, .04);
 }
 
 .all svg {
@@ -350,12 +388,12 @@ button:focus-visible,
 }
 
 .com a:hover .ic {
-  color: var(--accent);
+  color: var(--silver-100);
 }
 
 .com a:active {
-  color: var(--accent);
-  background: var(--accent-dim);
+  color: var(--silver-100);
+  background: rgba(232, 232, 230, .04);
   transform: scale(.96);
 }
 
@@ -370,7 +408,7 @@ button:focus-visible,
 }
 
 .com a:active .ic {
-  color: var(--accent);
+  color: var(--silver-100);
 }
 
 .com .social-disabled {
@@ -405,7 +443,7 @@ button:focus-visible,
   background: var(--accent);
   color: #000;
   padding: 10px 16px;
-  border-radius: 6px;
+  border-radius: 2px;
   font-family: "Geist Mono", monospace;
   font-size: 11px;
   letter-spacing: .18em;

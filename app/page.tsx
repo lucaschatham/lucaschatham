@@ -1,7 +1,7 @@
 import {
   Hero,
+  Lede,
   ManifestPage,
-  Portrait,
   RowsSection,
   homeEssayRows,
 } from "@/components/manifest";
@@ -41,7 +41,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
       />
       <Hero />
-      <Portrait />
+      <Lede />
       <RowsSection
         heading="essays"
         kicker="LATEST"
