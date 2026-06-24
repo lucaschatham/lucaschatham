@@ -99,6 +99,17 @@ export function ManifestNav({ active }: { active: NavKey }) {
 
   return (
     <nav className="nav" aria-label="Primary">
+      <span className="mark" aria-hidden="true">
+        <span className="px" />
+        <span className="px" />
+        <span className="px" />
+        <span className="px" />
+        <span className="px on" />
+        <span className="px" />
+        <span className="px" />
+        <span className="px" />
+        <span className="px" />
+      </span>
       {links.map((item) => {
         const isActive = item.key === active;
 
@@ -120,27 +131,7 @@ export function ManifestNav({ active }: { active: NavKey }) {
 
 export function Hero() {
   return (
-    <section className="hero">
-      <Link href="/" className="name" aria-label="Lucas Chatham — home">
-        Lucas
-        <br />
-        <b>Chatham</b>
-      </Link>
-      <p className="tag">
-        I build technology to help you live healthier, longer. I write a weekly
-        newsletter about the latest health advances in science.
-        <br />
-        <br />
-        I'm a Maker at heart. Wood, metal, the dance floor- whatever the medium,
-        you'll catch me cutting shapes.
-      </p>
-    </section>
-  );
-}
-
-export function Portrait() {
-  return (
-    <figure className="stage">
+    <section className="hero-cine">
       <img
         src="/images/lucas-portrait-clean.jpg"
         alt="Portrait of Lucas Chatham"
@@ -149,7 +140,26 @@ export function Portrait() {
         fetchPriority="high"
         decoding="async"
       />
-    </figure>
+      <div className="scrim" aria-hidden="true" />
+      <Link href="/" className="name" aria-label="Lucas Chatham — home">
+        Lucas
+        <br />
+        <b>Chatham</b>
+      </Link>
+    </section>
+  );
+}
+
+export function Lede() {
+  return (
+    <p className="lede">
+      I build technology to help you live healthier, longer. I write a weekly
+      newsletter about the latest health advances in science.
+      <br />
+      <br />
+      I'm a Maker at heart. Wood, metal, the dance floor- whatever the medium,
+      you'll catch me cutting shapes.
+    </p>
   );
 }
 
