@@ -77,9 +77,6 @@ export function ManifestPage({
 }) {
   return (
     <>
-      <a href="#main" className="skip">
-        Skip to content
-      </a>
       <div className="page">
         <ManifestNav active={active} />
         <main id="main">{children}</main>
