@@ -66,7 +66,7 @@ button:focus-visible,
 
 .nav {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   gap: 6px;
   padding: max(14px, calc(env(safe-area-inset-top, 0) + 12px)) 16px 14px;
@@ -135,11 +135,18 @@ button:focus-visible,
   }
 }
 
-.mark {
+.nav-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav a.mark {
   display: grid;
   grid-template-columns: repeat(3, 4px);
   gap: 2px;
-  margin-right: 4px;
+  padding: 8px;
+  margin-left: -8px;
   flex: none;
 }
 
@@ -147,10 +154,36 @@ button:focus-visible,
   width: 4px;
   height: 4px;
   background: var(--steel-500);
+  transition: background .2s ease;
 }
 
-.mark .px.on {
+.mark .center {
   background: var(--silver-100);
+}
+
+.mark:hover .px,
+.mark:focus-visible .px {
+  background: var(--silver-100);
+}
+
+.mark:hover .px:nth-child(2),
+.mark:hover .px:nth-child(4) { transition-delay: .03s; }
+.mark:hover .px:nth-child(3),
+.mark:hover .px:nth-child(5),
+.mark:hover .px:nth-child(7) { transition-delay: .06s; }
+.mark:hover .px:nth-child(6),
+.mark:hover .px:nth-child(8) { transition-delay: .09s; }
+.mark:hover .px:nth-child(9) { transition-delay: .12s; }
+
+.mark.active .center {
+  background: var(--pulse);
+  box-shadow: 0 0 6px var(--pulse);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mark.active .center {
+    animation: pls 1.6s ease-in-out infinite;
+  }
 }
 
 .hero-cine {

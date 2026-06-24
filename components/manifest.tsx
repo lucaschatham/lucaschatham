@@ -92,39 +92,47 @@ export function ManifestPage({
 
 export function ManifestNav({ active }: { active: NavKey }) {
   const links: { key: NavKey; href: string; label: string }[] = [
-    { key: "home", href: "/", label: "Home" },
     { key: "essays", href: "/essays", label: "Essays" },
     { key: "projects", href: "/projects", label: "Projects" },
   ];
 
+  const homeActive = active === "home";
+
   return (
     <nav className="nav" aria-label="Primary">
-      <span className="mark" aria-hidden="true">
-        <span className="px" />
-        <span className="px" />
-        <span className="px" />
-        <span className="px" />
-        <span className="px on" />
-        <span className="px" />
-        <span className="px" />
-        <span className="px" />
-        <span className="px" />
-      </span>
-      {links.map((item) => {
-        const isActive = item.key === active;
+      <Link
+        href="/"
+        className={homeActive ? "mark active" : "mark"}
+        aria-label="Lucas Chatham — home"
+        aria-current={homeActive ? "page" : undefined}
+      >
+        <span className="px" aria-hidden="true" />
+        <span className="px" aria-hidden="true" />
+        <span className="px" aria-hidden="true" />
+        <span className="px" aria-hidden="true" />
+        <span className="px center" aria-hidden="true" />
+        <span className="px" aria-hidden="true" />
+        <span className="px" aria-hidden="true" />
+        <span className="px" aria-hidden="true" />
+        <span className="px" aria-hidden="true" />
+      </Link>
+      <div className="nav-links">
+        {links.map((item) => {
+          const isActive = item.key === active;
 
-        return (
-          <Link
-            key={item.key}
-            href={item.href}
-            className={isActive ? "active" : undefined}
-            aria-current={isActive ? "page" : undefined}
-          >
-            <span className="dot" aria-hidden="true" />
-            {item.label}
-          </Link>
-        );
-      })}
+          return (
+            <Link
+              key={item.key}
+              href={item.href}
+              className={isActive ? "active" : undefined}
+              aria-current={isActive ? "page" : undefined}
+            >
+              <span className="dot" aria-hidden="true" />
+              {item.label}
+            </Link>
+          );
+        })}
+      </div>
     </nav>
   );
 }
