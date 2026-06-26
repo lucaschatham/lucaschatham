@@ -42,9 +42,9 @@ export function ReadingProgress() {
         position: "sticky",
         top: "calc(env(safe-area-inset-top, 0px) + 56px)",
         zIndex: 9,
-        height: "2px",
+        height: "3px",
         marginTop: "-1px",
-        background: "transparent",
+        background: "rgba(203, 58, 45, .22)",
         overflow: "hidden",
       }}
     >
