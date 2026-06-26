@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { getPost, getPosts } from "@/lib/content";
 import { MDXContent } from "@/components/mdx";
 import { ManifestPage } from "@/components/manifest";
+import { ReadingProgress } from "@/components/reading-progress";
 import type { Metadata } from "next";
 import { SITE_URL } from "@/lib/constants";
 
@@ -42,6 +43,7 @@ export default async function BlogPost({ params }: Props) {
 
   return (
     <ManifestPage active="essays">
+      <ReadingProgress />
       <article className="content-shell">
         <header className="mb-8">
           <h1 className="text-3xl font-semibold tracking-tight mb-2">
