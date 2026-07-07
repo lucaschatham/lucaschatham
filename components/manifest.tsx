@@ -139,9 +139,11 @@ export function Hero() {
     <section className="hero-cine">
       <img
         src="/images/lucas-portrait-clean.jpg"
+        srcSet="/images/lucas-portrait-clean-430.jpg 430w, /images/lucas-portrait-clean-860.jpg 860w, /images/lucas-portrait-clean.jpg 1200w"
+        sizes="(max-width: 520px) 100vw, 520px"
         alt="Portrait of Lucas Chatham"
-        width="724"
-        height="1086"
+        width="1200"
+        height="1800"
         fetchPriority="high"
         decoding="async"
       />
@@ -204,6 +206,8 @@ export function RowsSection({
 
 function ManifestRow({ row }: { row: Row }) {
   const isExternal = row.href.startsWith("http");
+  const isLive = row.meta.toLowerCase() === "live";
+  const className = isLive ? "r r-live" : "r";
   const content = (
     <>
       <div className="t">
@@ -219,14 +223,19 @@ function ManifestRow({ row }: { row: Row }) {
 
   if (isExternal) {
     return (
-      <a className="r" href={row.href} rel="noopener noreferrer" target="_blank">
+      <a
+        className={className}
+        href={row.href}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
         {content}
       </a>
     );
   }
 
   return (
-    <Link className="r" href={row.href}>
+    <Link className={className} href={row.href}>
       {content}
     </Link>
   );

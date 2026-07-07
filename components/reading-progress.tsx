@@ -36,28 +36,15 @@ export function ReadingProgress() {
 
   return (
     <div
+      className="reading-progress"
       aria-hidden="true"
       data-reading-progress=""
-      style={{
-        position: "sticky",
-        top: "calc(env(safe-area-inset-top, 0px) + 56px)",
-        zIndex: 9,
-        height: "3px",
-        marginTop: "-1px",
-        background: "rgba(203, 58, 45, .22)",
-        overflow: "hidden",
-      }}
     >
       <div
+        className="reading-progress-bar"
         data-reading-progress-bar=""
         style={{
-          width: "100%",
-          height: "100%",
-          background: "var(--pulse)",
-          boxShadow: "0 0 8px var(--pulse)",
           transform: `scaleX(${progress})`,
-          transformOrigin: "left center",
-          willChange: "transform",
         }}
       />
     </div>
