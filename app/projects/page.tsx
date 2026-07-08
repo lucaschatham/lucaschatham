@@ -1,5 +1,6 @@
 import { ManifestPage, RowsSection, projectToRow } from "@/components/manifest";
 import { getPosts } from "@/lib/content";
+import { orderPortfolioProjects } from "@/lib/portfolio-order";
 import { SITE_URL } from "@/lib/constants";
 import type { Metadata } from "next";
 
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default function ProjectsPage() {
-  const projects = getPosts("work");
+  const projects = orderPortfolioProjects(getPosts("work"));
   const rows = projects.map((project) => projectToRow(project, "projects"));
 
   return (

@@ -6,6 +6,7 @@ import {
   projectToRow,
 } from "@/components/manifest";
 import { getPosts } from "@/lib/content";
+import { orderPortfolioProjects } from "@/lib/portfolio-order";
 import { SITE_URL } from "@/lib/constants";
 import type { Metadata } from "next";
 
@@ -32,7 +33,7 @@ const personSchema = {
 };
 
 export default function Home() {
-  const work = getPosts("work").map((project) =>
+  const work = orderPortfolioProjects(getPosts("work")).map((project) =>
     projectToRow(project, "projects")
   );
 

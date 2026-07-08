@@ -81,17 +81,17 @@ const projectSnapshots: Record<string, ProjectSnapshotItem[]> = {
     {
       label: "Role",
       value: "Founder / builder",
-      detail: "Built the first AI movement-coach web application.",
+      detail: "Turned 14+ years of coaching judgment into product logic and a beta app.",
     },
     {
       label: "System",
       value: "Adaptive plans",
-      detail: "Fitness, nutrition, and biomechanics guidance from messy inputs.",
+      detail: "Translated goals, recovery, schedule, nutrition, and pain signals into decisions.",
     },
     {
       label: "Proof",
       value: "Working beta",
-      detail: "Generated and adjusted coaching plans around real user context.",
+      detail: "Generated and adjusted coaching plans from real user context.",
     },
   ],
   imerit: [
@@ -132,17 +132,17 @@ const projectSnapshots: Record<string, ProjectSnapshotItem[]> = {
     {
       label: "Role",
       value: "Operator",
-      detail: "Worked across product, programming, sales, and coach development.",
+      detail: "Converted expert movement coaching into products, curriculum, and sales systems.",
     },
     {
       label: "System",
       value: "Coach scaling",
-      detail: "Turned expert movement knowledge into products and curriculum.",
+      detail: "Made founder-level judgment reproducible across coaches and customers.",
     },
     {
       label: "Proof",
       value: "3,500+ customers",
-      detail: "Created customer demand strong enough to justify a third location.",
+      detail: "Helped support 209% YoY growth, a $2,000 certification, and a third location.",
     },
   ],
   "monster-fitness": [
@@ -154,7 +154,7 @@ const projectSnapshots: Record<string, ProjectSnapshotItem[]> = {
     {
       label: "System",
       value: "Sales playbook",
-      detail: "Built repeatable sales, retention, upsell, and account workflows.",
+      detail: "Built repeatable sales, follow-up, retention, upsell, and account workflows.",
     },
     {
       label: "Proof",

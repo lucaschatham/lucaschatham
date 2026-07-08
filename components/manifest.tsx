@@ -89,18 +89,19 @@ function projectListDek(project: Post): ReactNode {
       return (
         <>
           Founded an <span className="row-pop">AI movement coach</span> that turns
-          messy health inputs into adaptive fitness and biomechanics coaching
-          programs.
+          goals, soreness, sleep, nutrition, constraints, and schedule changes
+          into adaptive training and biomechanics decisions.
         </>
       );
     case "gymnazo":
       return (
         <>
-          Built programming, coach training, and sales systems tied to{" "}
+          Helped turn expert movement coaching into repeatable products,
+          curriculum, and sales systems tied to{" "}
           <span className="row-pop">209% YoY revenue growth</span>, a{" "}
           <span className="row-pop">$2,000 certification</span>,{" "}
-          <span className="row-pop">3,500+ customers</span>, and customer demand
-          strong enough to justify a{" "}
+          <span className="row-pop">3,500+ customers</span>, and demand strong
+          enough to justify a{" "}
           <span className="row-pop">third location</span>.
         </>
       );
@@ -109,7 +110,8 @@ function projectListDek(project: Post): ReactNode {
         <>
           Scaled the sales team while still in{" "}
           <span className="row-pop">high school</span>, coached{" "}
-          <span className="row-pop">6 sales agents</span>, and helped drive{" "}
+          <span className="row-pop">6 sales agents</span>, wrote the playbook,
+          and helped drive{" "}
           <span className="row-pop">3x annual revenue</span> and{" "}
           <span className="row-pop">NPS 31 -&gt; 68</span>.
         </>
@@ -519,6 +521,8 @@ function EmailIcon() {
   );
 }
 
+// Hidden until newsletter links return.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function NewsletterIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -527,6 +531,8 @@ function NewsletterIcon() {
   );
 }
 
+// Hidden until podcast links return.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function PodcastIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">

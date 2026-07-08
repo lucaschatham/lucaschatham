@@ -23,7 +23,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/essays`, lastModified: new Date() },
     { url: `${SITE_URL}/projects`, lastModified: new Date() },
     { url: `${SITE_URL}/side-quests`, lastModified: new Date() },
-    { url: `${SITE_URL}/about`, lastModified: new Date() },
   ];
 
   return [...staticPages, ...blogPosts, ...work, ...sideQuests];
