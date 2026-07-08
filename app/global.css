@@ -794,6 +794,65 @@ button:focus-visible,
   margin-bottom: 1.5rem;
 }
 
+.prose table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-collapse: collapse;
+  margin: 1.75rem 0;
+  font-size: .9rem;
+  line-height: 1.45;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.prose th {
+  color: var(--silver-100);
+  font-family: "Geist Mono", monospace;
+  font-size: .68rem;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-align: left;
+  text-transform: uppercase;
+  padding: .8rem .65rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.prose td {
+  min-width: 10rem;
+  vertical-align: top;
+  padding: .85rem .65rem;
+  border-bottom: 1px solid rgba(240, 240, 236, .065);
+}
+
+.prose tr:last-child td {
+  border-bottom: 0;
+}
+
+.prose .artifact {
+  margin: 1.75rem 0;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--pulse);
+  background: rgba(240, 240, 236, .035);
+  border-radius: 6px;
+}
+
+.prose .artifact p {
+  margin: .55rem 0;
+}
+
+.prose .artifact-label {
+  display: block;
+  margin-bottom: .7rem;
+  color: var(--gray-400);
+  font-family: "Geist Mono", monospace;
+  font-size: .68rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
 .prose code {
   font-size: 0.875rem;
   background: rgba(240, 240, 236, .08);
