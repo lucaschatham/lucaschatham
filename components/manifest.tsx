@@ -383,7 +383,7 @@ export function ManifestFooter() {
 function formatEssayDate(dateString: string): string {
   return new Date(`${dateString}T00:00:00`).toLocaleDateString("en-US", {
     month: "short",
-    day: "2-digit",
+    day: "numeric",
     year: "numeric",
   });
 }
