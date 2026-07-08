@@ -10,33 +10,6 @@ type Row = {
   meta: string;
 };
 
-const ESSAY_PLACEHOLDERS: Row[] = [
-  {
-    title: "The death of the design hire",
-    dek: "Why the team you're trying to build in 2026 doesn't exist",
-    href: "#",
-    meta: "May 23 · 12m",
-  },
-  {
-    title: "How to think about taste in the AI era",
-    dek: "Why taste is the one thing automation cannot replicate",
-    href: "#",
-    meta: "May 09 · 9m",
-  },
-  {
-    title: "Notes from shipping four things in a month",
-    dek: "What I learned moving fast without breaking taste",
-    href: "#",
-    meta: "Apr 28 · 6m",
-  },
-  {
-    title: "Who gets to build software now",
-    dek: "The next decade belongs to the people who didn't think they were allowed",
-    href: "#",
-    meta: "Apr 11 · 14m",
-  },
-];
-
 export function postToRow(
   post: Post,
   basePath: "blog" | "projects"
@@ -59,13 +32,9 @@ export function projectToRow(project: Post): Row {
 }
 
 export function homeEssayRows(posts: Post[]): Row[] {
-  if (posts.length === 0) return ESSAY_PLACEHOLDERS;
-
-  const realRows = posts
+  return posts
     .slice(0, 4)
     .map((post) => postToRow(post, "blog"));
-
-  return [...realRows, ...ESSAY_PLACEHOLDERS].slice(0, 4);
 }
 
 export function ManifestPage({
@@ -176,12 +145,14 @@ export function RowsSection({
   rows,
   allHref,
   allLabel,
+  emptyLabel,
 }: {
   heading: string;
   kicker: string;
   rows: Row[];
   allHref?: string;
   allLabel?: string;
+  emptyLabel?: string;
 }) {
   const headingId = `${heading.toLowerCase()}-heading`;
 
@@ -194,7 +165,10 @@ export function RowsSection({
       {rows.map((row) => (
         <ManifestRow key={`${row.href}-${row.title}`} row={row} />
       ))}
-      {allHref && allLabel && (
+      {rows.length === 0 && emptyLabel && (
+        <p className="empty-state">{emptyLabel}</p>
+      )}
+      {rows.length > 0 && allHref && allLabel && (
         <Link className="all" href={allHref}>
           {allLabel}
           <ArrowRightIcon />

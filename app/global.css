@@ -364,6 +364,13 @@ button:focus-visible,
   transition: color .15s, transform .15s;
 }
 
+.empty-state {
+  padding: 16px 6px 4px;
+  color: var(--gray-400);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
 @keyframes livepulse {
   0%,
   100% {

@@ -42,13 +42,15 @@ export default function Home() {
       />
       <Hero />
       <Lede />
-      <RowsSection
-        heading="essays"
-        kicker="LATEST"
-        rows={essays}
-        allHref="/essays"
-        allLabel="View all essays"
-      />
+      {essays.length > 0 && (
+        <RowsSection
+          heading="essays"
+          kicker="LATEST"
+          rows={essays}
+          allHref="/essays"
+          allLabel="View all essays"
+        />
+      )}
     </ManifestPage>
   );
 }
