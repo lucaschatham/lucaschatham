@@ -19,7 +19,8 @@ jobs:
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-      VERCEL_GLOBAL_CONFIG: ${{ github.workspace }}/.vercel-global
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_TELEMETRY_DISABLED: 1
 
     steps:
       - name: Check out repository
@@ -37,18 +38,11 @@ jobs:
       - name: Install Vercel CLI
         run: npm install --global vercel@54.5.1
 
-      - name: Restore Vercel auth
-        env:
-          VERCEL_AUTH_JSON: ${{ secrets.VERCEL_AUTH_JSON }}
-        run: |
-          mkdir -p "$VERCEL_GLOBAL_CONFIG"
-          printf '%s' "$VERCEL_AUTH_JSON" > "$VERCEL_GLOBAL_CONFIG/auth.json"
-
       - name: Pull Vercel project settings
-        run: vercel pull --yes --environment=production --global-config "$VERCEL_GLOBAL_CONFIG"
+        run: vercel pull --yes --environment=production --token "$VERCEL_TOKEN"
 
       - name: Build production bundle
-        run: vercel build --prod --global-config "$VERCEL_GLOBAL_CONFIG"
+        run: vercel build --prod --token "$VERCEL_TOKEN"
 
       - name: Deploy production bundle
-        run: vercel deploy --prebuilt --prod --global-config "$VERCEL_GLOBAL_CONFIG"
+        run: vercel deploy --prebuilt --prod --token "$VERCEL_TOKEN"
