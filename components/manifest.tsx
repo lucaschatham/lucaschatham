@@ -34,7 +34,7 @@ const projectRowLogos: Record<string, RowLogo> = {
   },
   "blue-vision-labs-lyft": {
     label: "Blue Vision Labs",
-    mark: "BVL",
+    image: "/images/brands/blue-vision-labs-logo.jpg",
     secondary: {
       label: "Lyft",
       image: "/images/brands/lyft-logo.jpg",

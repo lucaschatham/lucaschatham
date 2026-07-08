@@ -35,7 +35,10 @@ const projectBrands: Record<string, ProjectBrand> = {
     primary: { label: "iMerit", image: "/images/brands/imerit-logo.jpg" },
   },
   "blue-vision-labs-lyft": {
-    primary: { label: "Blue Vision Labs", mark: "BVL" },
+    primary: {
+      label: "Blue Vision Labs",
+      image: "/images/brands/blue-vision-labs-logo.jpg",
+    },
     secondary: { label: "Lyft", image: "/images/brands/lyft-logo.jpg" },
   },
   gymnazo: {
