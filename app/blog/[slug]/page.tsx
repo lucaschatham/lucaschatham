@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import { getPost, getPosts } from "@/lib/content";
 import { MDXContent } from "@/components/mdx";
+import { ManifestPage } from "@/components/manifest";
+import { ReadingProgress } from "@/components/reading-progress";
 import type { Metadata } from "next";
 import { SITE_URL } from "@/lib/constants";
 
@@ -28,6 +30,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       publishedTime: post.frontmatter.date,
       url: `${SITE_URL}/blog/${slug}`,
     },
+    alternates: {
+      canonical: `${SITE_URL}/blog/${slug}`,
+    },
   };
 }
 
@@ -37,20 +42,26 @@ export default async function BlogPost({ params }: Props) {
   if (!post) notFound();
 
   return (
-    <article>
-      <header className="mb-8">
-        <h1 className="text-3xl font-semibold tracking-tight mb-2">
-          {post.frontmatter.title}
-        </h1>
-        <time className="text-sm text-neutral-500">
-          {new Date(post.frontmatter.date).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-        </time>
-      </header>
-      <MDXContent source={post.content} />
-    </article>
+    <ManifestPage active="essays">
+      <ReadingProgress />
+      <article className="content-shell">
+        <header className="mb-8">
+          <h1 className="text-3xl font-semibold tracking-tight mb-2">
+            {post.frontmatter.title}
+          </h1>
+          <time className="text-sm text-[var(--mute)]">
+            {new Date(`${post.frontmatter.date}T00:00:00`).toLocaleDateString(
+              "en-US",
+              {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              }
+            )}
+          </time>
+        </header>
+        <MDXContent source={post.content} />
+      </article>
+    </ManifestPage>
   );
 }

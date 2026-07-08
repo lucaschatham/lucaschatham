@@ -1,36 +1,56 @@
+import {
+  Hero,
+  Lede,
+  ManifestPage,
+  RowsSection,
+  homeEssayRows,
+} from "@/components/manifest";
 import { getPosts } from "@/lib/content";
-import { PostCard } from "@/components/post-card";
+import { SITE_URL } from "@/lib/constants";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: SITE_URL,
+  },
+};
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Lucas Chatham",
+  url: SITE_URL,
+  image: `${SITE_URL}/images/lucas-portrait-clean.jpg`,
+  sameAs: ["https://x.com/lukeoutthebox"],
+  address: {
+    "@type": "PostalAddress",
+    addressRegion: "CA",
+    addressCountry: "US",
+  },
+  description:
+    "Operator. Building software, writing essays, broadcasting for the people figuring out what AI changes.",
+};
 
 export default function Home() {
-  const posts = getPosts("blog").slice(0, 5);
+  const essays = homeEssayRows(getPosts("blog"));
 
   return (
-    <div>
-      <section className="mb-12">
-        <h1 className="text-3xl font-semibold tracking-tight mb-4">
-          Lucas Chatham
-        </h1>
-        <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
-          Building things at the intersection of health, technology, and design.
-          Writing about what I learn along the way.
-        </p>
-      </section>
-
-      {posts.length > 0 && (
-        <section>
-          <h2 className="text-lg font-medium mb-4">Recent posts</h2>
-          <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
-            {posts.map((post) => (
-              <PostCard
-                key={post.slug}
-                slug={post.slug}
-                frontmatter={post.frontmatter}
-                basePath="blog"
-              />
-            ))}
-          </div>
-        </section>
+    <ManifestPage active="home">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+      />
+      <Hero />
+      <Lede />
+      {essays.length > 0 && (
+        <RowsSection
+          heading="essays"
+          kicker="LATEST"
+          rows={essays}
+          allHref="/essays"
+          allLabel="View all essays"
+        />
       )}
-    </div>
+    </ManifestPage>
   );
 }

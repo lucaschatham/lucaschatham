@@ -16,7 +16,9 @@ export type Post = {
   content: string;
 };
 
-function getContentDir(type: "blog" | "projects") {
+export type ContentType = "blog" | "work" | "side-quests";
+
+function getContentDir(type: ContentType) {
   return path.join(process.cwd(), "content", type);
 }
 
@@ -56,7 +58,7 @@ function parseFrontmatter(raw: string): {
   return { frontmatter: frontmatter as unknown as Frontmatter, content };
 }
 
-export function getPosts(type: "blog" | "projects"): Post[] {
+export function getPosts(type: ContentType): Post[] {
   const dir = getContentDir(type);
   if (!fs.existsSync(dir)) return [];
 
@@ -87,7 +89,7 @@ export function getPosts(type: "blog" | "projects"): Post[] {
 }
 
 export function getPost(
-  type: "blog" | "projects",
+  type: ContentType,
   slug: string
 ): Post | undefined {
   const dir = getContentDir(type);
