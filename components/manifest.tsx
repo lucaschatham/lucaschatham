@@ -76,7 +76,7 @@ export function projectToRow(
     dek: project.frontmatter.description,
     href: project.frontmatter.url ?? `/${basePath}/${project.slug}`,
     meta: isPortfolioProject
-      ? formatProjectYear(project)
+      ? ""
       : project.frontmatter.url
         ? "Live"
         : "Read",
@@ -245,8 +245,8 @@ function ManifestRow({ row }: { row: Row }) {
           <span className="s">{row.dek}</span>
         </div>
       </div>
-      <div className="meta">
-        {row.meta}
+      <div className={row.meta ? "meta" : "meta meta-icon-only"}>
+        {row.meta && <span>{row.meta}</span>}
         <ArrowUpRightIcon />
       </div>
     </>
@@ -386,13 +386,6 @@ function formatEssayDate(dateString: string): string {
     day: "2-digit",
     year: "numeric",
   });
-}
-
-function formatProjectYear(project: Post): string {
-  if (project.frontmatter.year) return project.frontmatter.year;
-
-  const year = new Date(`${project.frontmatter.date}T00:00:00`).getFullYear();
-  return Number.isFinite(year) ? String(year) : "";
 }
 
 function ArrowUpRightIcon() {
