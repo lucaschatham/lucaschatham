@@ -3,7 +3,7 @@ import {
   Lede,
   ManifestPage,
   RowsSection,
-  homeEssayRows,
+  projectToRow,
 } from "@/components/manifest";
 import { getPosts } from "@/lib/content";
 import { SITE_URL } from "@/lib/constants";
@@ -28,11 +28,13 @@ const personSchema = {
     addressCountry: "US",
   },
   description:
-    "Operator. Building software, writing essays, broadcasting for the people figuring out what AI changes.",
+    "Founder Operator building high-trust AI systems that turn messy real-world data into decisions people can bet on.",
 };
 
 export default function Home() {
-  const essays = homeEssayRows(getPosts("blog"));
+  const work = getPosts("work").map((project) =>
+    projectToRow(project, "projects")
+  );
 
   return (
     <ManifestPage active="home">
@@ -42,13 +44,11 @@ export default function Home() {
       />
       <Hero />
       <Lede />
-      {essays.length > 0 && (
+      {work.length > 0 && (
         <RowsSection
-          heading="essays"
-          kicker="LATEST"
-          rows={essays}
-          allHref="/essays"
-          allLabel="View all essays"
+          heading="work"
+          kicker="PROOF"
+          rows={work}
         />
       )}
     </ManifestPage>

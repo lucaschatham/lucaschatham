@@ -21,6 +21,12 @@ type BrandUnit = {
   variant?: "square" | "wide";
 };
 
+type ProjectSnapshotItem = {
+  label: string;
+  value: string;
+  detail: string;
+};
+
 const projectBrands: Record<string, ProjectBrand> = {
   "daybreaker-health": {
     primary: {
@@ -51,6 +57,111 @@ const projectBrands: Record<string, ProjectBrand> = {
       variant: "wide",
     },
   },
+};
+
+const projectSnapshots: Record<string, ProjectSnapshotItem[]> = {
+  "daybreaker-health": [
+    {
+      label: "Role",
+      value: "Founder",
+      detail: "Built the product logic, diagnostic workflow, and service model.",
+    },
+    {
+      label: "System",
+      value: "Clinical-adjacent",
+      detail: "Bloodwork, genetics, lifestyle data, protocols, and coaching.",
+    },
+    {
+      label: "Proof",
+      value: "Retesting loops",
+      detail: "Personalized protocols tied back to measurable follow-through.",
+    },
+  ],
+  checkfit: [
+    {
+      label: "Role",
+      value: "Founder / builder",
+      detail: "Built the first AI movement-coach web application.",
+    },
+    {
+      label: "System",
+      value: "Adaptive plans",
+      detail: "Fitness, nutrition, and biomechanics guidance from messy inputs.",
+    },
+    {
+      label: "Proof",
+      value: "Working beta",
+      detail: "Generated and adjusted coaching plans around real user context.",
+    },
+  ],
+  imerit: [
+    {
+      label: "Role",
+      value: "Senior Product Manager",
+      detail: "Owned product vision, requirements, roadmap, and stakeholder alignment.",
+    },
+    {
+      label: "System",
+      value: "Ground Control",
+      detail: "Data analytics platform for distributed enterprise AI operations.",
+    },
+    {
+      label: "Proof",
+      value: "6,000+ annotators",
+      detail: "Real-time visibility across tools, teams, time zones, and customers.",
+    },
+  ],
+  "blue-vision-labs-lyft": [
+    {
+      label: "Role",
+      value: "Mapping operations",
+      detail: "Tested, redesigned, deployed, and scaled field capture systems.",
+    },
+    {
+      label: "System",
+      value: "Camera-phone mapping",
+      detail: "City-scale 3D maps from real-world fleet capture.",
+    },
+    {
+      label: "Proof",
+      value: "3 cities -> 2 countries",
+      detail: "Helped produce a major public autonomous-vehicle street dataset.",
+    },
+  ],
+  gymnazo: [
+    {
+      label: "Role",
+      value: "Operator",
+      detail: "Worked across product, programming, sales, and coach development.",
+    },
+    {
+      label: "System",
+      value: "Coach scaling",
+      detail: "Turned expert movement knowledge into products and curriculum.",
+    },
+    {
+      label: "Proof",
+      value: "3,500+ customers",
+      detail: "Created customer demand strong enough to justify a third location.",
+    },
+  ],
+  "monster-fitness": [
+    {
+      label: "Role",
+      value: "Sales operator",
+      detail: "Scaled the sales team while still in high school.",
+    },
+    {
+      label: "System",
+      value: "Sales playbook",
+      detail: "Built repeatable sales, retention, upsell, and account workflows.",
+    },
+    {
+      label: "Proof",
+      value: "3x revenue",
+      detail: "Coached 6 sales agents and helped lift NPS from 31 to 68.",
+    },
+  ],
 };
 
 export async function generateStaticParams() {
@@ -93,10 +204,47 @@ export default async function ProjectPage({ params }: Props) {
             {project.frontmatter.title}
           </h1>
           <p className="text-[var(--mute)]">{project.frontmatter.description}</p>
+          <ProjectHeroMedia
+            image={project.frontmatter.image}
+            title={project.frontmatter.title}
+          />
+          <ProjectSnapshot items={projectSnapshots[slug]} />
         </header>
         <MDXContent source={project.content} />
       </article>
     </ManifestPage>
+  );
+}
+
+function ProjectHeroMedia({
+  image,
+  title,
+}: {
+  image?: string;
+  title: string;
+}) {
+  if (!image) return null;
+
+  return (
+    <figure className="project-hero-media">
+      <img src={image} alt={`${title} project visual`} />
+    </figure>
+  );
+}
+
+function ProjectSnapshot({ items }: { items?: ProjectSnapshotItem[] }) {
+  if (!items?.length) return null;
+
+  return (
+    <section className="project-snapshot" aria-label="Project snapshot">
+      {items.map((item) => (
+        <article className="project-snapshot-item" key={item.label}>
+          <span className="project-snapshot-label">{item.label}</span>
+          <strong>{item.value}</strong>
+          <p>{item.detail}</p>
+        </article>
+      ))}
+    </section>
   );
 }
 

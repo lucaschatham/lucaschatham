@@ -1,60 +1,46 @@
 ---
-title: "Blue Visions Labs (acq'd by Lyft)"
-description: Scaled computer vision data collection that helped produce the largest public autonomous vehicle street dataset of its time.
+title: "Blue Vision Labs (acq'd by Lyft)"
+description: Scaled camera-based mapping operations from 3 cities to 2 countries, helping turn rideshare-scale capture into city-scale 3D maps for Lyft Level 5.
 date: 2019-01-01
 year: "2018-2019"
 published: true
+image: /images/work/blue-vision-labs-lyft/visual-geometric-map-san-francisco.webp
 ---
 
-I started this work at Blue Vision Labs and continued it after the company was acquired by Lyft. My role began with testing, improving, and scaling data collection across the U.S. and U.K. After the acquisition, it evolved into sensor redesign, data ingestion pipeline optimization, and scaling low-cost mapping data collection across Lyft's rideshare fleet.
+## What Was Built
 
-## Problem
+Blue Vision Labs built visual positioning and AR Cloud technology that let phones localize against high-accuracy city maps and anchor shared, persistent AR. Lyft acquired the company because the same computer-vision stack could accelerate Level 5 mapping and localization: detailed 3D maps of cities from camera-phone imagery, not only expensive lidar rigs.
 
-Blue Vision Labs built precise collaborative augmented reality software. The same underlying technology enabled cheap, scalable localization and mapping: a useful primitive for autonomous vehicles.
+My work sat in the operational layer that made that promise real: getting capture hardware into vehicles, collecting useful street data, and improving the pipeline between field collection and downstream mapping.
 
-After the Lyft acquisition, the challenge was integrating that capability into Lyft Level 5. The goal was to use rideshare and autonomous vehicle data to build city-scale 3D maps, understand human driving patterns, and improve simulation tests for self-driving development.
+<figure className="work-visual">
+  <img src="/images/work/blue-vision-labs-lyft/shared-ar-phone-demo.webp" alt="Blue Vision Labs shared AR demo with two phones seeing the same augmented content on a city street" />
+  <figcaption>Blue Vision started with city-scale visual positioning for shared AR. Lyft acquired the team because that mapping stack also mattered for autonomous-vehicle localization.</figcaption>
+</figure>
 
-## Requirements
+## My Role
 
-The work had several high-level requirements:
+I helped test, improve, and scale the mapping operation across the U.S. and U.K. The role expanded from field testing into sensor redesign, vendor and part selection, mounting decisions, data-ingestion optimization, fleet deployment coordination, and privacy/compliance work around international camera data capture.
 
-- Hardware redesign: redesign, prototype, and iterate dashcam devices for U.S. and U.K. collection markets.
-- Data integration: combine rideshare driver data and autonomous vehicle data into useful 3D mapping outputs.
-- Real-time analytics: collect and analyze data continuously, while debugging transmission and quality issues.
-- Cost efficiency: estimate and reduce the cost of sensors, tooling, vendors, and per-unit deployment.
-- Scalability: grow collection from a few cities to multiple countries.
-- Compliance and security: handle sensitive vehicle and camera data carefully, especially around U.K. data capture and GDPR.
+The work required constant tradeoffs across hardware reliability, field conditions, cost, heat, capture quality, latency, driver behavior, privacy constraints, and downstream mapping usefulness. A collection system that works in a lab is not the same thing as one that works across cities, vehicles, routes, weather, tunnels, and real operators.
 
-## What I Worked On
+<figure className="work-visual">
+  <img src="/images/work/blue-vision-labs-lyft/car-mounted-phone-mapping.webp" alt="Blue Vision Labs camera phone mounted inside a vehicle for street-level mapping capture" />
+  <figcaption>The core operating problem was making camera-based mapping reliable in moving vehicles, then scaling that capture process beyond controlled demos.</figcaption>
+</figure>
 
-The end-to-end system started inside Lyft rental vehicles. A custom dashcam captured camera footage and sensor data, including accelerometer, gyroscope, GPS, ambient light, and barometer signals. That data then moved through ingestion pipelines and computer vision systems to produce 3D point clouds and city-scale map artifacts.
+## Result
 
-My work included:
+The program scaled from 3 city centers to 2 countries and helped create up-to-date city-scale 3D maps for simulation, localization, trajectory analysis, and autonomous-vehicle development.
 
-- Scaling data collection operations across the U.S. and U.K.
-- Testing sensor reliability in real driving conditions.
-- Redesigning the sensor suite after identifying quality, heat, latency, power, and image-capture limits in the initial approach.
-- Working through vendor and part selection to lower unit economics.
-- Coordinating deployment across Lyft's rental fleet.
-- Debugging field issues like overheating casings, low-light tunnel performance, and inconsistent image quality.
-- Working with legal and cross-functional teams on data protection, patents, and foreign-market collection constraints.
+The broader Lyft Level 5 program later released what it described as the largest publicly released dataset of its kind: 55,000+ human-labeled 3D annotated frames, data from 7 cameras and up to 3 lidars, a drivable surface map, and an HD spatial semantic map. My contribution was not research-model work; it was the practical collection, ingestion, and field-operations layer that makes city-scale datasets and maps possible.
 
-## Execution
+## Why It Mattered
 
-The first versions were resourceful by necessity. We iterated on early camera redesigns with spare parts and field testing, then used the results to justify a more robust sensor approach.
+Autonomous vehicles need real-world data at scale, but real-world collection is messy: heat, tunnels, bad lighting, mounting variation, driver behavior, privacy constraints, and hardware failures all affect whether the data is useful.
 
-The practical work was deeply cross-functional. Hardware choices affected data quality. Data quality affected map generation. Map generation affected simulation realism. Compliance constraints affected where and how data could be collected. A seemingly small part decision could change cost, thermal performance, ease of deployment, and downstream model usefulness.
+The value was turning ordinary fleet activity into a lower-cost mapping network that could collect useful data across markets without relying only on specialized mapping vehicles.
 
-## Impact
+## What This Proves
 
-The program scaled data ingestion from 3 cities to 2 countries and helped create thousands of miles of up-to-date city-scale 3D maps. Those maps supported simulation, localization, trajectory analysis, and autonomous vehicle development.
-
-The work also contributed to one of the largest open-source autonomous vehicle datasets at the time and supported Lyft's HD spatial semantic mapping efforts. Toyota, through Woven Planet, later acquired Lyft Level 5 and its IP.
-
-## Lessons
-
-The first lesson was resourcefulness. Lyft's rideshare fleet became a mobile data collection network, which made mapping cheaper and more scalable than a purely specialized fleet approach.
-
-The second lesson was that compliance work cannot be an afterthought. In autonomous vehicles, the market rewarded speed, but camera capture, vehicle tracking, and international privacy rules required careful judgment.
-
-The third lesson was to keep testing in the real world. Field conditions revealed issues a lab setup could miss: heat, low light, tunnels, mounting variation, driver behavior, and the small mechanical failures that quietly turn into data quality problems.
+I can operate where software, hardware, compliance, and field operations collide. The pattern is the same one I keep repeating: take messy real-world data, make the system observable, and scale it without losing trust in the output.

@@ -1,67 +1,79 @@
 ---
 title: iMerit
-description: Built real-time operating visibility for 6,000+ AI annotators across tools, teams, and time zones.
+description: Senior Product Manager for Ground Control, a real-time analytics and governance platform giving operating visibility into 6,000+ AI annotators for enterprise AI clients.
 date: 2024-01-01
 year: "2022-2024"
 published: true
+image: /images/work/imerit/ground-control-platform-architecture.webp
 ---
 
-At iMerit, I was Senior Product Manager for Ground Control, a unified data analytics platform for a global annotation workforce. The platform served 6,000+ annotators using 20+ labeling tools across 5 time zones, and gave internal teams and enterprise customers a clearer view of throughput, quality, anomalies, and operational risk.
+## What Was Built
 
-## Problem
+Ground Control was iMerit's operating layer for enterprise AI data operations: one place to see throughput, quality, anomalies, workforce risk, and customer-specific governance across distributed annotation programs.
 
-iMerit served enterprise AI customers with different data types, tools, workflows, and quality bars. The workforce was distributed. The tooling landscape was fragmented. Some data came from internal systems, some from external tools like Labelbox, Appen, and Dataloop, and some from customer-owned tools that were still maturing.
+The platform unified fragmented annotation data across 6,000+ annotators, 20+ labeling tools, and 5 time zones so internal teams and enterprise customers could understand what was happening before delivery, quality, or compliance broke down.
 
-The operational question was:
+<figure className="work-visual">
+  <img src="/images/work/imerit/ground-control-dashboard-inventory.webp" alt="Ground Control dashboard inventory across Athena, UV Eye, Blue River, Nuro, Bosch, and internal finance workflows" />
+  <figcaption>Ground Control organized analytics across customer programs, internal delivery workflows, and 20+ dashboards.</figcaption>
+</figure>
 
-How do you consolidate messy data from many labeling environments into a real-time view of workforce performance, dataset quality, and edge cases?
+## What the Product Did
 
-Without that layer, teams had to rely on spreadsheets, delayed reports, and manual escalation. That made it harder to catch quality issues early, resolve edge cases, identify best practices, and prove performance to customers.
+- Turned fragmented labeling activity into shared operating dashboards for delivery, quality, and customer teams.
+- Standardized metrics across projects, tools, customers, and time zones.
+- Captured edge cases and anomalies from browser-based labeling environments.
+- Supported role-based access, data lifecycle management, audit trails, encryption, and custom customer configurations.
+- Gave enterprise customers evidence that data work was moving, exceptions were being handled, and risk was visible.
 
-## Role
+## My Role
 
-I owned the what and the why for Ground Control, then worked closely with engineering and program management on the how and when. That included:
+I was the Senior Product Manager for Ground Control. I owned product vision, roadmap, stakeholder discovery, feature requirements, prioritization, and internal/customer alignment across engineering, program management, operations, compliance, and customer-facing teams.
 
-- Defining product vision and priorities from internal and external stakeholder feedback.
-- Translating customer and operations needs into feature requirements.
-- Prioritizing analytics, anomaly detection, user management, and compliance work.
-- Working with engineering on implementation paths across a complex tool ecosystem.
-- Keeping the platform tied to revenue, renewals, and operational efficiency rather than internal dashboard theater.
+The work was not just dashboard shipping. It required turning messy customer asks into reusable platform primitives: shared definitions, escalation workflows, anomaly lifecycle management, role-based access, and customer-ready proof.
 
-## Requirements
+<figure className="work-visual">
+  <img src="/images/work/imerit/ground-control-roadmap.webp" alt="Ground Control 2024 roadmap covering integrations, compliance, data governance, documentation, and categorization" />
+  <figcaption>The 2024 roadmap translated a messy analytics platform into concrete product tracks: integrations, compliance, governance, documentation, and categorization.</figcaption>
+</figure>
 
-Ground Control needed to become a single source of truth for enterprise AI operations:
+## Product Scope
 
-- Unified platform: consolidate data from many labeling tools and reporting surfaces.
-- Scalability: support 6,000+ annotators and large-scale enterprise data operations.
-- Data integration: ingest images, video, text, metadata, browser events, API feeds, manual inputs, and embedded plugin data.
-- Real-time analytics: deliver near-real-time operational and customer-facing insight.
-- Anomaly detection: make dataset edge cases visible, triageable, and trackable.
-- Security and compliance: support ISO27001, HIPAA, GDPR, SOC2, role-based access, and data governance needs.
-- Workforce management: connect performance, skill mapping, and operational planning.
+The hardest product problem was not a single feature. It was turning many one-off operational requests into an enterprise platform that could flex by customer without becoming impossible to maintain.
 
-## What We Built
+That meant writing requirements for configurable workflows, clarifying ownership across technical and delivery teams, defining success metrics, and separating what should be custom from what needed to become reusable product infrastructure.
 
-Ground Control became an end-to-end business intelligence layer for enterprise AI data operations. The system integrated data from multiple sources, normalized operational metrics, and exposed customizable dashboards for internal teams and customers.
+<figure className="work-visual">
+  <img src="/images/work/imerit/ground-control-data-governance.webp" alt="Enterprise-grade data governance matrix for standard, advanced, and custom governance levels" />
+  <figcaption>Governance became a product surface: access, audit trails, encryption, lifecycle controls, custom integrations, and customer-specific configurations.</figcaption>
+</figure>
 
-Key product surfaces included:
+## Edge Case System
 
-- Dynamic dashboards for throughput, quality, and project health.
-- Edge Case Module workflows for capturing and resolving dataset anomalies.
-- User and workforce management views for skill mapping and performance tracking.
-- Automation around anomaly management and workflow configuration.
-- Cloud Cover, a Chrome extension for immediate activity tracking and faster data ingestion from fragmented tool environments.
+One of the clearest examples was the Edge Case Module. The product needed to help teams capture a screenshot or event from a labeling workflow, route it into the right review path, preserve metadata, and make the resolved case usable for training and delivery improvement.
 
-## Impact
+<figure className="work-visual">
+  <img src="/images/work/imerit/ground-control-edge-case-module.webp" alt="Ground Control Edge Case Module showing screenshot capture from labeling tools into AWS and ECM" />
+  <figcaption>The Edge Case Module turned browser activity into structured evidence that could be reviewed, resolved, or discarded based on customer configuration.</figcaption>
+</figure>
 
-Ground Control improved annotation workforce efficiency by giving teams earlier visibility into quality and throughput problems. That mattered for bottom-quartile management: low performers or broken workflows could be identified before they damaged contract progress.
+<figure className="work-visual">
+  <img src="/images/work/imerit/ground-control-edge-case-workflow.webp" alt="Ground Control Edge Case Module workflow from labeling tool to client review and iMeritOne training module" />
+  <figcaption>The workflow connected labelers, subject matter experts, clients, resolution steps, and training loops. The platform preview tracked 4,000+ edge cases captured, reviewed, and resolved.</figcaption>
+</figure>
 
-The platform also supported enterprise revenue. Analytics and operational proof helped win, expand, and renew work with customers including John Deere and Cruise. The Edge Case Module captured and resolved 2,500+ unique dataset anomalies for Cruise, creating training and model-improvement feedback that would have been difficult to see in disconnected tools.
+## Result
 
-Across the program, Ground Control contributed more than $3 million in revenue impact and scaled data platform operations by roughly 50%.
+Ground Control gave teams earlier visibility into quality and throughput problems across large-scale annotation programs. It helped identify broken workflows and low-performing segments before they damaged delivery.
 
-## Lessons
+The platform supported enterprise revenue with customers including John Deere, Cruise, and Netflix, captured and resolved 2,500+ unique dataset anomalies for Cruise, contributed more than $3 million in revenue impact, and scaled data platform operations by roughly 50%.
 
-The most important product lesson was that many enterprise problems look unique until you solve the first 80% correctly. A specific customer pain point often reveals a platform primitive that applies across other customers.
+## Why It Mattered
 
-The second lesson was cultural: teams need shared standards for how work gets done. A data platform is not just a dashboard. It is an agreement about definitions, escalation, quality bars, and decision cadence.
+Enterprise AI programs fail when the work behind the model is invisible. Customers need proof that data is moving, edge cases are being handled, and quality risk is being caught before it becomes model risk.
+
+Ground Control made distributed human-in-the-loop AI work legible enough to manage, improve, and defend in front of customers.
+
+## What This Proves
+
+I can turn fragmented real-world workflows into operating systems for high-stakes AI programs: messy data in, clearer decisions out, with enough structure for teams, customers, and compliance requirements to trust the system.

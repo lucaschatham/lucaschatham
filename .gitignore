@@ -4,3 +4,7 @@ out/
 .env
 .env.local
 .vercel
+.gstack/
+.claude/
+artifacts/
+tsconfig.tsbuildinfo

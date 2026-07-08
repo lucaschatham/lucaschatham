@@ -7,7 +7,7 @@ const portraitUrl = `${SITE_URL}/images/lucas-portrait-clean.jpg`;
 const iconHref =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='32' fill='%231A1C1F'/%3E%3Crect x='16' y='16' width='40' height='40' fill='%236B6E72'/%3E%3Crect x='70' y='16' width='40' height='40' fill='%236B6E72'/%3E%3Crect x='124' y='16' width='40' height='40' fill='%236B6E72'/%3E%3Crect x='16' y='70' width='40' height='40' fill='%236B6E72'/%3E%3Crect x='70' y='70' width='40' height='40' fill='%23CB3A2D'/%3E%3Crect x='124' y='70' width='40' height='40' fill='%236B6E72'/%3E%3Crect x='16' y='124' width='40' height='40' fill='%236B6E72'/%3E%3Crect x='70' y='124' width='40' height='40' fill='%236B6E72'/%3E%3Crect x='124' y='124' width='40' height='40' fill='%236B6E72'/%3E%3C/svg%3E";
 const socialDescription =
-  "Building technology to help you live healthier, longer. Weekly newsletter on health science. Maker at heart.";
+  "Founder Operator building high-trust AI systems that turn messy real-world data into decisions people can bet on.";
 
 export const metadata: Metadata = {
   title: {

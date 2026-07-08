@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import type { Post } from "@/lib/content";
 
 type NavKey = "home" | "essays" | "projects" | "side-quests";
@@ -6,7 +7,7 @@ type NavKey = "home" | "essays" | "projects" | "side-quests";
 type Row = {
   title: string;
   subtitle?: string;
-  dek: string;
+  dek: ReactNode;
   href: string;
   meta: string;
   logo?: RowLogo;
@@ -52,6 +53,72 @@ const projectRowLogos: Record<string, RowLogo> = {
   },
 };
 
+function projectListDek(project: Post): ReactNode {
+  switch (project.slug) {
+    case "imerit":
+      return (
+        <>
+          Built <span className="row-pop">Ground Control</span>, a data analytics
+          platform giving real-time operating visibility into{" "}
+          <span className="row-pop">6,000+</span> annotators for enterprise AI
+          clients including <span className="row-pop">JOHN DEERE</span>,{" "}
+          <span className="row-pop">CRUISE</span>, and{" "}
+          <span className="row-pop">NETFLIX</span>.
+        </>
+      );
+    case "blue-vision-labs-lyft":
+      return (
+        <>
+          Scaled computer-vision data ingestion and mapping operations from{" "}
+          <span className="row-pop">3 cities -&gt; 2 countries</span>, helping
+          produce one of the largest public autonomous-vehicle street-mapping
+          datasets of its time,{" "}
+          <span className="row-pop">acq&apos;d by Lyft</span>.
+        </>
+      );
+    case "daybreaker-health":
+      return (
+        <>
+          Founded a <span className="row-pop">diagnostics-driven</span> longevity
+          company that turns bloodwork, genetics, lifestyle data, and coaching
+          into personalized protocols and measurable{" "}
+          <span className="row-pop">retesting loops</span>.
+        </>
+      );
+    case "checkfit":
+      return (
+        <>
+          Founded an <span className="row-pop">AI movement coach</span> that turns
+          messy health inputs into adaptive fitness and biomechanics coaching
+          programs.
+        </>
+      );
+    case "gymnazo":
+      return (
+        <>
+          Built programming, coach training, and sales systems tied to{" "}
+          <span className="row-pop">209% YoY revenue growth</span>, a{" "}
+          <span className="row-pop">$2,000 certification</span>,{" "}
+          <span className="row-pop">3,500+ customers</span>, and customer demand
+          strong enough to justify a{" "}
+          <span className="row-pop">third location</span>.
+        </>
+      );
+    case "monster-fitness":
+      return (
+        <>
+          Scaled the sales team while still in{" "}
+          <span className="row-pop">high school</span>, coached{" "}
+          <span className="row-pop">6 sales agents</span>, and helped drive{" "}
+          <span className="row-pop">3x annual revenue</span> and{" "}
+          <span className="row-pop">NPS 31 -&gt; 68</span>.
+        </>
+      );
+    default:
+      return project.frontmatter.description;
+  }
+}
+
 export function postToRow(
   post: Post,
   basePath: "blog" | "work" | "side-quests"
@@ -73,7 +140,9 @@ export function projectToRow(
 
   return {
     title: project.frontmatter.title,
-    dek: project.frontmatter.description,
+    dek: isPortfolioProject
+      ? projectListDek(project)
+      : project.frontmatter.description,
     href: project.frontmatter.url ?? `/${basePath}/${project.slug}`,
     meta: isPortfolioProject
       ? ""
@@ -84,18 +153,12 @@ export function projectToRow(
   };
 }
 
-export function homeEssayRows(posts: Post[]): Row[] {
-  return posts
-    .slice(0, 4)
-    .map((post) => postToRow(post, "blog"));
-}
-
 export function ManifestPage({
   active,
   children,
 }: {
   active: NavKey;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <>
@@ -112,7 +175,6 @@ export function ManifestPage({
 export function ManifestNav({ active }: { active: NavKey }) {
   const links: { key: NavKey; href: string; label: string }[] = [
     { key: "essays", href: "/essays", label: "Essays" },
-    { key: "projects", href: "/projects", label: "Projects" },
     { key: "side-quests", href: "/side-quests", label: "Side Quests" },
   ];
 
@@ -159,7 +221,7 @@ export function ManifestNav({ active }: { active: NavKey }) {
 
 export function Hero() {
   return (
-    <section className="hero-cine">
+    <section className="hero-cine" aria-labelledby="home-hero-title">
       <img
         src="/images/lucas-portrait-clean.jpg"
         srcSet="/images/lucas-portrait-clean-430.jpg 430w, /images/lucas-portrait-clean-860.jpg 860w, /images/lucas-portrait-clean.jpg 1200w"
@@ -171,25 +233,28 @@ export function Hero() {
         decoding="async"
       />
       <div className="scrim" aria-hidden="true" />
-      <Link href="/" className="name" aria-label="Lucas Chatham — home">
-        Lucas
-        <br />
-        <b>Chatham</b>
-      </Link>
+      <h1 className="name" id="home-hero-title">
+        <Link href="/" aria-label="Lucas Chatham — home">
+          Lucas
+          <br />
+          <b>Chatham</b>
+        </Link>
+        <span className="hero-role">
+          <span className="hero-role-main">Founder Operator</span>
+        </span>
+      </h1>
     </section>
   );
 }
 
 export function Lede() {
   return (
-    <p className="lede">
-      I build technology to help you live healthier, longer. I write a weekly
-      newsletter about the latest health advances in science.
-      <br />
-      <br />
-      I'm a Maker at heart. Wood, metal, the dance floor- whatever the medium,
-      you'll catch me cutting shapes.
-    </p>
+    <section className="lede" aria-label="Positioning">
+      <p className="proof-line">
+        I build high-trust AI systems that turn messy real-world data into
+        decisions people can bet on.
+      </p>
+    </section>
   );
 }
 
@@ -338,6 +403,16 @@ export function SocialFooter() {
         LinkedIn
       </a>
       <a
+        href="mailto:chathamworks@gmail.com"
+        rel="me"
+        aria-label="Email Lucas Chatham"
+      >
+        <span className="ic">
+          <EmailIcon />
+        </span>
+        Email
+      </a>
+      <a
         href="https://github.com/lucaschatham"
         rel="me noopener"
         aria-label="GitHub"
@@ -347,9 +422,10 @@ export function SocialFooter() {
         </span>
         GitHub
       </a>
-      {/* X hidden for now — uncomment to restore (and change .com grid-template-columns back to repeat(5,1fr))
+      {/* X hidden for now — uncomment to restore.
       <a href="https://x.com/lukeoutthebox" rel="me noopener" aria-label="X (formerly Twitter)"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span>X</a>
       */}
+      {/* Newsletter and Podcast are hidden until real destinations exist.
       <span
         className="social-disabled"
         role="link"
@@ -372,6 +448,7 @@ export function SocialFooter() {
         </span>
         Podcast
       </span>
+      */}
     </nav>
   );
 }
@@ -430,6 +507,14 @@ function GitHubIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+    </svg>
+  );
+}
+
+function EmailIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2Zm0 4.2-8 5-8-5V6l8 5 8-5v2.2Z" />
     </svg>
   );
 }
