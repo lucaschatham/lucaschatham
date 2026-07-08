@@ -1,10 +1,10 @@
 import type { Post } from "@/lib/content";
 
 const portfolioProjectOrder = [
-  "imerit",
-  "blue-vision-labs-lyft",
   "daybreaker-health",
   "checkfit",
+  "imerit",
+  "blue-vision-labs-lyft",
   "gymnazo",
   "monster-fitness",
 ];
