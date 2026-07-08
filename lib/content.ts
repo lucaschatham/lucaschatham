@@ -5,6 +5,7 @@ export type Frontmatter = {
   title: string;
   description: string;
   date: string;
+  year?: string;
   published?: boolean;
   image?: string;
   url?: string;

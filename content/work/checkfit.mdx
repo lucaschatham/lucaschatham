@@ -1,10 +1,57 @@
 ---
 title: CheckFit
-description: Consumer health and accountability work at the intersection of fitness and behavior change.
+description: AI-powered fitness and nutrition coaching that adapts to real lifestyle and health inputs.
 date: 2025-01-01
+year: "2024-2025"
 published: true
 ---
 
-Selected work from Lucas Chatham's time building CheckFit.
+CheckFit was an AI-powered fitness and nutrition coach I built with a co-founder to reduce the planning burden around physical health. The goal was simple: take the daily inputs that change someone's readiness - sleep, nutrition, supplements, medication, soreness, schedule, and goals - and update the plan without forcing the user to become their own full-time analyst.
 
-More detail is coming here: role, scope, product surfaces, proof points, and outcomes.
+## Problem
+
+Fitness plans usually pretend the user is static. They prescribe a fixed workout split, a fixed nutrition target, and a fixed progression model, even though the user's actual body is changing daily.
+
+That gap mattered personally. Managing health, training, food, supplements, and recovery can take hours every month, especially when health constraints make inconsistency expensive. With modern AI, the planning burden should be minutes per week, not another job.
+
+## Vision
+
+The vision was an adaptive coach that could:
+
+- Update training recommendations when sleep, nutrition, stress, or soreness changed.
+- Adjust nutrition guidance around the user's actual week, not an idealized plan.
+- Help users make fewer daily decisions without giving up personalization.
+- Stay affordable enough to be a consumer product, not a concierge service.
+
+The target was less than 15 minutes of active planning per week while still improving adherence and performance.
+
+## What I Built
+
+My role was co-founder and engineer. I defined the product logic from 14+ years in fitness and built the first web application using a TALL stack: Laravel, Filament, PHP, and Tailwind CSS. I integrated Anthropic's Claude API to support adaptive plan generation and to reason across lifestyle inputs.
+
+The early product included:
+
+- Intake flows for goals, training history, constraints, and preferences.
+- Workout and nutrition plan generation.
+- Daily adjustment logic based on sleep, food, supplements, and schedule changes.
+- Beta onboarding flows for early users.
+- A product structure designed to eventually support medication-adjacent workflows, while recognizing that state-by-state regulatory approval is non-trivial.
+
+## Roadblocks
+
+The main product challenge was not generating a decent workout. The harder problem was adapting the plan without becoming noisy, unsafe, or overcomplicated.
+
+That created several constraints:
+
+- The product needed enough context to personalize without making onboarding painful.
+- AI output had to be bounded by fitness logic and user constraints.
+- The experience needed to be cheap enough for consumers while still feeling meaningfully personal.
+- Medication workflows had to stay separate from the core fitness product until regulatory requirements were solved.
+
+## Impact
+
+CheckFit produced a working beta that could generate and adjust training and nutrition guidance around real user inputs. It clarified a product direction that later informed my broader health technology work: the future of personal health is not just more tracking. It is better translation from data to action.
+
+## Lessons
+
+The product taught me that AI health products need strong defaults and strong boundaries. Users do not want infinite options. They want the next right action, explained clearly, adjusted when life changes, and constrained by enough domain logic that it stays trustworthy.

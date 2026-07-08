@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Post } from "@/lib/content";
 
-type NavKey = "home" | "essays" | "work" | "side-quests";
+type NavKey = "home" | "essays" | "projects" | "side-quests";
 
 type Row = {
   title: string;
@@ -24,13 +24,19 @@ export function postToRow(
 
 export function projectToRow(
   project: Post,
-  basePath: "work" | "side-quests" = "work"
+  basePath: "projects" | "side-quests" = "projects"
 ): Row {
+  const isPortfolioProject = basePath === "projects";
+
   return {
     title: project.frontmatter.title,
     dek: project.frontmatter.description,
     href: project.frontmatter.url ?? `/${basePath}/${project.slug}`,
-    meta: project.frontmatter.url ? "Live" : "Read",
+    meta: isPortfolioProject
+      ? formatProjectYear(project)
+      : project.frontmatter.url
+        ? "Live"
+        : "Read",
   };
 }
 
@@ -62,7 +68,7 @@ export function ManifestPage({
 export function ManifestNav({ active }: { active: NavKey }) {
   const links: { key: NavKey; href: string; label: string }[] = [
     { key: "essays", href: "/essays", label: "Essays" },
-    { key: "work", href: "/work", label: "Work" },
+    { key: "projects", href: "/projects", label: "Projects" },
     { key: "side-quests", href: "/side-quests", label: "Side Quests" },
   ];
 
@@ -280,6 +286,13 @@ function formatShortDate(dateString: string): string {
     month: "short",
     day: "2-digit",
   });
+}
+
+function formatProjectYear(project: Post): string {
+  if (project.frontmatter.year) return project.frontmatter.year;
+
+  const year = new Date(`${project.frontmatter.date}T00:00:00`).getFullYear();
+  return Number.isFinite(year) ? String(year) : "";
 }
 
 function ArrowUpRightIcon() {

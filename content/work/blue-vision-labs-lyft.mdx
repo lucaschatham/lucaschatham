@@ -1,10 +1,60 @@
 ---
-title: Blue Vision Labs -> Lyft
-description: Computer vision mapping work with Blue Vision Labs, later acquired by Lyft.
-date: 2018-01-01
+title: "Blue Vision Labs -> Lyft"
+description: Computer vision mapping and data collection work for Blue Vision Labs, acquired by Lyft.
+date: 2019-01-01
+year: "2018-2019"
 published: true
 ---
 
-Selected work from Lucas Chatham's time with Blue Vision Labs and Lyft.
+I started this work at Blue Vision Labs and continued it after the company was acquired by Lyft. My role began with testing, improving, and scaling data collection across the U.S. and U.K. After the acquisition, it evolved into sensor redesign, data ingestion pipeline optimization, and scaling low-cost mapping data collection across Lyft's rideshare fleet.
 
-More detail is coming here: role, scope, product surfaces, proof points, and outcomes.
+## Problem
+
+Blue Vision Labs built precise collaborative augmented reality software. The same underlying technology enabled cheap, scalable localization and mapping: a useful primitive for autonomous vehicles.
+
+After the Lyft acquisition, the challenge was integrating that capability into Lyft Level 5. The goal was to use rideshare and autonomous vehicle data to build city-scale 3D maps, understand human driving patterns, and improve simulation tests for self-driving development.
+
+## Requirements
+
+The work had several high-level requirements:
+
+- Hardware redesign: redesign, prototype, and iterate dashcam devices for U.S. and U.K. collection markets.
+- Data integration: combine rideshare driver data and autonomous vehicle data into useful 3D mapping outputs.
+- Real-time analytics: collect and analyze data continuously, while debugging transmission and quality issues.
+- Cost efficiency: estimate and reduce the cost of sensors, tooling, vendors, and per-unit deployment.
+- Scalability: grow collection from a few cities to multiple countries.
+- Compliance and security: handle sensitive vehicle and camera data carefully, especially around U.K. data capture and GDPR.
+
+## What I Worked On
+
+The end-to-end system started inside Lyft rental vehicles. A custom dashcam captured camera footage and sensor data, including accelerometer, gyroscope, GPS, ambient light, and barometer signals. That data then moved through ingestion pipelines and computer vision systems to produce 3D point clouds and city-scale map artifacts.
+
+My work included:
+
+- Scaling data collection operations across the U.S. and U.K.
+- Testing sensor reliability in real driving conditions.
+- Redesigning the sensor suite after identifying quality, heat, latency, power, and image-capture limits in the initial approach.
+- Working through vendor and part selection to lower unit economics.
+- Coordinating deployment across Lyft's rental fleet.
+- Debugging field issues like overheating casings, low-light tunnel performance, and inconsistent image quality.
+- Working with legal and cross-functional teams on data protection, patents, and foreign-market collection constraints.
+
+## Execution
+
+The first versions were resourceful by necessity. We iterated on early camera redesigns with spare parts and field testing, then used the results to justify a more robust sensor approach.
+
+The practical work was deeply cross-functional. Hardware choices affected data quality. Data quality affected map generation. Map generation affected simulation realism. Compliance constraints affected where and how data could be collected. A seemingly small part decision could change cost, thermal performance, ease of deployment, and downstream model usefulness.
+
+## Impact
+
+The program scaled data ingestion from 3 cities to 2 countries and helped create thousands of miles of up-to-date city-scale 3D maps. Those maps supported simulation, localization, trajectory analysis, and autonomous vehicle development.
+
+The work also contributed to one of the largest open-source autonomous vehicle datasets at the time and supported Lyft's HD spatial semantic mapping efforts. Toyota, through Woven Planet, later acquired Lyft Level 5 and its IP.
+
+## Lessons
+
+The first lesson was resourcefulness. Lyft's rideshare fleet became a mobile data collection network, which made mapping cheaper and more scalable than a purely specialized fleet approach.
+
+The second lesson was that compliance work cannot be an afterthought. In autonomous vehicles, the market rewarded speed, but camera capture, vehicle tracking, and international privacy rules required careful judgment.
+
+The third lesson was to keep testing in the real world. Field conditions revealed issues a lab setup could miss: heat, low light, tunnels, mounting variation, driver behavior, and the small mechanical failures that quietly turn into data quality problems.

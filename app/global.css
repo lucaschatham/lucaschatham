@@ -506,6 +506,120 @@ button:focus-visible,
   color: var(--cream);
 }
 
+.project-brand {
+  --brand-accent: var(--pulse);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 20px;
+}
+
+.project-brand-tile {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--brand-accent) 70%, transparent);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--brand-accent) 18%, transparent), transparent 62%),
+    rgba(240, 240, 236, .035);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--brand-accent) 12%, transparent);
+  overflow: hidden;
+}
+
+.project-brand-tile.secondary {
+  --brand-accent: #ff00bf;
+}
+
+.project-brand-tile.has-image {
+  padding: 6px;
+  background: rgba(255, 255, 255, .96);
+}
+
+.project-brand-tile.has-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.project-brand-tile.has-image.wide {
+  width: min(178px, 100%);
+  padding: 0;
+  background: rgba(0, 0, 0, .72);
+}
+
+.project-brand-tile.has-image.wide img {
+  object-fit: cover;
+  border-radius: 7px;
+}
+
+.project-brand-mark {
+  font-family: "Geist Mono", monospace;
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: .08em;
+  color: var(--cream);
+  line-height: 1;
+}
+
+.project-brand-label {
+  width: 100%;
+  padding: 0 4px 6px;
+  font-family: "Geist Mono", monospace;
+  font-size: 6.5px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  line-height: 1.15;
+  text-align: center;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--brand-accent) 72%, var(--mute));
+}
+
+.project-brand-arrow {
+  font-family: "Geist Mono", monospace;
+  font-size: 10px;
+  letter-spacing: .12em;
+  color: var(--mute);
+}
+
+.project-brand-daybreaker-health {
+  --brand-accent: var(--pulse);
+}
+
+.project-brand-checkfit {
+  --brand-accent: #54d19a;
+}
+
+.project-brand-imerit {
+  --brand-accent: #79b8ff;
+}
+
+.project-brand-blue-vision-labs-lyft {
+  --brand-accent: #6ee7f9;
+}
+
+.project-brand-gymnazo {
+  --brand-accent: #f59e0b;
+}
+
+.project-brand-monster-fitness {
+  --brand-accent: #e5e7eb;
+}
+
+.project-year {
+  margin: 0 0 10px;
+  font-family: "Geist Mono", monospace;
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--pulse);
+  font-weight: 500;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .nav a.active .dot {
     animation: pls 1.6s ease-in-out infinite;
