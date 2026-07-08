@@ -5,6 +5,7 @@ type NavKey = "home" | "essays" | "projects" | "side-quests";
 
 type Row = {
   title: string;
+  subtitle?: string;
   dek: string;
   href: string;
   meta: string;
@@ -57,9 +58,10 @@ export function postToRow(
 ): Row {
   return {
     title: post.frontmatter.title,
+    subtitle: post.frontmatter.subtitle,
     dek: post.frontmatter.description,
     href: `/${basePath}/${post.slug}`,
-    meta: formatShortDate(post.frontmatter.date),
+    meta: formatEssayDate(post.frontmatter.date),
   };
 }
 
@@ -239,6 +241,7 @@ function ManifestRow({ row }: { row: Row }) {
         {row.logo && <RowLogoMark logo={row.logo} />}
         <div className="t">
           {row.title}
+          {row.subtitle && <span className="st">{row.subtitle}</span>}
           <span className="s">{row.dek}</span>
         </div>
       </div>
@@ -377,10 +380,11 @@ export function ManifestFooter() {
   return <footer className="ft">© Lucas Chatham · Made in California</footer>;
 }
 
-function formatShortDate(dateString: string): string {
+function formatEssayDate(dateString: string): string {
   return new Date(`${dateString}T00:00:00`).toLocaleDateString("en-US", {
     month: "short",
     day: "2-digit",
+    year: "numeric",
   });
 }
 

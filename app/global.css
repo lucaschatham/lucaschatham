@@ -381,6 +381,12 @@ button:focus-visible,
   color: var(--cream);
 }
 
+.r .t .st {
+  display: block;
+  color: rgba(240, 240, 236, .88);
+  margin-top: 2px;
+}
+
 .r .t .s {
   display: block;
   font-size: 12px;

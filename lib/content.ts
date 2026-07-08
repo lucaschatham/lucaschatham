@@ -3,6 +3,7 @@ import path from "path";
 
 export type Frontmatter = {
   title: string;
+  subtitle?: string;
   description: string;
   date: string;
   year?: string;
