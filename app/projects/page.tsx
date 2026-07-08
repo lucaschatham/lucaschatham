@@ -18,7 +18,7 @@ export default function ProjectsPage() {
 
   return (
     <ManifestPage active="projects">
-      <RowsSection heading="projects" kicker="" rows={rows} />
+      <RowsSection heading="projects" headingLevel={1} kicker="" rows={rows} />
     </ManifestPage>
   );
 }

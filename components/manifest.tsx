@@ -264,6 +264,7 @@ export function RowsSection({
   heading,
   kicker,
   rows,
+  headingLevel = 2,
   allHref,
   allLabel,
   emptyLabel,
@@ -271,18 +272,20 @@ export function RowsSection({
   heading: string;
   kicker: string;
   rows: Row[];
+  headingLevel?: 1 | 2;
   allHref?: string;
   allLabel?: string;
   emptyLabel?: string;
 }) {
   const headingId = `${heading.toLowerCase().replace(/\s+/g, "-")}-heading`;
+  const Heading = headingLevel === 1 ? "h1" : "h2";
 
   return (
     <section className="man" aria-labelledby={headingId}>
-      <h2 className="h" id={headingId}>
+      <Heading className="h" id={headingId}>
         <span className="l">{heading}</span>
         {kicker && <span className="n">{kicker}</span>}
-      </h2>
+      </Heading>
       {rows.map((row) => (
         <ManifestRow key={`${row.href}-${row.title}`} row={row} />
       ))}

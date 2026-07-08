@@ -17,7 +17,12 @@ export default function SideQuestsPage() {
 
   return (
     <ManifestPage active="side-quests">
-      <RowsSection heading="side quests" kicker="" rows={rows} />
+      <RowsSection
+        heading="side quests"
+        headingLevel={1}
+        kicker=""
+        rows={rows}
+      />
     </ManifestPage>
   );
 }

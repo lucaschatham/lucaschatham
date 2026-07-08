@@ -19,6 +19,7 @@ export default function EssaysPage() {
     <ManifestPage active="essays">
       <RowsSection
         heading="essays"
+        headingLevel={1}
         kicker="ALL"
         rows={rows}
         emptyLabel="No essays published yet."
