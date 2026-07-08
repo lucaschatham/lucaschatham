@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Post } from "@/lib/content";
 
-type NavKey = "home" | "essays" | "projects";
+type NavKey = "home" | "essays" | "work" | "side-quests";
 
 type Row = {
   title: string;
@@ -12,7 +12,7 @@ type Row = {
 
 export function postToRow(
   post: Post,
-  basePath: "blog" | "projects"
+  basePath: "blog" | "work" | "side-quests"
 ): Row {
   return {
     title: post.frontmatter.title,
@@ -22,11 +22,14 @@ export function postToRow(
   };
 }
 
-export function projectToRow(project: Post): Row {
+export function projectToRow(
+  project: Post,
+  basePath: "work" | "side-quests" = "work"
+): Row {
   return {
     title: project.frontmatter.title,
     dek: project.frontmatter.description,
-    href: project.frontmatter.url ?? `/projects/${project.slug}`,
+    href: project.frontmatter.url ?? `/${basePath}/${project.slug}`,
     meta: project.frontmatter.url ? "Live" : "Read",
   };
 }
@@ -59,7 +62,8 @@ export function ManifestPage({
 export function ManifestNav({ active }: { active: NavKey }) {
   const links: { key: NavKey; href: string; label: string }[] = [
     { key: "essays", href: "/essays", label: "Essays" },
-    { key: "projects", href: "/projects", label: "Projects" },
+    { key: "work", href: "/work", label: "Work" },
+    { key: "side-quests", href: "/side-quests", label: "Side Quests" },
   ];
 
   const homeActive = active === "home";
@@ -154,7 +158,7 @@ export function RowsSection({
   allLabel?: string;
   emptyLabel?: string;
 }) {
-  const headingId = `${heading.toLowerCase()}-heading`;
+  const headingId = `${heading.toLowerCase().replace(/\s+/g, "-")}-heading`;
 
   return (
     <section className="man" aria-labelledby={headingId}>

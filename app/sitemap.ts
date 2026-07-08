@@ -8,17 +8,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(post.frontmatter.date),
   }));
 
-  const projects = getPosts("projects").map((project) => ({
-    url: `${SITE_URL}/projects/${project.slug}`,
+  const work = getPosts("work").map((project) => ({
+    url: `${SITE_URL}/work/${project.slug}`,
+    lastModified: new Date(project.frontmatter.date),
+  }));
+
+  const sideQuests = getPosts("side-quests").map((project) => ({
+    url: `${SITE_URL}/side-quests/${project.slug}`,
     lastModified: new Date(project.frontmatter.date),
   }));
 
   const staticPages = [
     { url: SITE_URL, lastModified: new Date() },
     { url: `${SITE_URL}/essays`, lastModified: new Date() },
-    { url: `${SITE_URL}/projects`, lastModified: new Date() },
+    { url: `${SITE_URL}/work`, lastModified: new Date() },
+    { url: `${SITE_URL}/side-quests`, lastModified: new Date() },
     { url: `${SITE_URL}/about`, lastModified: new Date() },
   ];
 
-  return [...staticPages, ...blogPosts, ...projects];
+  return [...staticPages, ...blogPosts, ...work, ...sideQuests];
 }
