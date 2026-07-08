@@ -17,7 +17,7 @@ export default function ProjectsPage() {
 
   return (
     <ManifestPage active="projects">
-      <RowsSection heading="projects" kicker="PORTFOLIO" rows={rows} />
+      <RowsSection heading="projects" kicker="" rows={rows} />
     </ManifestPage>
   );
 }

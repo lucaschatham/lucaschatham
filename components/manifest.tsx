@@ -170,7 +170,7 @@ export function RowsSection({
     <section className="man" aria-labelledby={headingId}>
       <h2 className="h" id={headingId}>
         <span className="l">{heading}</span>
-        <span className="n">{kicker}</span>
+        {kicker && <span className="n">{kicker}</span>}
       </h2>
       {rows.map((row) => (
         <ManifestRow key={`${row.href}-${row.title}`} row={row} />
@@ -190,8 +190,7 @@ export function RowsSection({
 
 function ManifestRow({ row }: { row: Row }) {
   const isExternal = row.href.startsWith("http");
-  const isLive = row.meta.toLowerCase() === "live";
-  const className = isLive ? "r r-live" : "r";
+  const className = "r";
   const content = (
     <>
       <div className="t">
