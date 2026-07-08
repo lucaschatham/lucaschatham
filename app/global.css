@@ -305,6 +305,74 @@ button:focus-visible,
   transform: translate(2px, -2px);
 }
 
+.row-main {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.row-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.row-logo-tile {
+  width: 36px;
+  height: 36px;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  overflow: hidden;
+  border: 1px solid rgba(240, 240, 236, .16);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, .96);
+  box-shadow: 0 0 18px rgba(0, 0, 0, .18);
+}
+
+.row-logo-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.row-logo-tile.wide {
+  width: 50px;
+  background: rgba(0, 0, 0, .76);
+}
+
+.row-logo-tile.wide img {
+  object-fit: cover;
+}
+
+.row-logo-tile:not(.has-image) {
+  background:
+    linear-gradient(135deg, rgba(110, 231, 249, .2), transparent 62%),
+    rgba(240, 240, 236, .035);
+  border-color: rgba(110, 231, 249, .62);
+}
+
+.row-logo-tile.secondary {
+  border-color: rgba(255, 0, 191, .5);
+}
+
+.row-logo-mark {
+  font-family: "Geist Mono", monospace;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: .08em;
+  color: var(--cream);
+}
+
+.row-logo-arrow {
+  font-family: "Geist Mono", monospace;
+  font-size: 8px;
+  color: var(--mute);
+}
+
 .r .t {
   font-size: 15px;
   font-weight: 500;
@@ -754,6 +822,17 @@ button:focus-visible,
   border-radius: 0.5rem;
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
+}
+
+.prose .side-quest-video {
+  display: block;
+  width: min(100%, 420px);
+  aspect-ratio: 9 / 16;
+  margin: 1.5rem auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #000;
+  object-fit: cover;
 }
 
 .prose hr {

@@ -8,6 +8,47 @@ type Row = {
   dek: string;
   href: string;
   meta: string;
+  logo?: RowLogo;
+};
+
+type RowLogo = {
+  label: string;
+  image?: string;
+  mark?: string;
+  variant?: "square" | "wide";
+  secondary?: Omit<RowLogo, "secondary">;
+};
+
+const projectRowLogos: Record<string, RowLogo> = {
+  "daybreaker-health": {
+    label: "Daybreaker Health",
+    image: "/images/brands/daybreaker-health-logo.jpg",
+  },
+  checkfit: {
+    label: "CheckFit",
+    image: "/images/brands/checkfit-logo.jpg",
+  },
+  imerit: {
+    label: "iMerit",
+    image: "/images/brands/imerit-logo.jpg",
+  },
+  "blue-vision-labs-lyft": {
+    label: "Blue Vision Labs",
+    mark: "BVL",
+    secondary: {
+      label: "Lyft",
+      image: "/images/brands/lyft-logo.jpg",
+    },
+  },
+  gymnazo: {
+    label: "Gymnazo",
+    image: "/images/brands/gymnazo-logo.jpg",
+  },
+  "monster-fitness": {
+    label: "Monster Fitness",
+    image: "/images/brands/monster-fitness-logo.png",
+    variant: "wide",
+  },
 };
 
 export function postToRow(
@@ -37,6 +78,7 @@ export function projectToRow(
       : project.frontmatter.url
         ? "Live"
         : "Read",
+    logo: isPortfolioProject ? projectRowLogos[project.slug] : undefined,
   };
 }
 
@@ -193,9 +235,12 @@ function ManifestRow({ row }: { row: Row }) {
   const className = "r";
   const content = (
     <>
-      <div className="t">
-        {row.title}
-        <span className="s">{row.dek}</span>
+      <div className="row-main">
+        {row.logo && <RowLogoMark logo={row.logo} />}
+        <div className="t">
+          {row.title}
+          <span className="s">{row.dek}</span>
+        </div>
       </div>
       <div className="meta">
         {row.meta}
@@ -221,6 +266,58 @@ function ManifestRow({ row }: { row: Row }) {
     <Link className={className} href={row.href}>
       {content}
     </Link>
+  );
+}
+
+function RowLogoMark({ logo }: { logo: RowLogo }) {
+  return (
+    <span
+      className={logo.secondary ? "row-logo row-logo-pair" : "row-logo"}
+      aria-label={logo.label}
+      title={logo.label}
+    >
+      <RowLogoTile logo={logo} />
+      {logo.secondary && (
+        <>
+          <span className="row-logo-arrow" aria-hidden="true">
+            -&gt;
+          </span>
+          <RowLogoTile logo={logo.secondary} secondary />
+        </>
+      )}
+    </span>
+  );
+}
+
+function RowLogoTile({
+  logo,
+  secondary = false,
+}: {
+  logo: Omit<RowLogo, "secondary">;
+  secondary?: boolean;
+}) {
+  const className = [
+    "row-logo-tile",
+    logo.image ? "has-image" : "",
+    logo.variant === "wide" ? "wide" : "",
+    secondary ? "secondary" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  return (
+    <span className={className} aria-hidden="true">
+      {logo.image ? (
+        <img
+          src={logo.image}
+          alt=""
+          width={logo.variant === "wide" ? 520 : 100}
+          height={logo.variant === "wide" ? 199 : 100}
+        />
+      ) : (
+        <span className="row-logo-mark">{logo.mark}</span>
+      )}
+    </span>
   );
 }
 
