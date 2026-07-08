@@ -147,7 +147,7 @@ export function projectToRow(
       : project.frontmatter.description,
     href: project.frontmatter.url ?? `/${basePath}/${project.slug}`,
     meta: isPortfolioProject
-      ? ""
+      ? project.frontmatter.year ?? ""
       : project.frontmatter.url
         ? "Live"
         : "Read",
