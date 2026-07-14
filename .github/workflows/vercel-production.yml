@@ -45,7 +45,7 @@ jobs:
         run: vercel build --prod --token "$VERCEL_TOKEN"
 
       - name: Deploy production bundle
-        run: vercel deploy --prebuilt --prod --token "$VERCEL_TOKEN"
+        run: vercel deploy --prebuilt --prod --archive=tgz --token "$VERCEL_TOKEN"
 
       - name: Smoke test production
         run: sleep 5 && npm run test:smoke
