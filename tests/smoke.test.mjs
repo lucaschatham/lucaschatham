@@ -223,12 +223,13 @@ test("portfolio project pages keep the agreed case-study template", async () => 
   }
 });
 
-test("footer keeps recruiter contact paths visible", async () => {
+test("footer keeps contact and publishing paths visible", async () => {
   const html = await readHtml("/");
 
   assert.match(html, /https:\/\/www\.linkedin\.com\/in\/lucaschatham\//);
   assert.match(html, /mailto:chathamworks@gmail\.com/);
   assert.match(html, /https:\/\/github\.com\/lucaschatham/);
+  assert.match(html, /https:\/\/levelwithlucas\.lucaschatham\.com/);
 });
 
 test("robots and RSS endpoints are present", async () => {

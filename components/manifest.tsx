@@ -475,21 +475,20 @@ export function SocialFooter() {
         </span>
         GitHub
       </a>
-      {/* X hidden for now — uncomment to restore.
-      <a href="https://x.com/lukeoutthebox" rel="me noopener" aria-label="X (formerly Twitter)"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span>X</a>
-      */}
-      {/* Newsletter and Podcast are hidden until real destinations exist.
-      <span
-        className="social-disabled"
-        role="link"
-        aria-disabled="true"
-        aria-label="Newsletter"
+      <a
+        href="https://levelwithlucas.lucaschatham.com"
+        rel="me noopener"
+        aria-label="Level With Lucas newsletter"
       >
         <span className="ic">
           <NewsletterIcon />
         </span>
-        Newsletter
-      </span>
+        Level With Lucas
+      </a>
+      {/* X hidden for now — uncomment to restore.
+      <a href="https://x.com/lukeoutthebox" rel="me noopener" aria-label="X (formerly Twitter)"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span>X</a>
+      */}
+      {/* Podcast is hidden until a real destination exists.
       <span
         className="social-disabled"
         role="link"
@@ -572,8 +571,6 @@ function EmailIcon() {
   );
 }
 
-// Hidden until newsletter links return.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function NewsletterIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
