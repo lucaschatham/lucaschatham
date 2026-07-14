@@ -230,6 +230,8 @@ test("footer keeps contact and publishing paths visible", async () => {
   assert.match(html, /mailto:chathamworks@gmail\.com/);
   assert.match(html, /https:\/\/github\.com\/lucaschatham/);
   assert.match(html, /https:\/\/levelwithlucas\.lucaschatham\.com/);
+  assert.match(html, /aria-label="Blog newsletter"/);
+  assert.match(html, /<span class="ic">[\s\S]*?<\/span>\s*Blog\s*<\/a>/);
 });
 
 test("robots and RSS endpoints are present", async () => {
