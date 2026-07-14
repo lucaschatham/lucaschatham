@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type TouchEvent } from "react";
 
 type Evidence = "Confirmed public fact" | "Supported inference" | "Not publicly established";
 
@@ -273,8 +273,20 @@ const deckPdfUrl = "https://docs.google.com/presentation/d/1hhIpVdlBl8Qxthosrzoj
 export function AuroraDeploymentExperience() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isReelVisible, setIsReelVisible] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const reelViewportRef = useRef<HTMLDivElement>(null);
+  const reelHasBeenVisible = useRef(false);
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
   const stage = stages[activeIndex];
+  const isPlaying = !isPaused && !prefersReducedMotion && isReelVisible;
+  const playbackState = prefersReducedMotion
+    ? "Evidence reel / motion reduced"
+    : isPlaying
+      ? "Evidence reel / playing"
+      : isReelVisible
+        ? "Evidence reel / paused"
+        : "Evidence reel / paused while offscreen";
 
   useEffect(() => {
     const syncFromHash = () => {
@@ -298,14 +310,40 @@ export function AuroraDeploymentExperience() {
   }, []);
 
   useEffect(() => {
-    if (isPaused || prefersReducedMotion) return;
+    const target = reelViewportRef.current;
+
+    if (!target || !("IntersectionObserver" in window)) {
+      setIsReelVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const isVisible = entry.isIntersecting && entry.intersectionRatio >= 0.5;
+        setIsReelVisible(isVisible);
+
+        if (isVisible) {
+          reelHasBeenVisible.current = true;
+        } else if (reelHasBeenVisible.current) {
+          setIsPaused(true);
+        }
+      },
+      { threshold: [0, 0.5, 1] },
+    );
+
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isPlaying) return;
 
     const interval = window.setInterval(() => {
       setActiveIndex((currentIndex) => (currentIndex + 1) % stages.length);
-    }, 6000);
+    }, 7000);
 
     return () => window.clearInterval(interval);
-  }, [isPaused, prefersReducedMotion]);
+  }, [isPlaying]);
 
   function selectStage(index: number) {
     const nextIndex = Math.max(0, Math.min(index, stages.length - 1));
@@ -316,6 +354,37 @@ export function AuroraDeploymentExperience() {
 
   function pauseOnCurrentFrame() {
     setIsPaused(true);
+  }
+
+  function moveStage(direction: -1 | 1) {
+    const nextIndex = (activeIndex + direction + stages.length) % stages.length;
+    selectStage(nextIndex);
+  }
+
+  function togglePlayback() {
+    if (prefersReducedMotion) return;
+    setIsPaused((paused) => !paused);
+  }
+
+  function recordTouchStart(event: TouchEvent<HTMLButtonElement>) {
+    const touch = event.touches[0];
+    if (touch) touchStart.current = { x: touch.clientX, y: touch.clientY };
+  }
+
+  function moveOnSwipe(event: TouchEvent<HTMLButtonElement>) {
+    const start = touchStart.current;
+    const touch = event.changedTouches[0];
+    touchStart.current = null;
+
+    if (!start || !touch) return;
+
+    const horizontalDistance = touch.clientX - start.x;
+    const verticalDistance = touch.clientY - start.y;
+
+    if (Math.abs(horizontalDistance) < 44 || Math.abs(horizontalDistance) <= Math.abs(verticalDistance)) return;
+
+    if (horizontalDistance < 0) moveStage(1);
+    else moveStage(-1);
   }
 
   return (
@@ -332,57 +401,89 @@ export function AuroraDeploymentExperience() {
       </header>
 
       <section className="aurora-stage" aria-labelledby="aurora-stage-title">
-        <button
-          type="button"
-          className="aurora-image-wrap aurora-image-reel"
-          onClick={pauseOnCurrentFrame}
-          aria-label={isPaused || prefersReducedMotion
-            ? `Reel paused on frame ${stage.number}: ${stage.title}. Use the play button to resume.`
-            : `Reel playing frame ${stage.number}: ${stage.title}. Click to pause on this frame.`}
-        >
-          <img key={stage.number} src={stage.image} alt={stage.imageAlt} width="1200" height="760" />
-          <div className="aurora-image-scrim" aria-hidden="true" />
-          <p className="aurora-image-state">{stage.evidence}</p>
-          <p className="aurora-image-stage">Frame {stage.number} / {stages.length} · {stage.shortTitle}</p>
-          <p className="aurora-image-hint" aria-hidden="true">
-            {prefersReducedMotion ? "Motion reduced" : isPaused ? "Paused" : "Click image to pause"}
-          </p>
-        </button>
+        <div ref={reelViewportRef} className="aurora-stage-media">
+          <button
+            type="button"
+            className="aurora-image-wrap aurora-image-reel"
+            onClick={pauseOnCurrentFrame}
+            onTouchStart={recordTouchStart}
+            onTouchEnd={moveOnSwipe}
+            onKeyDown={(event) => {
+              if (event.key === "ArrowLeft") {
+                event.preventDefault();
+                moveStage(-1);
+              }
+              if (event.key === "ArrowRight") {
+                event.preventDefault();
+                moveStage(1);
+              }
+            }}
+            aria-label={isPlaying
+              ? `Reel playing frame ${stage.number}: ${stage.title}. Tap to pause, or swipe to change frames.`
+              : `Reel paused on frame ${stage.number}: ${stage.title}. Tap to keep this frame selected, or swipe to change frames.`}
+          >
+            <img key={stage.number} src={stage.image} alt={stage.imageAlt} width="1200" height="760" />
+            <div className="aurora-image-scrim" aria-hidden="true" />
+            <p className="aurora-image-hint" aria-hidden="true">
+              {prefersReducedMotion ? "Motion reduced" : isPlaying ? "Tap to pause · swipe frames" : "Paused · swipe frames"}
+            </p>
+          </button>
 
-        <div className="aurora-stage-controls">
-          <div className="aurora-controls-head">
-            <p>{prefersReducedMotion ? "Evidence reel / motion reduced" : isPaused ? "Evidence reel / paused" : "Evidence reel / playing"}</p>
-            <div>
-              <button
-                type="button"
-                onClick={() => setIsPaused((paused) => !paused)}
-                disabled={prefersReducedMotion}
-                aria-pressed={isPaused}
-              >
-                {isPaused ? "Play" : "Pause"}
-              </button>
+          <div key={stage.number} className="aurora-caption-rail">
+            <div className="aurora-caption-meta">
+              <p className={`aurora-caption-status ${stage.evidence === "Confirmed public fact" ? "fact" : stage.evidence === "Supported inference" ? "inference" : "unknown"}`}>
+                {stage.evidence}
+              </p>
+              <p className="aurora-caption-frame">Frame {stage.number} / {stages.length}</p>
             </div>
+            <p className="aurora-stage-phase">{stage.phase}</p>
+            <h2 id="aurora-stage-title">{stage.title}</h2>
+            <p className="aurora-caption-summary">{stage.summary}</p>
           </div>
-          <ol className="aurora-stage-list" aria-label="Select an Aurora-INL evidence-reel frame">
-            {stages.map((candidate, index) => (
-              <li key={candidate.number}>
-                <button
-                  type="button"
-                  onClick={() => selectStage(index)}
-                  aria-current={index === activeIndex ? "step" : undefined}
-                  aria-label={`Frame ${candidate.number}: ${candidate.title}. Selecting a frame pauses the reel.`}
-                >
-                  {candidate.number}
-                </button>
-              </li>
-            ))}
-          </ol>
         </div>
 
-        <div className="aurora-stage-copy">
-          <p className="aurora-stage-phase">{stage.phase}</p>
-          <h2 id="aurora-stage-title">{stage.title}</h2>
-          <p>{stage.summary}</p>
+        <div className="aurora-stage-controls">
+          <div className="aurora-stage-navigation" aria-label="Evidence-reel navigation">
+            <button type="button" onClick={() => moveStage(-1)} aria-label="Previous evidence-reel frame">Previous</button>
+            <p aria-live="polite"><span>Frame</span><strong>{stage.number} / {stages.length}</strong></p>
+            <button type="button" onClick={() => moveStage(1)} aria-label="Next evidence-reel frame">Next</button>
+          </div>
+
+          <div className="aurora-progress" aria-hidden="true">
+            {stages.map((candidate, index) => (
+              <span className={index === activeIndex ? "is-current" : index < activeIndex ? "is-complete" : undefined} key={candidate.number} />
+            ))}
+          </div>
+
+          <div className="aurora-controls-head">
+            <p>{playbackState}</p>
+            <button
+              type="button"
+              onClick={togglePlayback}
+              disabled={prefersReducedMotion}
+              aria-pressed={isPaused}
+            >
+              {isPlaying ? "Pause" : "Play"}
+            </button>
+          </div>
+
+          <details className="aurora-frame-picker">
+            <summary>Browse all frames</summary>
+            <ol className="aurora-stage-list" aria-label="Select an Aurora-INL evidence-reel frame">
+              {stages.map((candidate, index) => (
+                <li key={candidate.number}>
+                  <button
+                    type="button"
+                    onClick={() => selectStage(index)}
+                    aria-current={index === activeIndex ? "step" : undefined}
+                    aria-label={`Frame ${candidate.number}: ${candidate.title}. Selecting a frame pauses the reel.`}
+                  >
+                    <span>{candidate.number}</span>{candidate.shortTitle}
+                  </button>
+                </li>
+              ))}
+            </ol>
+          </details>
         </div>
       </section>
 
