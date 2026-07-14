@@ -190,12 +190,12 @@ test("homepage work list stays reverse chronological", async () => {
   }
 });
 
-test("homepage makes recruiter paths explicit", async () => {
+test("homepage makes primary paths explicit", async () => {
   const html = await readHtml("/");
 
   assert.match(html, /<a href="\/projects">(?:<[^>]+>)*Work<\/a>/i);
-  assert.match(html, /<a href="\/side-quests">(?:<[^>]+>)*Independent<\/a>/i);
-  assert.match(html, /href="mailto:chathamworks@gmail\.com"[^>]*>[^<]*Contact/i);
+  assert.match(html, /<a href="\/side-quests">(?:<[^>]+>)*Side Quests<\/a>/i);
+  assert.match(html, /href="mailto:chathamworks@gmail\.com"[^>]*>[^<]*Email Lucas/i);
   assert.match(html, /Product leader for enterprise AI, data operations, and high-stakes customer workflows/i);
   assert.match(html, /href="#work-heading"[^>]*>[\s\S]*?View selected work/i);
 });
