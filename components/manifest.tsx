@@ -180,8 +180,9 @@ export function ManifestPage({
 
 export function ManifestNav({ active }: { active: NavKey }) {
   const links: { key: NavKey; href: string; label: string }[] = [
+    { key: "projects", href: "/projects", label: "Work" },
     { key: "essays", href: "/essays", label: "Essays" },
-    { key: "side-quests", href: "/side-quests", label: "Side Quests" },
+    { key: "side-quests", href: "/side-quests", label: "Independent" },
   ];
 
   const homeActive = active === "home";
@@ -190,6 +191,7 @@ export function ManifestNav({ active }: { active: NavKey }) {
     <nav className="nav" aria-label="Primary">
       <Link
         href="/"
+        prefetch={false}
         className={homeActive ? "home-link active" : "home-link"}
         aria-label="Lucas Chatham — home"
         aria-current={homeActive ? "page" : undefined}
@@ -205,6 +207,7 @@ export function ManifestNav({ active }: { active: NavKey }) {
             <Link
               key={item.key}
               href={item.href}
+              prefetch={false}
               className={isActive ? "active" : undefined}
               aria-current={isActive ? "page" : undefined}
             >
@@ -213,6 +216,9 @@ export function ManifestNav({ active }: { active: NavKey }) {
             </Link>
           );
         })}
+        <a href="mailto:chathamworks@gmail.com" aria-label="Email Lucas Chatham">
+          Contact
+        </a>
       </div>
     </nav>
   );
@@ -239,7 +245,7 @@ export function Hero() {
           <b>Chatham</b>
         </Link>
         <span className="hero-role">
-          <span className="hero-role-main">Founder Operator</span>
+          <span className="hero-role-main">Founder operator · Product leader</span>
         </span>
       </h1>
     </section>
@@ -250,9 +256,18 @@ export function Lede() {
   return (
     <section className="lede" aria-label="Positioning">
       <p className="proof-line">
-        I build high-trust AI systems that turn messy real-world data into
-        decisions people can bet on.
+        I lead products for enterprise AI, data operations, and high-stakes
+        customer workflows.
       </p>
+      <div className="hero-actions" aria-label="Primary actions">
+        <Link className="hero-action hero-action-primary" href="#work-heading">
+          View selected work
+          <ArrowRightIcon />
+        </Link>
+        <a className="hero-action" href="mailto:chathamworks@gmail.com">
+          Email Lucas
+        </a>
+      </div>
     </section>
   );
 }
@@ -384,7 +399,7 @@ function ManifestRow({ row }: { row: Row }) {
   }
 
   return (
-    <Link className={className} href={row.href}>
+    <Link className={className} href={row.href} prefetch={false}>
       {content}
     </Link>
   );
@@ -434,6 +449,8 @@ function RowLogoTile({
           alt=""
           width={logo.variant === "wide" ? 520 : 100}
           height={logo.variant === "wide" ? 199 : 100}
+          loading="lazy"
+          decoding="async"
         />
       ) : (
         <span className="row-logo-mark">{logo.mark}</span>

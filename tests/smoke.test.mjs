@@ -190,6 +190,16 @@ test("homepage work list stays reverse chronological", async () => {
   }
 });
 
+test("homepage makes recruiter paths explicit", async () => {
+  const html = await readHtml("/");
+
+  assert.match(html, /<a href="\/projects">(?:<[^>]+>)*Work<\/a>/i);
+  assert.match(html, /<a href="\/side-quests">(?:<[^>]+>)*Independent<\/a>/i);
+  assert.match(html, /href="mailto:chathamworks@gmail\.com"[^>]*>[^<]*Contact/i);
+  assert.match(html, /Product leader for enterprise AI, data operations, and high-stakes customer workflows/i);
+  assert.match(html, /href="#work-heading"[^>]*>[\s\S]*?View selected work/i);
+});
+
 test("frontmatter tags use the shared capsule system on lists and detail pages", async () => {
   const indexHtml = await readHtml("/side-quests");
   assert.match(indexHtml, /class="tag-list tag-list--row"/);

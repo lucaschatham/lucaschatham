@@ -4,8 +4,8 @@ import { SITE_URL } from "@/lib/constants";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Side Quests",
-  description: "Personal builds, experiments, and self-directed tools.",
+  title: "Independent Work",
+  description: "Independent research, self-directed builds, and practical experiments.",
   alternates: {
     canonical: `${SITE_URL}/side-quests`,
   },
@@ -18,7 +18,7 @@ export default function SideQuestsPage() {
   return (
     <ManifestPage active="side-quests">
       <RowsSection
-        heading="side quests"
+        heading="independent work"
         headingLevel={1}
         kicker=""
         rows={rows}

@@ -9,14 +9,14 @@ const auroraTags = parseTags(auroraPost?.frontmatter.tags);
 
 export const metadata: Metadata = {
   title: "Aurora-INL Deployment Evidence",
-  description: "A public-source model of Aurora-INL as a reactor built once on site and once in evidence.",
+  description: "Independent public-source research into Aurora-INL's site, safety-basis, fuel, and licensing evidence.",
   keywords: auroraTags,
   alternates: {
     canonical: `${SITE_URL}/side-quests/aurora-inl`,
   },
   openGraph: {
     title: "Aurora-INL Deployment Evidence",
-    description: "A public-source model of Aurora-INL's site, safety-basis, fuel, and licensing evidence.",
+    description: "Independent public-source research into Aurora-INL's site, safety-basis, fuel, and licensing evidence.",
     url: `${SITE_URL}/side-quests/aurora-inl`,
     type: "article",
     tags: auroraTags,

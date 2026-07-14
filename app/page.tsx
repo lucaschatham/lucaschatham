@@ -30,7 +30,7 @@ const personSchema = {
     addressCountry: "US",
   },
   description:
-    "Founder Operator building high-trust AI systems that turn messy real-world data into decisions people can bet on.",
+    "Product leader for enterprise AI, data operations, and high-stakes customer workflows.",
 };
 
 export default function Home() {

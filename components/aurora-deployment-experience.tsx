@@ -391,7 +391,7 @@ export function AuroraDeploymentExperience({ tags }: { tags?: string[] }) {
   return (
     <article className="aurora-page">
       <header className="aurora-intro">
-        <p className="aurora-kicker">Side quest 01 / Nuclear energy</p>
+        <p className="aurora-kicker">Independent research / Nuclear energy</p>
         <h1>Aurora-INL deployment evidence</h1>
         <p className="aurora-lede">
           A public-source model of a reactor built twice: once on site, once in evidence.
@@ -426,6 +426,9 @@ export function AuroraDeploymentExperience({ tags }: { tags?: string[] }) {
           >
             <img key={stage.number} src={stage.image} alt={stage.imageAlt} width="1200" height="760" />
             <div className="aurora-image-scrim" aria-hidden="true" />
+            <p className="aurora-visual-note">
+              Illustrative reconstruction, not a construction photograph
+            </p>
             <p className="aurora-image-hint" aria-hidden="true">
               {prefersReducedMotion ? "Motion reduced" : isPlaying ? "Tap to pause · swipe frames" : "Paused · swipe frames"}
             </p>
