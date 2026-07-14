@@ -1,5 +1,6 @@
 import Link from "next/link";
-import type { Frontmatter } from "@/lib/content";
+import { TagList } from "@/components/tag-list";
+import { parseTags, type Frontmatter } from "@/lib/content";
 
 type PostCardProps = {
   slug: string;
@@ -24,6 +25,7 @@ export function PostCard({ slug, frontmatter, basePath }: PostCardProps) {
             </span>
           )}
         </div>
+        <TagList tags={parseTags(frontmatter.tags)} placement="row" />
         <p className="text-sm text-neutral-500 dark:text-neutral-500">
           {frontmatter.description}
         </p>

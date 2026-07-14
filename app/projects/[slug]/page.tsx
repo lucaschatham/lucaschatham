@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
-import { getPost, getPosts } from "@/lib/content";
+import { getPost, getPosts, parseTags } from "@/lib/content";
 import { MDXContent } from "@/components/mdx";
 import { ManifestPage } from "@/components/manifest";
+import { TagList } from "@/components/tag-list";
 import type { Metadata } from "next";
 import { SITE_URL } from "@/lib/constants";
 
@@ -173,14 +174,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const project = getPost("work", slug);
   if (!project) return {};
+  const tags = parseTags(project.frontmatter.tags);
 
   return {
     title: project.frontmatter.title,
     description: project.frontmatter.description,
+    keywords: tags,
     openGraph: {
       title: project.frontmatter.title,
       description: project.frontmatter.description,
       type: "article",
+      tags,
       url: `${SITE_URL}/projects/${slug}`,
     },
     alternates: {
@@ -193,6 +197,7 @@ export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
   const project = getPost("work", slug);
   if (!project) notFound();
+  const tags = parseTags(project.frontmatter.tags);
 
   return (
     <ManifestPage active="projects">
@@ -203,6 +208,7 @@ export default async function ProjectPage({ params }: Props) {
           <h1 className="text-3xl font-semibold tracking-tight mb-2">
             {project.frontmatter.title}
           </h1>
+          <TagList tags={tags} placement="detail" />
           <p className="text-[var(--mute)]">{project.frontmatter.description}</p>
           <ProjectHeroMedia
             image={project.frontmatter.image}

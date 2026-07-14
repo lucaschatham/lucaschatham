@@ -190,6 +190,23 @@ test("homepage work list stays reverse chronological", async () => {
   }
 });
 
+test("frontmatter tags use the shared capsule system on lists and detail pages", async () => {
+  const indexHtml = await readHtml("/side-quests");
+  assert.match(indexHtml, /class="tag-list tag-list--row"/);
+  assert.match(indexHtml, /<li class="tag-capsule">Training<\/li>/);
+  assert.match(indexHtml, /<li class="tag-capsule">Open Source<\/li>/);
+
+  const detailHtml = await readHtml("/side-quests/diy-gym");
+  assert.match(detailHtml, /class="tag-list tag-list--detail"/);
+  assert.match(detailHtml, /<li class="tag-capsule">Training<\/li>/);
+  assert.match(detailHtml, /<meta\b[^>]*name="keywords"[^>]*content="Training"/i);
+
+  const customDetailHtml = await readHtml("/side-quests/aurora-inl");
+  assert.match(customDetailHtml, /class="tag-list tag-list--detail"/);
+  assert.match(customDetailHtml, /<li class="tag-capsule">Nuclear<\/li>/);
+  assert.match(customDetailHtml, /<li class="tag-capsule">Systems<\/li>/);
+});
+
 test("portfolio project pages keep the agreed case-study template", async () => {
   const sitemapResponse = await request("/sitemap.xml");
   const urls = sitemapUrls(await sitemapResponse.text()).filter((url) =>

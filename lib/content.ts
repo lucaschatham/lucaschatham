@@ -21,6 +21,20 @@ export type Post = {
 
 export type ContentType = "blog" | "work" | "side-quests";
 
+export function parseTags(value?: string): string[] {
+  const seen = new Set<string>();
+
+  return (value ?? "")
+    .split(",")
+    .map((tag) => tag.trim().replace(/\s+/g, " "))
+    .filter((tag) => {
+      const key = tag.toLowerCase();
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+}
+
 function getContentDir(type: ContentType) {
   return path.join(process.cwd(), "content", type);
 }

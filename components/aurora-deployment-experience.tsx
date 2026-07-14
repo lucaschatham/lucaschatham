@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { TagList } from "@/components/tag-list";
 
 type Evidence = "Confirmed public fact" | "Supported inference" | "Not publicly established";
 
@@ -270,7 +271,7 @@ const stages: Stage[] = [
 const deckUrl = "https://docs.google.com/presentation/d/1hhIpVdlBl8QxthosrzojB8Abbb0R9znmUxWxpAD5FGk/edit";
 const deckPdfUrl = "https://docs.google.com/presentation/d/1hhIpVdlBl8QxthosrzojB8Abbb0R9znmUxWxpAD5FGk/export/pdf";
 
-export function AuroraDeploymentExperience() {
+export function AuroraDeploymentExperience({ tags }: { tags?: string[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
@@ -326,6 +327,7 @@ export function AuroraDeploymentExperience() {
         <p className="aurora-lede">
           A public-source model of a reactor built twice: once on site, once in evidence.
         </p>
+        <TagList tags={tags} placement="detail" />
         <p className="aurora-disclaimer">
           Reviewed 14 July 2026. This is an independent analytical model, not an Oklo schedule, authorization statement, or proprietary design disclosure.
         </p>

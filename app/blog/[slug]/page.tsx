@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
-import { getPost, getPosts } from "@/lib/content";
+import { getPost, getPosts, parseTags } from "@/lib/content";
 import { MDXContent } from "@/components/mdx";
 import { ManifestPage } from "@/components/manifest";
 import { ReadingProgress } from "@/components/reading-progress";
+import { TagList } from "@/components/tag-list";
 import type { Metadata } from "next";
 import { SITE_URL } from "@/lib/constants";
 
@@ -20,15 +21,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = getPost("blog", slug);
   if (!post) return {};
   const title = formatPostTitle(post.frontmatter.title, post.frontmatter.subtitle);
+  const tags = parseTags(post.frontmatter.tags);
 
   return {
     title,
     description: post.frontmatter.description,
+    keywords: tags,
     openGraph: {
       title,
       description: post.frontmatter.description,
       type: "article",
       publishedTime: post.frontmatter.date,
+      tags,
       url: `${SITE_URL}/blog/${slug}`,
     },
     alternates: {
@@ -41,6 +45,7 @@ export default async function BlogPost({ params }: Props) {
   const { slug } = await params;
   const post = getPost("blog", slug);
   if (!post) notFound();
+  const tags = parseTags(post.frontmatter.tags);
 
   return (
     <ManifestPage active="essays">
@@ -55,6 +60,7 @@ export default async function BlogPost({ params }: Props) {
               {post.frontmatter.subtitle}
             </p>
           )}
+          <TagList tags={tags} placement="detail" />
           <time className="text-sm text-[var(--mute)]">
             {new Date(`${post.frontmatter.date}T00:00:00`).toLocaleDateString(
               "en-US",

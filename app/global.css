@@ -19,6 +19,14 @@
   --pulse-soft: rgba(240, 68, 56, .14);
   --line: rgba(240, 240, 236, .1);  /* hairline panel-line divider */
 
+  /* shared editorial tag capsule */
+  --tag-fg: var(--silver-200);
+  --tag-border: rgba(213, 214, 212, .28);
+  --tag-bg: rgba(240, 240, 236, .055);
+  --tag-hover-fg: var(--silver-100);
+  --tag-hover-border: rgba(240, 240, 236, .42);
+  --tag-hover-bg: rgba(240, 240, 236, .085);
+
   /* legacy aliases kept so existing rules resolve */
   --ink: var(--bg);
   --cream: var(--silver-100);
@@ -428,23 +436,30 @@ button:focus-visible,
   margin-top: 2px;
 }
 
-.row-tags {
+.tag-list {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
-  margin-top: 7px;
   list-style: none;
 }
 
-.row-tags li {
+.tag-list--row {
+  margin-top: 7px;
+}
+
+.tag-list--detail {
+  margin: 9px 0 12px;
+}
+
+.tag-capsule {
   min-height: 18px;
   display: inline-flex;
   align-items: center;
   padding: 2px 7px 1px;
-  border: 1px solid rgba(213, 214, 212, .28);
+  border: 1px solid var(--tag-border);
   border-radius: 999px;
-  background: rgba(240, 240, 236, .055);
-  color: var(--silver-200);
+  background: var(--tag-bg);
+  color: var(--tag-fg);
   font-family: "Geist Mono", monospace;
   font-size: 8px;
   font-weight: 600;
@@ -454,11 +469,11 @@ button:focus-visible,
   transition: color .15s, border-color .15s, background .15s;
 }
 
-.r:hover .row-tags li,
-.r:focus-visible .row-tags li {
-  border-color: rgba(240, 240, 236, .28);
-  background: rgba(240, 240, 236, .05);
-  color: var(--silver-200);
+.r:hover .tag-capsule,
+.r:focus-visible .tag-capsule {
+  border-color: var(--tag-hover-border);
+  background: var(--tag-hover-bg);
+  color: var(--tag-hover-fg);
 }
 
 .r .t .s {

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import type { Post } from "@/lib/content";
+import { TagList } from "@/components/tag-list";
+import { parseTags, type Post } from "@/lib/content";
 
 type NavKey = "home" | "essays" | "projects" | "side-quests";
 
@@ -132,6 +133,7 @@ export function postToRow(
     dek: post.frontmatter.description,
     href: `/${basePath}/${post.slug}`,
     meta: formatEssayDate(post.frontmatter.date),
+    tags: parseTags(post.frontmatter.tags),
   };
 }
 
@@ -152,12 +154,7 @@ export function projectToRow(
       : project.frontmatter.url
         ? "Live"
         : "Read",
-    tags: isPortfolioProject
-      ? undefined
-      : project.frontmatter.tags
-        ?.split(",")
-        .map((tag) => tag.trim())
-        .filter(Boolean),
+    tags: parseTags(project.frontmatter.tags),
     logo: isPortfolioProject ? projectRowLogos[project.slug] : undefined,
   };
 }
@@ -319,13 +316,7 @@ function ManifestRow({ row }: { row: Row }) {
         <div className="t">
           {row.title}
           {row.subtitle && <span className="st">{row.subtitle}</span>}
-          {row.tags && row.tags.length > 0 && (
-            <ul className="row-tags" aria-label="Tags">
-              {row.tags.map((tag) => (
-                <li key={tag}>{tag}</li>
-              ))}
-            </ul>
-          )}
+          <TagList tags={row.tags} placement="row" />
           <span className="s">{row.dek}</span>
         </div>
       </div>
