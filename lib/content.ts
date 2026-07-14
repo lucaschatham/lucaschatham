@@ -10,6 +10,7 @@ export type Frontmatter = {
   published?: boolean;
   image?: string;
   url?: string;
+  tags?: string;
 };
 
 export type Post = {

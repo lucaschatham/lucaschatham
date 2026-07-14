@@ -428,6 +428,39 @@ button:focus-visible,
   margin-top: 2px;
 }
 
+.row-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 7px;
+  list-style: none;
+}
+
+.row-tags li {
+  min-height: 18px;
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px 1px;
+  border: 1px solid rgba(240, 240, 236, .15);
+  border-radius: 999px;
+  background: rgba(240, 240, 236, .025);
+  color: var(--steel-500);
+  font-family: "Geist Mono", monospace;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  line-height: 1;
+  text-transform: uppercase;
+  transition: color .15s, border-color .15s, background .15s;
+}
+
+.r:hover .row-tags li,
+.r:focus-visible .row-tags li {
+  border-color: rgba(240, 240, 236, .28);
+  background: rgba(240, 240, 236, .05);
+  color: var(--silver-200);
+}
+
 .r .t .s {
   display: block;
   font-size: 12px;

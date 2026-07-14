@@ -10,6 +10,7 @@ type Row = {
   dek: ReactNode;
   href: string;
   meta: string;
+  tags?: string[];
   logo?: RowLogo;
 };
 
@@ -151,6 +152,12 @@ export function projectToRow(
       : project.frontmatter.url
         ? "Live"
         : "Read",
+    tags: isPortfolioProject
+      ? undefined
+      : project.frontmatter.tags
+        ?.split(",")
+        .map((tag) => tag.trim())
+        .filter(Boolean),
     logo: isPortfolioProject ? projectRowLogos[project.slug] : undefined,
   };
 }
@@ -312,6 +319,13 @@ function ManifestRow({ row }: { row: Row }) {
         <div className="t">
           {row.title}
           {row.subtitle && <span className="st">{row.subtitle}</span>}
+          {row.tags && row.tags.length > 0 && (
+            <ul className="row-tags" aria-label="Tags">
+              {row.tags.map((tag) => (
+                <li key={tag}>{tag}</li>
+              ))}
+            </ul>
+          )}
           <span className="s">{row.dek}</span>
         </div>
       </div>
