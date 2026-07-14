@@ -13,6 +13,7 @@ const expectedSitemapPaths = [
   "/essays",
   "/projects",
   "/side-quests",
+  "/side-quests/aurora-inl",
   "/projects/daybreaker-health",
   "/projects/checkfit",
   "/projects/imerit",
