@@ -1220,6 +1220,15 @@ button:focus-visible,
   aspect-ratio: 4 / 3;
 }
 
+.aurora-image-reel {
+  display: block;
+  width: 100%;
+  padding: 0;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
 .aurora-image-wrap img {
   display: block;
   width: 100%;
@@ -1228,6 +1237,8 @@ button:focus-visible,
   filter: saturate(.82) contrast(1.08) brightness(.7);
   transition: transform .45s ease, filter .45s ease;
 }
+
+.aurora-image-reel img { animation: aurora-frame-in .42s ease both; }
 
 .aurora-image-wrap:hover img {
   transform: scale(1.025);
@@ -1265,6 +1276,24 @@ button:focus-visible,
   bottom: 14px;
   left: 14px;
   color: var(--silver-100);
+}
+
+.aurora-image-hint {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  z-index: 1;
+  margin: 0;
+  color: rgba(240, 240, 236, .72);
+  font-family: "Geist Mono", monospace;
+  font-size: 8px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.aurora-image-reel:focus-visible {
+  outline: 2px solid var(--pulse);
+  outline-offset: 3px;
 }
 
 .aurora-stage-controls {
@@ -1458,10 +1487,16 @@ button:focus-visible,
 .aurora-method { padding: 34px 8px 10px; }
 .aurora-method > p:first-child { color: var(--pulse); }
 
+@keyframes aurora-frame-in {
+  from { opacity: .22; transform: scale(1.016); }
+  to { opacity: 1; transform: scale(1); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .aurora-image-wrap img,
   .aurora-stage-list button,
   .aurora-controls-head button,
   .aurora-deck-links a,
   .aurora-sources a { transition: none; }
+  .aurora-image-reel img { animation: none; }
 }

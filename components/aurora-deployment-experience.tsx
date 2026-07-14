@@ -272,6 +272,8 @@ const deckPdfUrl = "https://docs.google.com/presentation/d/1hhIpVdlBl8Qxthosrzoj
 
 export function AuroraDeploymentExperience() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const stage = stages[activeIndex];
 
   useEffect(() => {
@@ -286,10 +288,34 @@ export function AuroraDeploymentExperience() {
     return () => window.removeEventListener("hashchange", syncFromHash);
   }, []);
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const syncMotionPreference = () => setPrefersReducedMotion(mediaQuery.matches);
+
+    syncMotionPreference();
+    mediaQuery.addEventListener("change", syncMotionPreference);
+    return () => mediaQuery.removeEventListener("change", syncMotionPreference);
+  }, []);
+
+  useEffect(() => {
+    if (isPaused || prefersReducedMotion) return;
+
+    const interval = window.setInterval(() => {
+      setActiveIndex((currentIndex) => (currentIndex + 1) % stages.length);
+    }, 6000);
+
+    return () => window.clearInterval(interval);
+  }, [isPaused, prefersReducedMotion]);
+
   function selectStage(index: number) {
     const nextIndex = Math.max(0, Math.min(index, stages.length - 1));
+    setIsPaused(true);
     setActiveIndex(nextIndex);
     window.history.replaceState(null, "", `#stage-${stages[nextIndex].number}`);
+  }
+
+  function pauseOnCurrentFrame() {
+    setIsPaused(true);
   }
 
   return (
@@ -306,29 +332,45 @@ export function AuroraDeploymentExperience() {
       </header>
 
       <section className="aurora-stage" aria-labelledby="aurora-stage-title">
-        <div className="aurora-image-wrap">
-          <img src={stage.image} alt={stage.imageAlt} width="1200" height="760" />
+        <button
+          type="button"
+          className="aurora-image-wrap aurora-image-reel"
+          onClick={pauseOnCurrentFrame}
+          aria-label={isPaused || prefersReducedMotion
+            ? `Reel paused on frame ${stage.number}: ${stage.title}. Use the play button to resume.`
+            : `Reel playing frame ${stage.number}: ${stage.title}. Click to pause on this frame.`}
+        >
+          <img key={stage.number} src={stage.image} alt={stage.imageAlt} width="1200" height="760" />
           <div className="aurora-image-scrim" aria-hidden="true" />
           <p className="aurora-image-state">{stage.evidence}</p>
-          <p className="aurora-image-stage">{stage.number} / {stage.shortTitle}</p>
-        </div>
+          <p className="aurora-image-stage">Frame {stage.number} / {stages.length} · {stage.shortTitle}</p>
+          <p className="aurora-image-hint" aria-hidden="true">
+            {prefersReducedMotion ? "Motion reduced" : isPaused ? "Paused" : "Click image to pause"}
+          </p>
+        </button>
 
         <div className="aurora-stage-controls">
           <div className="aurora-controls-head">
-            <p>Evidence stages</p>
+            <p>{prefersReducedMotion ? "Evidence reel / motion reduced" : isPaused ? "Evidence reel / paused" : "Evidence reel / playing"}</p>
             <div>
-              <button type="button" onClick={() => selectStage(activeIndex - 1)} disabled={activeIndex === 0} aria-label="Previous evidence stage">Prev</button>
-              <button type="button" onClick={() => selectStage(activeIndex + 1)} disabled={activeIndex === stages.length - 1} aria-label="Next evidence stage">Next</button>
+              <button
+                type="button"
+                onClick={() => setIsPaused((paused) => !paused)}
+                disabled={prefersReducedMotion}
+                aria-pressed={isPaused}
+              >
+                {isPaused ? "Play" : "Pause"}
+              </button>
             </div>
           </div>
-          <ol className="aurora-stage-list" aria-label="Select an Aurora-INL evidence stage">
+          <ol className="aurora-stage-list" aria-label="Select an Aurora-INL evidence-reel frame">
             {stages.map((candidate, index) => (
               <li key={candidate.number}>
                 <button
                   type="button"
                   onClick={() => selectStage(index)}
                   aria-current={index === activeIndex ? "step" : undefined}
-                  aria-label={`Stage ${candidate.number}: ${candidate.title}`}
+                  aria-label={`Frame ${candidate.number}: ${candidate.title}. Selecting a frame pauses the reel.`}
                 >
                   {candidate.number}
                 </button>
