@@ -264,6 +264,56 @@ export function Lede() {
   );
 }
 
+const throughlineSteps = [
+  {
+    number: "01",
+    title: "Make invisible work legible",
+    detail:
+      "Turn fragmented data, handoffs, and lived operating reality into a shared view of what is true.",
+  },
+  {
+    number: "02",
+    title: "Turn judgment into a system",
+    detail:
+      "Translate expert instincts into repeatable products, workflows, and decision rules that teams can use.",
+  },
+  {
+    number: "03",
+    title: "Scale trust with proof",
+    detail:
+      "Build the feedback loops, evidence, and operating cadence that let customers and teams act with confidence.",
+  },
+];
+
+export function CareerThroughline() {
+  return (
+    <section className="throughline" aria-labelledby="throughline-heading">
+      <div className="throughline-heading-row">
+        <h2 id="throughline-heading">Career throughline</h2>
+        <span>THE PATTERN</span>
+      </div>
+      <p className="throughline-summary">
+        Across AI data operations, health, mapping, coaching, and sales, the work
+        has stayed consistent: find the judgment trapped in messy systems, make
+        it legible, then build the operating loop that lets people trust it at scale.
+      </p>
+      <ol className="throughline-steps">
+        {throughlineSteps.map((step) => (
+          <li className="throughline-step" key={step.number}>
+            <span className="throughline-number" aria-hidden="true">
+              {step.number}
+            </span>
+            <div>
+              <h3>{step.title}</h3>
+              <p>{step.detail}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
 export function RowsSection({
   heading,
   kicker,

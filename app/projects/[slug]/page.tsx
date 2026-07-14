@@ -199,6 +199,8 @@ export default async function ProjectPage({ params }: Props) {
   if (!project) notFound();
   const tags = parseTags(project.frontmatter.tags);
 
+  const hero = project.frontmatter.hero ?? project.frontmatter.description;
+
   return (
     <ManifestPage active="projects">
       <article className="content-shell">
@@ -209,10 +211,13 @@ export default async function ProjectPage({ params }: Props) {
             {project.frontmatter.title}
           </h1>
           <TagList tags={tags} placement="detail" />
-          <p className="text-[var(--mute)]">{project.frontmatter.description}</p>
+          <p className="project-hero-statement">{hero}</p>
           <ProjectHeroMedia
             image={project.frontmatter.image}
-            title={project.frontmatter.title}
+            alt={
+              project.frontmatter.imageAlt ??
+              `${project.frontmatter.title} project visual`
+            }
           />
           <ProjectSnapshot items={projectSnapshots[slug]} />
         </header>
@@ -224,16 +229,26 @@ export default async function ProjectPage({ params }: Props) {
 
 function ProjectHeroMedia({
   image,
-  title,
+  alt,
 }: {
   image?: string;
-  title: string;
+  alt: string;
 }) {
   if (!image) return null;
 
   return (
     <figure className="project-hero-media">
-      <img src={image} alt={`${title} project visual`} />
+      <a
+        className="project-hero-media-link"
+        href={image}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img src={image} alt={alt} />
+        <span className="project-hero-media-open">
+          View full-size infographic <span aria-hidden="true">↗</span>
+        </span>
+      </a>
     </figure>
   );
 }

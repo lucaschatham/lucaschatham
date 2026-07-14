@@ -287,6 +287,88 @@ button:focus-visible,
   color: rgba(240, 240, 236, .9);
 }
 
+.throughline {
+  margin: 34px 22px 0;
+  padding: 20px 0 4px;
+  border-top: 1px solid var(--line);
+}
+
+.throughline-heading-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  font-family: "Geist Mono", monospace;
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+}
+
+.throughline-heading-row h2 {
+  color: var(--silver-100);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .18em;
+}
+
+.throughline-heading-row h2::before {
+  content: "// ";
+  color: var(--mute);
+  font-weight: 500;
+}
+
+.throughline-heading-row span {
+  color: var(--pulse);
+  white-space: nowrap;
+}
+
+.throughline-summary {
+  max-width: 39ch;
+  margin: 16px 0 0;
+  color: rgba(240, 240, 236, .9);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.throughline-steps {
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.throughline-step {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 12px;
+  padding: 13px 0;
+  border-top: 1px solid var(--line);
+}
+
+.throughline-number {
+  padding-top: 2px;
+  color: var(--pulse);
+  font-family: "Geist Mono", monospace;
+  font-size: 9px;
+  font-weight: 650;
+  letter-spacing: .12em;
+}
+
+.throughline-step h3 {
+  color: var(--silver-100);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.throughline-step p {
+  margin: 5px 0 0;
+  color: var(--gray-400);
+  font-size: 12.5px;
+  line-height: 1.48;
+}
+
 .man {
   padding: 36px 22px 16px;
   border-bottom: 1px solid var(--line);
@@ -794,6 +876,15 @@ button:focus-visible,
   font-weight: 500;
 }
 
+.project-hero-statement {
+  max-width: 42ch;
+  color: rgba(240, 240, 236, .92);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.48;
+  letter-spacing: -0.02em;
+}
+
 .project-hero-media {
   margin: 22px 0 0;
   overflow: hidden;
@@ -806,6 +897,35 @@ button:focus-visible,
   display: block;
   width: 100%;
   height: auto;
+}
+
+.project-hero-media-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.project-hero-media-open {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-top: 1px solid var(--line);
+  color: var(--gray-400);
+  background: rgba(240, 240, 236, .025);
+  font-family: "Geist Mono", monospace;
+  font-size: 8px;
+  font-weight: 550;
+  letter-spacing: .14em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  transition: color .15s, background .15s;
+}
+
+.project-hero-media-link:hover .project-hero-media-open,
+.project-hero-media-link:focus-visible .project-hero-media-open {
+  color: var(--silver-100);
+  background: var(--pulse-soft);
 }
 
 .project-snapshot {

@@ -4,11 +4,13 @@ import path from "path";
 export type Frontmatter = {
   title: string;
   subtitle?: string;
+  hero?: string;
   description: string;
   date: string;
   year?: string;
   published?: boolean;
   image?: string;
+  imageAlt?: string;
   url?: string;
   tags?: string;
 };

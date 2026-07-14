@@ -1,4 +1,5 @@
 import {
+  CareerThroughline,
   Hero,
   Lede,
   ManifestPage,
@@ -45,6 +46,7 @@ export default function Home() {
       />
       <Hero />
       <Lede />
+      <CareerThroughline />
       {work.length > 0 && (
         <RowsSection
           heading="work"
