@@ -1350,7 +1350,8 @@ button:focus-visible,
   position: relative;
   overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
   background: var(--shadow-900);
   aspect-ratio: 4 / 3;
 }
@@ -1387,37 +1388,14 @@ button:focus-visible,
   pointer-events: none;
 }
 
-.aurora-image-state,
-.aurora-image-stage {
-  position: absolute;
-  z-index: 1;
-  margin: 0;
-  font-family: "Geist Mono", monospace;
-  font-size: 9px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-}
-
-.aurora-image-state {
-  top: 12px;
-  left: 12px;
-  padding: 6px 7px;
-  border: 1px solid rgba(240, 240, 236, .24);
-  background: rgba(18, 19, 22, .58);
-  color: var(--silver-100);
-}
-
-.aurora-image-stage {
-  bottom: 14px;
-  left: 14px;
-  color: var(--silver-100);
-}
-
 .aurora-image-hint {
   position: absolute;
   right: 14px;
   bottom: 14px;
   z-index: 1;
+  padding: 6px 7px;
+  border: 1px solid rgba(240, 240, 236, .17);
+  background: rgba(18, 19, 22, .58);
   margin: 0;
   color: rgba(240, 240, 236, .72);
   font-family: "Geist Mono", monospace;
@@ -1431,27 +1409,82 @@ button:focus-visible,
   outline-offset: 3px;
 }
 
-.aurora-stage-controls {
-  margin-top: 12px;
-  padding: 12px 0 15px;
-  border-bottom: 1px solid var(--line);
+.aurora-caption-rail {
+  display: grid;
+  min-height: 184px;
+  padding: 15px 15px 18px;
+  align-content: start;
+  border: 1px solid var(--line);
+  border-radius: 0 0 8px 8px;
+  background: rgba(240, 240, 236, .025);
+  animation: aurora-caption-in .35s ease both;
 }
 
-.aurora-controls-head {
+.aurora-caption-meta {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
 }
 
-.aurora-controls-head > p { color: var(--steel-500); }
+.aurora-caption-status,
+.aurora-caption-frame {
+  margin: 0;
+  font-family: "Geist Mono", monospace;
+  font-size: 9px;
+  letter-spacing: .08em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
 
-.aurora-controls-head > div { display: flex; gap: 5px; }
+.aurora-caption-status.fact { color: var(--good); }
+.aurora-caption-status.inference { color: var(--gray-400); }
+.aurora-caption-status.unknown { color: var(--pulse); }
+.aurora-caption-frame { color: var(--steel-500); text-align: right; }
 
+.aurora-caption-rail .aurora-stage-phase { margin-top: 13px; }
+
+.aurora-caption-rail h2 {
+  display: -webkit-box;
+  margin: 6px 0 10px;
+  overflow: hidden;
+  color: var(--silver-100);
+  font-size: clamp(22px, 6.3vw, 30px);
+  font-weight: 480;
+  letter-spacing: -.035em;
+  line-height: 1.06;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.aurora-caption-summary {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  color: var(--gray-400);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.aurora-stage-controls {
+  padding: 16px 0 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.aurora-stage-navigation {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: stretch;
+  gap: 8px;
+}
+
+.aurora-stage-navigation button,
 .aurora-controls-head button {
-  min-height: 30px;
+  min-height: 44px;
   border: 1px solid var(--line);
-  border-radius: 2px;
+  border-radius: 3px;
   background: transparent;
   color: var(--gray-400);
   font-family: "Geist Mono", monospace;
@@ -1462,38 +1495,108 @@ button:focus-visible,
   transition: border-color .15s, color .15s, background .15s;
 }
 
+.aurora-stage-navigation button:hover,
 .aurora-controls-head button:hover:not(:disabled) {
   border-color: rgba(240, 240, 236, .32);
   background: rgba(240, 240, 236, .05);
   color: var(--silver-100);
 }
 
+.aurora-stage-navigation p {
+  display: grid;
+  min-width: 72px;
+  margin: 0;
+  place-items: center;
+  color: var(--steel-500);
+  font-family: "Geist Mono", monospace;
+  font-size: 8px;
+  letter-spacing: .08em;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.aurora-stage-navigation strong {
+  display: block;
+  margin-top: 3px;
+  color: var(--silver-100);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.aurora-progress {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 3px;
+  margin: 14px 0;
+}
+
+.aurora-progress span {
+  height: 2px;
+  background: rgba(240, 240, 236, .16);
+}
+
+.aurora-progress span.is-complete { background: rgba(240, 240, 236, .46); }
+.aurora-progress span.is-current { background: var(--pulse); box-shadow: 0 0 9px rgba(240, 68, 56, .45); }
+
+.aurora-controls-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.aurora-controls-head > p { color: var(--steel-500); }
 .aurora-controls-head button:disabled { opacity: .35; cursor: not-allowed; }
+
+.aurora-frame-picker {
+  margin-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.aurora-frame-picker summary {
+  min-height: 44px;
+  padding: 0 2px;
+  color: var(--gray-400);
+  font-family: "Geist Mono", monospace;
+  font-size: 9px;
+  letter-spacing: .08em;
+  line-height: 44px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.aurora-frame-picker[open] summary { color: var(--silver-100); }
 
 .aurora-stage-list {
   display: grid;
-  grid-template-columns: repeat(12, minmax(25px, 1fr));
-  gap: 4px;
-  margin: 13px 0 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+  margin: 0 0 4px;
   padding: 0;
   list-style: none;
 }
 
 .aurora-stage-list button {
-  display: grid;
+  display: flex;
+  min-height: 44px;
   width: 100%;
-  aspect-ratio: 1;
-  place-items: center;
+  padding: 7px 8px;
+  align-items: center;
+  gap: 6px;
   border: 1px solid rgba(240, 240, 236, .22);
-  border-radius: 50%;
+  border-radius: 3px;
   background: transparent;
   color: var(--steel-500);
   font-family: "Geist Mono", monospace;
   font-size: 8px;
+  line-height: 1.2;
+  text-align: left;
   cursor: pointer;
   transition: background .15s, border-color .15s, color .15s, transform .15s;
 }
 
+.aurora-stage-list button span { color: var(--silver-100); }
 .aurora-stage-list button:hover { color: var(--silver-100); border-color: var(--silver-100); }
 .aurora-stage-list button[aria-current="step"] {
   border-color: var(--pulse);
@@ -1504,8 +1607,6 @@ button:focus-visible,
   transform: scale(1.08);
 }
 
-.aurora-stage-copy { padding: 22px 8px 28px; }
-.aurora-stage-copy h2,
 .aurora-method h2 {
   margin: 7px 0 10px;
   color: var(--silver-100);
@@ -1514,7 +1615,6 @@ button:focus-visible,
   letter-spacing: -.035em;
   line-height: 1.05;
 }
-.aurora-stage-copy > p:last-child,
 .aurora-method > p:last-child {
   color: var(--gray-400);
   font-size: 15px;
@@ -1627,11 +1727,18 @@ button:focus-visible,
   to { opacity: 1; transform: scale(1); }
 }
 
+@keyframes aurora-caption-in {
+  from { opacity: .3; transform: translateY(3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .aurora-image-wrap img,
   .aurora-stage-list button,
   .aurora-controls-head button,
+  .aurora-stage-navigation button,
   .aurora-deck-links a,
   .aurora-sources a { transition: none; }
-  .aurora-image-reel img { animation: none; }
+  .aurora-image-reel img,
+  .aurora-caption-rail { animation: none; }
 }
