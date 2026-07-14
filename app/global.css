@@ -154,33 +154,47 @@ button:focus-visible,
   min-width: 0;
 }
 
-.nav a.home-link {
-  margin-left: -9px;
+.nav a.mark {
+  display: grid;
+  grid-template-columns: repeat(3, 4px);
+  gap: 2px;
+  padding: 8px;
+  margin-left: -8px;
   flex: none;
-  position: relative;
 }
 
-.nav a.home-link::before {
-  content: "";
-  position: absolute;
-  inset: -9px -4px;
+.mark .px {
+  width: 4px;
+  height: 4px;
+  background: var(--steel-500);
+  transition: background .2s ease;
 }
 
-.home-signal {
-  width: 5px;
-  height: 5px;
-  background: currentColor;
-  flex: none;
-  transition: background .15s, box-shadow .15s, transform .15s;
+.mark .center {
+  background: var(--silver-100);
 }
 
-.home-link.active .home-signal {
+.mark:hover .px,
+.mark:focus-visible .px {
+  background: var(--silver-100);
+}
+
+.mark:hover .px:nth-child(2),
+.mark:hover .px:nth-child(4) { transition-delay: .03s; }
+.mark:hover .px:nth-child(3),
+.mark:hover .px:nth-child(5),
+.mark:hover .px:nth-child(7) { transition-delay: .06s; }
+.mark:hover .px:nth-child(6),
+.mark:hover .px:nth-child(8) { transition-delay: .09s; }
+.mark:hover .px:nth-child(9) { transition-delay: .12s; }
+
+.mark.active .center {
   background: var(--pulse);
   box-shadow: 0 0 8px var(--pulse);
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .home-link.active .home-signal {
+  .mark.active .center {
     animation: pls 1.6s ease-in-out infinite;
   }
 }
@@ -977,8 +991,9 @@ button:focus-visible,
     padding-inline: 5px;
   }
 
-  .nav a.home-link {
+  .nav a.mark {
     margin-left: 0;
+    padding-inline: 6px;
   }
 
   .nav a .dot {

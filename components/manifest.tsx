@@ -190,12 +190,19 @@ export function ManifestNav({ active }: { active: NavKey }) {
     <nav className="nav" aria-label="Primary">
       <Link
         href="/"
-        className={homeActive ? "home-link active" : "home-link"}
+        className={homeActive ? "mark active" : "mark"}
         aria-label="Lucas Chatham — home"
         aria-current={homeActive ? "page" : undefined}
       >
-        <span className="home-signal" aria-hidden="true" />
-        Home
+        <span className="px" aria-hidden="true" />
+        <span className="px" aria-hidden="true" />
+        <span className="px" aria-hidden="true" />
+        <span className="px" aria-hidden="true" />
+        <span className="px center" aria-hidden="true" />
+        <span className="px" aria-hidden="true" />
+        <span className="px" aria-hidden="true" />
+        <span className="px" aria-hidden="true" />
+        <span className="px" aria-hidden="true" />
       </Link>
       <div className="nav-links">
         {links.map((item) => {
