@@ -255,8 +255,8 @@ export function Lede() {
   return (
     <section className="lede" aria-label="Positioning">
       <p className="proof-line">
-        I build high-trust AI systems people rely on when getting it wrong is
-        expensive, from autonomous vehicles to healthcare.
+        I build high-trust AI systems people rely on in domains where mistakes
+        have real consequences, from autonomous vehicles to healthcare.
       </p>
       <div className="hero-actions" aria-label="Primary actions">
         <Link className="hero-action hero-action-primary" href="#work-heading">

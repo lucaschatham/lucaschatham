@@ -196,7 +196,7 @@ test("homepage makes primary paths explicit", async () => {
   assert.match(html, /<a href="\/#work-heading">(?:<[^>]+>)*Work<\/a>/i);
   assert.match(html, /<a href="\/side-quests">(?:<[^>]+>)*Side Quests<\/a>/i);
   assert.match(html, /href="mailto:chathamworks@gmail\.com"[^>]*>[^<]*Email Lucas/i);
-  assert.match(html, /I build high-trust AI systems people rely on when getting it wrong is expensive, from autonomous vehicles to healthcare/i);
+  assert.match(html, /I build high-trust AI systems people rely on in domains where mistakes have real consequences, from autonomous vehicles to healthcare/i);
   assert.match(html, /href="#work-heading"[^>]*>[\s\S]*?View selected work/i);
 });
 
