@@ -417,6 +417,10 @@ button:focus-visible,
   margin-bottom: 18px;
 }
 
+#work-heading {
+  scroll-margin-top: 72px;
+}
+
 .man .h .l {
   color: var(--silver-100);
   font-size: 13px;
