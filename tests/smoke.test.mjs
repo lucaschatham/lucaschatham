@@ -200,6 +200,16 @@ test("homepage makes primary paths explicit", async () => {
   assert.match(html, /href="#work-heading"[^>]*>[\s\S]*?View selected work/i);
 });
 
+test("homepage career throughline stays concise", async () => {
+  const html = await readHtml("/");
+
+  assert.match(html, /Across AI, mapping, health, coaching, and sales:/);
+  assert.match(html, /Make invisible work legible/);
+  assert.match(html, /Turn judgment into systems/);
+  assert.match(html, /Scale trust with proof/);
+  assert.doesNotMatch(html, /THE PATTERN/);
+});
+
 test("frontmatter tags use the shared capsule system on lists and detail pages", async () => {
   const indexHtml = await readHtml("/side-quests");
   assert.match(indexHtml, /class="tag-list tag-list--row"/);
