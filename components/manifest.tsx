@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { TagList } from "@/components/tag-list";
+import { ThemeSwitch } from "@/components/theme-switch";
 import { parseTags, type Post } from "@/lib/content";
 
 type NavKey = "home" | "essays" | "projects" | "side-quests";
@@ -168,6 +169,7 @@ export function ManifestPage({
 }) {
   return (
     <>
+      <a className="skip-link" href="#main">Skip to content</a>
       <div className="page">
         <ManifestNav active={active} />
         <main id="main">{children}</main>
@@ -188,65 +190,86 @@ export function ManifestNav({ active }: { active: NavKey }) {
   const homeActive = active === "home";
 
   return (
-    <nav className="nav" aria-label="Primary">
-      <Link
-        href="/"
-        prefetch={false}
-        className={homeActive ? "home-link active" : "home-link"}
-        aria-label="Lucas Chatham — home"
-        aria-current={homeActive ? "page" : undefined}
-      >
-        <span className="home-signal" aria-hidden="true" />
-        Home
-      </Link>
-      <div className="nav-links">
-        {links.map((item) => {
-          const isActive = item.key === active;
+    <header className="site-header">
+      <nav className="nav" aria-label="Primary">
+        <Link
+          href="/"
+          prefetch={false}
+          className={homeActive ? "home-link active" : "home-link"}
+          aria-label="Lucas Chatham — home"
+          aria-current={homeActive ? "page" : undefined}
+        >
+          <span className="home-signal" aria-hidden="true" />
+          Home
+        </Link>
+        <div className="nav-links">
+          {links.map((item) => {
+            const isActive = item.key === active;
 
-          return (
-            <Link
-              key={item.key}
-              href={item.href}
-              prefetch={false}
-              className={isActive ? "active" : undefined}
-              aria-current={isActive ? "page" : undefined}
-            >
-              <span className="dot" aria-hidden="true" />
-              {item.label}
-            </Link>
-          );
-        })}
-      </div>
-    </nav>
+            return (
+              <Link
+                key={item.key}
+                href={item.href}
+                prefetch={false}
+                className={isActive ? "active" : undefined}
+                aria-current={isActive ? "page" : undefined}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+        </div>
+        <div className="nav-tools">
+          <ThemeSwitch />
+          <details className="mobile-nav">
+            <summary aria-label="Open navigation">Menu</summary>
+            <div className="mobile-nav-menu">
+              {links.map((item) => {
+                const isActive = item.key === active;
+                return (
+                  <Link
+                    key={item.key}
+                    href={item.href}
+                    prefetch={false}
+                    className={isActive ? "active" : undefined}
+                    aria-current={isActive ? "page" : undefined}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
+          </details>
+        </div>
+      </nav>
+    </header>
   );
 }
 
 export function Hero() {
   return (
     <section className="hero-cine" aria-labelledby="home-hero-title">
-      <img
-        src="/images/lucas-portrait-clean.jpg"
-        srcSet="/images/lucas-portrait-clean-430.jpg 430w, /images/lucas-portrait-clean-860.jpg 860w, /images/lucas-portrait-clean.jpg 1200w"
-        sizes="(max-width: 520px) 100vw, 520px"
-        alt="Portrait of Lucas Chatham"
-        width="1200"
-        height="1800"
-        fetchPriority="high"
-        decoding="async"
-      />
-      <div className="scrim" aria-hidden="true" />
-      <h1 className="name" id="home-hero-title">
-        <Link href="/" aria-label="Lucas Chatham — home">
-          Lucas
-          <br />
-          <b>Chatham</b>
-        </Link>
+      <div className="hero-copy">
+        <p className="hero-eyebrow">Product leader · Builder</p>
+        <h1 className="name" id="home-hero-title">
+          Lucas <b>Chatham</b>
+        </h1>
         <span className="hero-role">
-          <span className="hero-role-main">
-            Founder <span className="hero-role-separator" aria-hidden="true">·</span> Operator
-          </span>
+          Founder <span aria-hidden="true">·</span> Operator
         </span>
-      </h1>
+      </div>
+      <figure className="hero-portrait">
+        <img
+          src="/images/lucas-portrait-clean.jpg"
+          srcSet="/images/lucas-portrait-clean-430.jpg 430w, /images/lucas-portrait-clean-860.jpg 860w, /images/lucas-portrait-clean.jpg 1200w"
+          sizes="(max-width: 700px) 100vw, 420px"
+          alt="Portrait of Lucas Chatham"
+          width="1200"
+          height="1800"
+          fetchPriority="high"
+          decoding="async"
+        />
+      </figure>
     </section>
   );
 }
@@ -276,6 +299,7 @@ export function CareerThroughline() {
     <section className="throughline" aria-labelledby="throughline-heading">
       <div className="throughline-heading-row">
         <h2 id="throughline-heading">Career throughline</h2>
+        <span>The pattern</span>
       </div>
       <p className="throughline-summary">
         Across AI, mapping, health, coaching, and sales:
@@ -428,7 +452,12 @@ function RowLogoTile({
 
 export function SocialFooter() {
   return (
-    <nav className="com" aria-label="Social">
+    <section className="contact-band" aria-labelledby="contact-heading">
+      <div>
+        <p className="contact-kicker">Have a hard problem?</p>
+        <h2 id="contact-heading">Let&apos;s compare notes.</h2>
+      </div>
+      <nav className="com" aria-label="Social">
       <a
         href="https://www.linkedin.com/in/lucaschatham/"
         rel="me noopener"
@@ -485,12 +514,18 @@ export function SocialFooter() {
         Podcast
       </span>
       */}
-    </nav>
+      </nav>
+    </section>
   );
 }
 
 export function ManifestFooter() {
-  return <footer className="ft">© Lucas Chatham · Made in California</footer>;
+  return (
+    <footer className="ft">
+      <span>© {new Date().getFullYear()} Lucas Chatham</span>
+      <span>Made in California</span>
+    </footer>
+  );
 }
 
 function formatEssayDate(dateString: string): string {

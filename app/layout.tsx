@@ -1,7 +1,16 @@
 import type { Metadata } from "next";
 import type { Viewport } from "next";
+import { Space_Grotesk } from "next/font/google";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/constants";
+import { ThemeProvider } from "@/components/theme-provider";
 import "./global.css";
+import "./redesign.css";
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+  display: "swap",
+});
 
 const portraitUrl = `${SITE_URL}/images/lucas-portrait-clean.jpg`;
 const iconHref =
@@ -66,8 +75,11 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#1A1C1F",
-  colorScheme: "dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#030712" },
+  ],
+  colorScheme: "dark light",
 };
 
 export default function RootLayout({
@@ -76,17 +88,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Geist:wght@200;300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body>
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body className={spaceGrotesk.variable}>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );
