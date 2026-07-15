@@ -458,7 +458,7 @@ export function SocialFooter() {
         GitHub
       </a>
       <a
-        href="https://levelwithlucas.lucaschatham.com"
+        href="https://levelwithlucas.lucaschatham.com/archive"
         rel="me noopener"
         aria-label="Blog newsletter"
       >

@@ -249,7 +249,7 @@ test("footer keeps contact and publishing paths visible", async () => {
   assert.match(html, /https:\/\/www\.linkedin\.com\/in\/lucaschatham\//);
   assert.match(html, /mailto:chathamworks@gmail\.com/);
   assert.match(html, /https:\/\/github\.com\/lucaschatham/);
-  assert.match(html, /https:\/\/levelwithlucas\.lucaschatham\.com/);
+  assert.match(html, /https:\/\/levelwithlucas\.lucaschatham\.com\/archive/);
   assert.match(html, /aria-label="Blog newsletter"/);
   assert.match(html, /<span class="ic">[\s\S]*?<\/span>\s*Blog\s*<\/a>/);
 });
