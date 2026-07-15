@@ -242,7 +242,9 @@ export function Hero() {
           <b>Chatham</b>
         </Link>
         <span className="hero-role">
-          <span className="hero-role-main">Founder operator · Product leader</span>
+          <span className="hero-role-main">
+            Founder <span className="hero-role-separator" aria-hidden="true">·</span> Operator
+          </span>
         </span>
       </h1>
     </section>
@@ -253,8 +255,8 @@ export function Lede() {
   return (
     <section className="lede" aria-label="Positioning">
       <p className="proof-line">
-        I lead products for enterprise AI, data operations, and high-stakes
-        customer workflows.
+        I build high-trust AI systems people rely on when getting it wrong is
+        expensive, from autonomous vehicles to healthcare.
       </p>
       <div className="hero-actions" aria-label="Primary actions">
         <Link className="hero-action hero-action-primary" href="#work-heading">

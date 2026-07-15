@@ -257,6 +257,10 @@ button:focus-visible,
   color: var(--silver-100);
 }
 
+.hero-cine .name .hero-role-separator {
+  color: var(--gray-400);
+}
+
 .hero-cine .name a:active {
   opacity: .8;
 }
