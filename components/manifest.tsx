@@ -250,7 +250,6 @@ export function Hero() {
   return (
     <section className="hero-cine" aria-labelledby="home-hero-title">
       <div className="hero-copy">
-        <p className="hero-eyebrow">Product leader · Builder</p>
         <h1 className="name" id="home-hero-title">
           Lucas <b>Chatham</b>
         </h1>
