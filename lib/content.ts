@@ -117,5 +117,11 @@ export function getPost(
 
   const raw = fs.readFileSync(filePath, "utf-8");
   const { frontmatter, content } = parseFrontmatter(raw);
+  if (
+    process.env.NODE_ENV === "production" &&
+    frontmatter.published === false
+  ) {
+    return undefined;
+  }
   return { slug, frontmatter, content };
 }
