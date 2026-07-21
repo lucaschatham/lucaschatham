@@ -427,7 +427,8 @@ test("contact band keeps email private until the Email action is clicked", async
   assert.doesNotMatch(visibleContactText, /chathamworks@gmail\.com/);
   assert.match(html, /https:\/\/github\.com\/lucaschatham/);
   assert.match(html, /https:\/\/x\.com\/lukeoutthebox/);
-  assert.match(html, /@lukeoutthebox/);
+  assert.match(html, /aria-label="@lukeoutthebox on X \(opens in a new tab\)"/);
+  assert.doesNotMatch(visibleContactText, /@lukeoutthebox/);
   assert.match(html, /levelwithlucas\.lucaschatham\.com\/archive/);
   assert.doesNotMatch(html, /href="\/rss"/);
 });

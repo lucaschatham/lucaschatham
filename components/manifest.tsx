@@ -455,8 +455,6 @@ export function SocialFooter() {
         <span className="ic">
           <XIcon />
         </span>
-        @lukeoutthebox
-        <span aria-hidden="true">↗</span>
       </a>
       </nav>
     </section>
