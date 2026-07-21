@@ -1396,7 +1396,7 @@ button:focus-visible,
 .aurora-boundary > p,
 .aurora-controls-head > p {
   color: var(--pulse);
-  font-family: "Geist Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 600;
   letter-spacing: .15em;
@@ -1484,7 +1484,7 @@ button:focus-visible,
   background: rgba(18, 19, 22, .58);
   margin: 0;
   color: rgba(240, 240, 236, .72);
-  font-family: "Geist Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 8px;
   letter-spacing: .08em;
   text-transform: uppercase;
@@ -1501,7 +1501,7 @@ button:focus-visible,
   border: 1px solid rgba(240, 240, 236, .17);
   background: rgba(18, 19, 22, .58);
   color: rgba(240, 240, 236, .78);
-  font-family: "Geist Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 8px;
   letter-spacing: .07em;
   line-height: 1.35;
@@ -1520,7 +1520,7 @@ button:focus-visible,
   align-content: start;
   border: 1px solid var(--line);
   border-radius: 0 0 8px 8px;
-  background: rgba(240, 240, 236, .025);
+  background: var(--surface);
   animation: aurora-caption-in .35s ease both;
 }
 
@@ -1534,7 +1534,7 @@ button:focus-visible,
 .aurora-caption-status,
 .aurora-caption-frame {
   margin: 0;
-  font-family: "Geist Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: .08em;
   line-height: 1.35;
@@ -1586,12 +1586,13 @@ button:focus-visible,
 
 .aurora-stage-navigation button,
 .aurora-controls-head button {
+  min-width: 44px;
   min-height: 44px;
   border: 1px solid var(--line);
   border-radius: 3px;
   background: transparent;
   color: var(--gray-400);
-  font-family: "Geist Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: .08em;
   text-transform: uppercase;
@@ -1601,8 +1602,8 @@ button:focus-visible,
 
 .aurora-stage-navigation button:hover,
 .aurora-controls-head button:hover:not(:disabled) {
-  border-color: rgba(240, 240, 236, .32);
-  background: rgba(240, 240, 236, .05);
+  border-color: var(--line-strong);
+  background: var(--surface-raised);
   color: var(--silver-100);
 }
 
@@ -1612,7 +1613,7 @@ button:focus-visible,
   margin: 0;
   place-items: center;
   color: var(--steel-500);
-  font-family: "Geist Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 8px;
   letter-spacing: .08em;
   line-height: 1.2;
@@ -1637,11 +1638,11 @@ button:focus-visible,
 
 .aurora-progress span {
   height: 2px;
-  background: rgba(240, 240, 236, .16);
+  background: var(--line);
 }
 
-.aurora-progress span.is-complete { background: rgba(240, 240, 236, .46); }
-.aurora-progress span.is-current { background: var(--pulse); box-shadow: 0 0 9px rgba(240, 68, 56, .45); }
+.aurora-progress span.is-complete { background: var(--line-strong); }
+.aurora-progress span.is-current { background: var(--pulse); box-shadow: 0 0 9px var(--pulse-soft); }
 
 .aurora-controls-head {
   display: flex;
@@ -1662,7 +1663,7 @@ button:focus-visible,
   min-height: 44px;
   padding: 0 2px;
   color: var(--gray-400);
-  font-family: "Geist Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: .08em;
   line-height: 44px;
@@ -1688,11 +1689,11 @@ button:focus-visible,
   padding: 7px 8px;
   align-items: center;
   gap: 6px;
-  border: 1px solid rgba(240, 240, 236, .22);
+  border: 1px solid var(--line-strong);
   border-radius: 3px;
   background: transparent;
   color: var(--steel-500);
-  font-family: "Geist Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 8px;
   line-height: 1.2;
   text-align: left;
@@ -1703,13 +1704,14 @@ button:focus-visible,
 .aurora-stage-list button span { color: var(--silver-100); }
 .aurora-stage-list button:hover { color: var(--silver-100); border-color: var(--silver-100); }
 .aurora-stage-list button[aria-current="step"] {
-  border-color: var(--pulse);
-  background: var(--pulse);
-  color: var(--shadow-900);
+  border-color: var(--action-bg);
+  background: var(--action-bg);
+  color: var(--action-fg);
   font-weight: 700;
-  box-shadow: 0 0 14px rgba(240, 68, 56, .32);
+  box-shadow: 0 0 14px var(--pulse-soft);
   transform: scale(1.08);
 }
+.aurora-stage-list button[aria-current="step"] span { color: var(--action-fg); }
 
 .aurora-method h2 {
   margin: 7px 0 10px;
@@ -1729,7 +1731,7 @@ button:focus-visible,
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: rgba(240, 240, 236, .025);
+  background: var(--surface);
 }
 
 .aurora-brief > header {
@@ -1743,7 +1745,7 @@ button:focus-visible,
 
 .aurora-status {
   flex: none;
-  font-family: "Geist Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 8px;
   letter-spacing: .08em;
   text-transform: uppercase;
@@ -1757,7 +1759,7 @@ button:focus-visible,
 .aurora-brief dt {
   margin-bottom: 7px;
   color: var(--silver-100);
-  font-family: "Geist Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: .1em;
   text-transform: uppercase;
@@ -1770,7 +1772,7 @@ button:focus-visible,
   border-left: 2px solid var(--pulse);
   background: var(--pulse-soft);
 }
-.aurora-boundary > p { margin-bottom: 7px; color: rgba(240, 240, 236, .65); }
+.aurora-boundary > p { margin-bottom: 7px; color: var(--steel-500); }
 .aurora-boundary strong { display: block; color: var(--silver-100); font-size: 14px; line-height: 1.43; }
 
 .aurora-vocabulary,
@@ -1781,6 +1783,8 @@ button:focus-visible,
 .aurora-vocabulary summary {
   display: grid;
   grid-template-columns: 60px 1fr;
+  min-height: 44px;
+  align-items: center;
   gap: 8px;
   padding: 10px 0;
   color: var(--gray-400);
@@ -1788,12 +1792,14 @@ button:focus-visible,
   font-size: 12px;
   line-height: 1.35;
 }
-.aurora-vocabulary summary span { color: var(--pulse); font-family: "Geist Mono", monospace; font-weight: 600; }
+.aurora-vocabulary summary span { color: var(--pulse); font-family: var(--font-mono); font-weight: 600; }
 
 .aurora-sources ul { margin: 0; padding: 0; list-style: none; }
 .aurora-sources li { border-top: 1px solid var(--line); }
 .aurora-sources a {
-  display: block;
+  display: flex;
+  min-height: 44px;
+  align-items: center;
   padding: 10px 0;
   color: var(--gray-400);
   font-size: 12px;
@@ -1809,10 +1815,12 @@ button:focus-visible,
   border-top: 1px solid var(--line);
 }
 .aurora-deck-links a {
+  display: flex;
   min-height: 55px;
+  align-items: center;
   padding: 12px;
   color: var(--silver-100);
-  font-family: "Geist Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 9px;
   line-height: 1.35;
   letter-spacing: .06em;
@@ -1821,7 +1829,7 @@ button:focus-visible,
   transition: background .15s, color .15s;
 }
 .aurora-deck-links a + a { border-left: 1px solid var(--line); }
-.aurora-deck-links a:hover { background: var(--pulse); color: var(--shadow-900); }
+.aurora-deck-links a:hover { background: var(--action-bg); color: var(--action-fg); }
 
 .aurora-method { padding: 34px 8px 10px; }
 .aurora-method > p:first-child { color: var(--pulse); }

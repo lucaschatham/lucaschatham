@@ -273,7 +273,7 @@ const deckPdfUrl = "https://docs.google.com/presentation/d/1hhIpVdlBl8Qxthosrzoj
 
 export function AuroraDeploymentExperience({ tags }: { tags?: string[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const [isPaused, setIsPaused] = useState(true);
   const [isReelVisible, setIsReelVisible] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const reelViewportRef = useRef<HTMLDivElement>(null);
@@ -291,9 +291,11 @@ export function AuroraDeploymentExperience({ tags }: { tags?: string[] }) {
 
   useEffect(() => {
     const syncFromHash = () => {
-      const requested = window.location.hash.match(/stage-(\d{2})/)?.[1];
+      const requested = window.location.hash.match(/^#stage-(\d{2})$/)?.[1];
       const nextIndex = stages.findIndex((candidate) => candidate.number === requested);
-      if (nextIndex >= 0) setActiveIndex(nextIndex);
+
+      setIsPaused(true);
+      setActiveIndex(nextIndex >= 0 ? nextIndex : 0);
     };
 
     syncFromHash();
@@ -466,7 +468,8 @@ export function AuroraDeploymentExperience({ tags }: { tags?: string[] }) {
               type="button"
               onClick={togglePlayback}
               disabled={prefersReducedMotion}
-              aria-pressed={isPaused}
+              aria-pressed={isPlaying}
+              aria-label={isPlaying ? "Pause evidence reel" : "Play evidence reel"}
             >
               {isPlaying ? "Pause" : "Play"}
             </button>
