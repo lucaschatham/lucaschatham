@@ -7,6 +7,7 @@ import {
 } from "@/components/manifest";
 import { getPosts } from "@/lib/content";
 import { orderPortfolioProjects } from "@/lib/portfolio-order";
+import { getProjectProfile } from "@/lib/project-manifest";
 import { SITE_URL } from "@/lib/constants";
 import type { Metadata } from "next";
 
@@ -38,9 +39,11 @@ const personSchema = {
 };
 
 export default function Home() {
-  const work = orderPortfolioProjects(getPosts("work")).map((project) =>
-    projectToRow(project, "projects")
-  );
+  const work = orderPortfolioProjects(getPosts("work"))
+    .filter(
+      (project) => getProjectProfile(project.slug)?.featureTier === "featured"
+    )
+    .map((project) => projectToRow(project, "projects"));
 
   return (
     <ManifestPage active="home">

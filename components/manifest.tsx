@@ -4,6 +4,7 @@ import { NavigationTools } from "@/components/navigation-tools";
 import { TagList } from "@/components/tag-list";
 import { CONTACT_EMAIL, CONTACT_MAILTO } from "@/lib/constants";
 import { parseTags, type Post } from "@/lib/content";
+import { getProjectProfile } from "@/lib/project-manifest";
 
 type NavKey = "home" | "essays" | "projects" | "side-quests";
 
@@ -31,38 +32,6 @@ type RowLogo = {
   secondary?: Omit<RowLogo, "secondary">;
 };
 
-const projectRowLogos: Record<string, RowLogo> = {
-  "daybreaker-health": {
-    label: "Daybreaker Health",
-    image: "/images/brands/daybreaker-health-logo.jpg",
-  },
-  checkfit: {
-    label: "CheckFit",
-    image: "/images/brands/checkfit-logo.jpg",
-  },
-  imerit: {
-    label: "iMerit",
-    image: "/images/brands/imerit-logo.jpg",
-  },
-  "blue-vision-labs-lyft": {
-    label: "Blue Vision Labs",
-    image: "/images/brands/blue-vision-labs-logo.jpg",
-    secondary: {
-      label: "Lyft",
-      image: "/images/brands/lyft-logo.jpg",
-    },
-  },
-  gymnazo: {
-    label: "Gymnazo",
-    image: "/images/brands/gymnazo-logo.jpg",
-  },
-  "monster-fitness": {
-    label: "Monster Fitness",
-    image: "/images/brands/monster-fitness-logo.png",
-    variant: "wide",
-  },
-};
-
 const sideQuestRowIcons: Record<string, RowIcon> = {
   "aurora-inl": {
     label: "Laboratory flask",
@@ -81,74 +50,6 @@ const sideQuestRowIcons: Record<string, RowIcon> = {
     image: "/images/side-quests/icons/link.webp",
   },
 };
-
-function projectListDek(project: Post): ReactNode {
-  switch (project.slug) {
-    case "imerit":
-      return (
-        <>
-          Built <span className="row-pop">Ground Control</span>, a data analytics
-          platform giving real-time operating visibility into{" "}
-          <span className="row-pop">6,000+</span> annotators for enterprise AI
-          clients including <span className="row-pop">JOHN DEERE</span>,{" "}
-          <span className="row-pop">CRUISE</span>, and{" "}
-          <span className="row-pop">NETFLIX</span>.
-        </>
-      );
-    case "blue-vision-labs-lyft":
-      return (
-        <>
-          Scaled computer-vision data ingestion and mapping operations from{" "}
-          <span className="row-pop">3 cities → 2 countries</span>, helping
-          produce one of the largest public autonomous-vehicle street-mapping
-          datasets of its time,{" "}
-          <span className="row-pop">acq&apos;d by Lyft</span>.
-        </>
-      );
-    case "daybreaker-health":
-      return (
-        <>
-          Founded a <span className="row-pop">diagnostics-driven</span> longevity
-          company that turns bloodwork, genetics, lifestyle data, and coaching
-          into personalized protocols and measurable{" "}
-          <span className="row-pop">retesting loops</span>.
-        </>
-      );
-    case "checkfit":
-      return (
-        <>
-          Founded an <span className="row-pop">AI movement coach</span> that turns
-          goals, soreness, sleep, nutrition, constraints, and schedule changes
-          into adaptive training and biomechanics decisions.
-        </>
-      );
-    case "gymnazo":
-      return (
-        <>
-          Helped turn expert movement coaching into repeatable products,
-          curriculum, and sales systems tied to{" "}
-          <span className="row-pop">209% YoY revenue growth</span>, a{" "}
-          <span className="row-pop">$2,000 certification</span>,{" "}
-          <span className="row-pop">3,500+ customers</span>, and demand strong
-          enough to justify a{" "}
-          <span className="row-pop">third location</span>.
-        </>
-      );
-    case "monster-fitness":
-      return (
-        <>
-          Scaled the sales team while still in{" "}
-          <span className="row-pop">high school</span>, coached{" "}
-          <span className="row-pop">6 sales agents</span>, wrote the playbook,
-          and helped drive{" "}
-          <span className="row-pop">3x annual revenue</span> and{" "}
-          <span className="row-pop">NPS 31 → 68</span>.
-        </>
-      );
-    default:
-      return project.frontmatter.description;
-  }
-}
 
 export function postToRow(
   post: Post,
@@ -169,18 +70,24 @@ export function projectToRow(
   basePath: "projects" | "side-quests" = "projects"
 ): Row {
   const isPortfolioProject = basePath === "projects";
+  const profile = isPortfolioProject
+    ? getProjectProfile(project.slug)
+    : undefined;
 
   return {
     title: project.frontmatter.title,
-    dek: isPortfolioProject
-      ? projectListDek(project)
-      : project.frontmatter.description,
+    dek: profile?.cardDescription ?? project.frontmatter.description,
     href: `/${basePath}/${project.slug}`,
     meta: isPortfolioProject
       ? project.frontmatter.year ?? ""
       : "Read",
     tags: parseTags(project.frontmatter.tags),
-    logo: isPortfolioProject ? projectRowLogos[project.slug] : undefined,
+    logo: profile
+      ? {
+          ...profile.brand.primary,
+          secondary: profile.brand.secondary,
+        }
+      : undefined,
     icon: isPortfolioProject ? undefined : sideQuestRowIcons[project.slug],
   };
 }
@@ -212,7 +119,11 @@ export function ManifestNav({ active }: { active: NavKey | null }) {
       href: active === "home" ? "#work-heading" : "/projects",
       label: "Work",
     },
-    { key: "essays", href: "/essays", label: "Essays" },
+    {
+      key: "essays",
+      href: "https://levelwithlucas.lucaschatham.com/archive",
+      label: "Essays",
+    },
     { key: "side-quests", href: "/side-quests", label: "Side Quests" },
   ];
 
