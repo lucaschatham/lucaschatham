@@ -152,7 +152,7 @@ function projectListDek(project: Post): ReactNode {
 
 export function postToRow(
   post: Post,
-  basePath: "blog" | "work" | "side-quests"
+  basePath: "blog" | "essays" | "work" | "side-quests"
 ): Row {
   return {
     title: post.frontmatter.title,
@@ -175,12 +175,10 @@ export function projectToRow(
     dek: isPortfolioProject
       ? projectListDek(project)
       : project.frontmatter.description,
-    href: project.frontmatter.url ?? `/${basePath}/${project.slug}`,
+    href: `/${basePath}/${project.slug}`,
     meta: isPortfolioProject
       ? project.frontmatter.year ?? ""
-      : project.frontmatter.url
-        ? "Live"
-        : "Read",
+      : "Read",
     tags: parseTags(project.frontmatter.tags),
     logo: isPortfolioProject ? projectRowLogos[project.slug] : undefined,
     icon: isPortfolioProject ? undefined : sideQuestRowIcons[project.slug],
@@ -191,7 +189,7 @@ export function ManifestPage({
   active,
   children,
 }: {
-  active: NavKey;
+  active: NavKey | null;
   children: ReactNode;
 }) {
   return (
@@ -207,9 +205,13 @@ export function ManifestPage({
   );
 }
 
-export function ManifestNav({ active }: { active: NavKey }) {
+export function ManifestNav({ active }: { active: NavKey | null }) {
   const links: { key: NavKey; href: string; label: string }[] = [
-    { key: "projects", href: "/#work-heading", label: "Work" },
+    {
+      key: "projects",
+      href: active === "home" ? "#work-heading" : "/projects",
+      label: "Work",
+    },
     { key: "essays", href: "/essays", label: "Essays" },
     { key: "side-quests", href: "/side-quests", label: "Side Quests" },
   ];
@@ -245,6 +247,7 @@ export function ManifestNav({ active }: { active: NavKey }) {
               </Link>
             );
           })}
+          <a href="#contact">Contact</a>
         </div>
         <div className="nav-tools">
           <ThemeSwitch />
@@ -265,6 +268,7 @@ export function ManifestNav({ active }: { active: NavKey }) {
                   </Link>
                 );
               })}
+              <a href="#contact">Contact</a>
             </div>
           </details>
         </div>

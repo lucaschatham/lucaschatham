@@ -4,7 +4,7 @@ import { SITE_URL } from "@/lib/constants";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const blogPosts = getPosts("blog").map((post) => ({
-    url: `${SITE_URL}/blog/${post.slug}`,
+    url: `${SITE_URL}/essays/${post.slug}`,
     lastModified: new Date(post.frontmatter.date),
   }));
 
