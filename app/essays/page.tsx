@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function EssaysPage() {
   const posts = getPosts("blog");
-  const rows = posts.map((post) => postToRow(post, "blog"));
+  const rows = posts.map((post) => postToRow(post, "essays"));
 
   return (
     <ManifestPage active="essays">

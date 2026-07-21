@@ -1,12 +1,12 @@
 import type { Post } from "@/lib/content";
+import {
+  additionalProjectSlugs,
+  featuredProjectSlugs,
+} from "@/lib/project-manifest";
 
-const portfolioProjectOrder = [
-  "daybreaker-health",
-  "checkfit",
-  "imerit",
-  "blue-vision-labs-lyft",
-  "gymnazo",
-  "monster-fitness",
+const portfolioProjectOrder: readonly string[] = [
+  ...featuredProjectSlugs,
+  ...additionalProjectSlugs,
 ];
 
 export function orderPortfolioProjects(projects: Post[]): Post[] {

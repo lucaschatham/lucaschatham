@@ -1,168 +1,20 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPost, getPosts, parseTags } from "@/lib/content";
 import { MDXContent } from "@/components/mdx";
 import { ManifestPage } from "@/components/manifest";
 import { TagList } from "@/components/tag-list";
 import type { Metadata } from "next";
-import { SITE_URL } from "@/lib/constants";
+import { CONTACT_MAILTO, SITE_URL } from "@/lib/constants";
+import {
+  getProjectProfile,
+  type BrandUnit,
+  type ProjectBrand,
+  type ProjectSnapshotItem,
+} from "@/lib/project-manifest";
 
 type Props = {
   params: Promise<{ slug: string }>;
-};
-
-type ProjectBrand = {
-  primary: BrandUnit;
-  secondary?: BrandUnit;
-};
-
-type BrandUnit = {
-  label: string;
-  mark?: string;
-  image?: string;
-  variant?: "square" | "wide";
-};
-
-type ProjectSnapshotItem = {
-  label: string;
-  value: string;
-  detail: string;
-};
-
-const projectBrands: Record<string, ProjectBrand> = {
-  "daybreaker-health": {
-    primary: {
-      label: "Daybreaker Health",
-      image: "/images/brands/daybreaker-health-logo.jpg",
-    },
-  },
-  checkfit: {
-    primary: { label: "CheckFit", image: "/images/brands/checkfit-logo.jpg" },
-  },
-  imerit: {
-    primary: { label: "iMerit", image: "/images/brands/imerit-logo.jpg" },
-  },
-  "blue-vision-labs-lyft": {
-    primary: {
-      label: "Blue Vision Labs",
-      image: "/images/brands/blue-vision-labs-logo.jpg",
-    },
-    secondary: { label: "Lyft", image: "/images/brands/lyft-logo.jpg" },
-  },
-  gymnazo: {
-    primary: { label: "Gymnazo", image: "/images/brands/gymnazo-logo.jpg" },
-  },
-  "monster-fitness": {
-    primary: {
-      label: "Monster Fitness",
-      image: "/images/brands/monster-fitness-logo.png",
-      variant: "wide",
-    },
-  },
-};
-
-const projectSnapshots: Record<string, ProjectSnapshotItem[]> = {
-  "daybreaker-health": [
-    {
-      label: "Role",
-      value: "Founder",
-      detail: "Built the product logic, diagnostic workflow, and service model.",
-    },
-    {
-      label: "System",
-      value: "Clinical-adjacent",
-      detail: "Bloodwork, genetics, lifestyle data, protocols, and coaching.",
-    },
-    {
-      label: "Proof",
-      value: "Retesting loops",
-      detail: "Personalized protocols tied back to measurable follow-through.",
-    },
-  ],
-  checkfit: [
-    {
-      label: "Role",
-      value: "Founder / builder",
-      detail: "Turned 14+ years of coaching judgment into product logic and a beta app.",
-    },
-    {
-      label: "System",
-      value: "Adaptive plans",
-      detail: "Translated goals, recovery, schedule, nutrition, and pain signals into decisions.",
-    },
-    {
-      label: "Proof",
-      value: "Working beta",
-      detail: "Generated and adjusted coaching plans from real user context.",
-    },
-  ],
-  imerit: [
-    {
-      label: "Role",
-      value: "Senior Product Manager",
-      detail: "Owned product vision, requirements, roadmap, and stakeholder alignment.",
-    },
-    {
-      label: "System",
-      value: "Ground Control",
-      detail: "Data analytics platform for distributed enterprise AI operations.",
-    },
-    {
-      label: "Proof",
-      value: "6,000+ annotators",
-      detail: "Real-time visibility across tools, teams, time zones, and customers.",
-    },
-  ],
-  "blue-vision-labs-lyft": [
-    {
-      label: "Role",
-      value: "Mapping operations",
-      detail: "Tested, redesigned, deployed, and scaled field capture systems.",
-    },
-    {
-      label: "System",
-      value: "Camera-phone mapping",
-      detail: "City-scale 3D maps from real-world fleet capture.",
-    },
-    {
-      label: "Proof",
-      value: "3 cities -> 2 countries",
-      detail: "Helped produce a major public autonomous-vehicle street dataset.",
-    },
-  ],
-  gymnazo: [
-    {
-      label: "Role",
-      value: "Operator",
-      detail: "Converted expert movement coaching into products, curriculum, and sales systems.",
-    },
-    {
-      label: "System",
-      value: "Coach scaling",
-      detail: "Made founder-level judgment reproducible across coaches and customers.",
-    },
-    {
-      label: "Proof",
-      value: "3,500+ customers",
-      detail: "Helped support 209% YoY growth, a $2,000 certification, and a third location.",
-    },
-  ],
-  "monster-fitness": [
-    {
-      label: "Role",
-      value: "Sales operator",
-      detail: "Scaled the sales team while still in high school.",
-    },
-    {
-      label: "System",
-      value: "Sales playbook",
-      detail: "Built repeatable sales, follow-up, retention, upsell, and account workflows.",
-    },
-    {
-      label: "Proof",
-      value: "3x revenue",
-      detail: "Coached 6 sales agents and helped lift NPS from 31 to 68.",
-    },
-  ],
 };
 
 export async function generateStaticParams() {
@@ -187,6 +39,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       tags,
       url: `${SITE_URL}/projects/${slug}`,
     },
+    twitter: {
+      card: "summary_large_image",
+      title: project.frontmatter.title,
+      description: project.frontmatter.description,
+      images: [`${SITE_URL}/projects/${slug}/opengraph-image`],
+    },
     alternates: {
       canonical: `${SITE_URL}/projects/${slug}`,
     },
@@ -196,34 +54,104 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
   const project = getPost("work", slug);
-  if (!project) notFound();
+  const profile = getProjectProfile(slug);
+  if (!project || !profile) notFound();
   const tags = parseTags(project.frontmatter.tags);
+  const relatedProject = getPost("work", profile.relatedSlug);
 
-  const hero = project.frontmatter.hero ?? project.frontmatter.description;
+  const hero =
+    profile.heroStatement ??
+    project.frontmatter.hero ??
+    project.frontmatter.description;
+  const image = profile.media.image ?? project.frontmatter.image;
+  const imageAlt =
+    profile.media.imageAlt ??
+    project.frontmatter.imageAlt ??
+    `${project.frontmatter.title} project visual`;
+  const creativeWorkSchema = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: project.frontmatter.title,
+    description: project.frontmatter.description,
+    url: `${SITE_URL}/projects/${slug}`,
+    dateCreated: project.frontmatter.date,
+    image: image ? `${SITE_URL}${image}` : undefined,
+    keywords: tags,
+    creator: {
+      "@type": "Person",
+      name: "Lucas Chatham",
+      url: SITE_URL,
+    },
+  };
 
   return (
     <ManifestPage active="projects">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(creativeWorkSchema) }}
+      />
       <article className="content-shell">
         <header className="mb-8">
-          <ProjectBrandMark brand={projectBrands[slug]} slug={slug} />
+          <ProjectBrandMark brand={profile.brand} slug={slug} />
           <p className="project-year">{project.frontmatter.year}</p>
           <h1 className="text-3xl font-semibold tracking-tight mb-2">
             {project.frontmatter.title}
           </h1>
           <TagList tags={tags} placement="detail" />
           <p className="project-hero-statement">{hero}</p>
-          <ProjectHeroMedia
-            image={project.frontmatter.image}
-            alt={
-              project.frontmatter.imageAlt ??
-              `${project.frontmatter.title} project visual`
-            }
-          />
-          <ProjectSnapshot items={projectSnapshots[slug]} />
+          <ProjectSnapshot items={profile.snapshot} />
+          <ProjectAttribution>{profile.attribution}</ProjectAttribution>
+          <ProjectHeroMedia image={image} alt={imageAlt} />
         </header>
         <MDXContent source={project.content} />
+        {relatedProject && (
+          <ProjectNext
+            relatedSlug={relatedProject.slug}
+            relatedTitle={relatedProject.frontmatter.title}
+            relatedDescription={relatedProject.frontmatter.description}
+          />
+        )}
       </article>
     </ManifestPage>
+  );
+}
+
+function ProjectAttribution({ children }: { children: string }) {
+  return (
+    <aside className="project-attribution">
+      <p className="project-attribution-label">Scope and attribution</p>
+      <p>{children}</p>
+    </aside>
+  );
+}
+
+function ProjectNext({
+  relatedSlug,
+  relatedTitle,
+  relatedDescription,
+}: {
+  relatedSlug: string;
+  relatedTitle: string;
+  relatedDescription: string;
+}) {
+  return (
+    <footer className="project-next">
+      <div>
+        <p className="project-next-label">Related case</p>
+        <Link href={`/projects/${relatedSlug}`} prefetch={false}>
+          <strong>{relatedTitle}</strong>
+          <span>{relatedDescription}</span>
+          <span aria-hidden="true">View case →</span>
+        </Link>
+      </div>
+      <div>
+        <p className="project-next-label">Have a hard problem?</p>
+        <p>Two sentences about what is stuck is plenty.</p>
+        <a className="hero-action hero-action-primary" href={CONTACT_MAILTO}>
+          Discuss a hard problem
+        </a>
+      </div>
+    </footer>
   );
 }
 
@@ -246,16 +174,14 @@ function ProjectHeroMedia({
       >
         <img src={image} alt={alt} />
         <span className="project-hero-media-open">
-          View full-size infographic <span aria-hidden="true">↗</span>
+          View full-size artifact <span aria-hidden="true">↗</span>
         </span>
       </a>
     </figure>
   );
 }
 
-function ProjectSnapshot({ items }: { items?: ProjectSnapshotItem[] }) {
-  if (!items?.length) return null;
-
+function ProjectSnapshot({ items }: { items: readonly ProjectSnapshotItem[] }) {
   return (
     <section className="project-snapshot" aria-label="Project snapshot">
       {items.map((item) => (
@@ -273,18 +199,16 @@ function ProjectBrandMark({
   brand,
   slug,
 }: {
-  brand?: ProjectBrand;
+  brand: ProjectBrand;
   slug: string;
 }) {
-  if (!brand) return null;
-
   return (
     <div className={`project-brand project-brand-${slug}`}>
       <BrandTile unit={brand.primary} />
       {brand.secondary && (
         <>
           <span className="project-brand-arrow" aria-hidden="true">
-            -&gt;
+            →
           </span>
           <BrandTile unit={brand.secondary} secondary />
         </>
@@ -303,7 +227,7 @@ function BrandTile({
   const classNames = [
     "project-brand-tile",
     secondary ? "secondary" : "",
-    unit.image ? "has-image" : "",
+    "has-image",
     unit.variant === "wide" ? "wide" : "",
   ]
     .filter(Boolean)
@@ -315,19 +239,12 @@ function BrandTile({
       aria-label={unit.label}
       title={unit.label}
     >
-      {unit.image ? (
-        <img
-          src={unit.image}
-          alt=""
-          width={unit.variant === "wide" ? 520 : 100}
-          height={unit.variant === "wide" ? 199 : 100}
-        />
-      ) : (
-        <>
-          <span className="project-brand-mark">{unit.mark}</span>
-          <span className="project-brand-label">{unit.label}</span>
-        </>
-      )}
+      <img
+        src={unit.image}
+        alt=""
+        width={unit.variant === "wide" ? 520 : 100}
+        height={unit.variant === "wide" ? 199 : 100}
+      />
     </div>
   );
 }

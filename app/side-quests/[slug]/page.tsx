@@ -60,7 +60,7 @@ export default async function SideQuestPage({ params }: Props) {
               rel="noopener noreferrer"
               className="inline-block mt-3 text-sm text-[var(--mute)] transition-colors hover:text-[var(--cream)]"
             >
-              Visit {new URL(project.frontmatter.url).hostname} &rarr;
+              Launch {project.frontmatter.title} <span aria-hidden="true">↗</span>
             </a>
           )}
         </header>

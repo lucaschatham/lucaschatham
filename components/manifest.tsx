@@ -1,8 +1,11 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { NavigationTools } from "@/components/navigation-tools";
 import { TagList } from "@/components/tag-list";
-import { ThemeSwitch } from "@/components/theme-switch";
+import { CONTACT_EMAIL, CONTACT_MAILTO } from "@/lib/constants";
 import { parseTags, type Post } from "@/lib/content";
+import { formatShortDate } from "@/lib/formatting";
+import { getProjectProfile } from "@/lib/project-manifest";
 
 type NavKey = "home" | "essays" | "projects" | "side-quests";
 
@@ -24,42 +27,9 @@ type RowIcon = {
 
 type RowLogo = {
   label: string;
-  image?: string;
-  mark?: string;
+  image: string;
   variant?: "square" | "wide";
   secondary?: Omit<RowLogo, "secondary">;
-};
-
-const projectRowLogos: Record<string, RowLogo> = {
-  "daybreaker-health": {
-    label: "Daybreaker Health",
-    image: "/images/brands/daybreaker-health-logo.jpg",
-  },
-  checkfit: {
-    label: "CheckFit",
-    image: "/images/brands/checkfit-logo.jpg",
-  },
-  imerit: {
-    label: "iMerit",
-    image: "/images/brands/imerit-logo.jpg",
-  },
-  "blue-vision-labs-lyft": {
-    label: "Blue Vision Labs",
-    image: "/images/brands/blue-vision-labs-logo.jpg",
-    secondary: {
-      label: "Lyft",
-      image: "/images/brands/lyft-logo.jpg",
-    },
-  },
-  gymnazo: {
-    label: "Gymnazo",
-    image: "/images/brands/gymnazo-logo.jpg",
-  },
-  "monster-fitness": {
-    label: "Monster Fitness",
-    image: "/images/brands/monster-fitness-logo.png",
-    variant: "wide",
-  },
 };
 
 const sideQuestRowIcons: Record<string, RowIcon> = {
@@ -81,84 +51,16 @@ const sideQuestRowIcons: Record<string, RowIcon> = {
   },
 };
 
-function projectListDek(project: Post): ReactNode {
-  switch (project.slug) {
-    case "imerit":
-      return (
-        <>
-          Built <span className="row-pop">Ground Control</span>, a data analytics
-          platform giving real-time operating visibility into{" "}
-          <span className="row-pop">6,000+</span> annotators for enterprise AI
-          clients including <span className="row-pop">JOHN DEERE</span>,{" "}
-          <span className="row-pop">CRUISE</span>, and{" "}
-          <span className="row-pop">NETFLIX</span>.
-        </>
-      );
-    case "blue-vision-labs-lyft":
-      return (
-        <>
-          Scaled computer-vision data ingestion and mapping operations from{" "}
-          <span className="row-pop">3 cities -&gt; 2 countries</span>, helping
-          produce one of the largest public autonomous-vehicle street-mapping
-          datasets of its time,{" "}
-          <span className="row-pop">acq&apos;d by Lyft</span>.
-        </>
-      );
-    case "daybreaker-health":
-      return (
-        <>
-          Founded a <span className="row-pop">diagnostics-driven</span> longevity
-          company that turns bloodwork, genetics, lifestyle data, and coaching
-          into personalized protocols and measurable{" "}
-          <span className="row-pop">retesting loops</span>.
-        </>
-      );
-    case "checkfit":
-      return (
-        <>
-          Founded an <span className="row-pop">AI movement coach</span> that turns
-          goals, soreness, sleep, nutrition, constraints, and schedule changes
-          into adaptive training and biomechanics decisions.
-        </>
-      );
-    case "gymnazo":
-      return (
-        <>
-          Helped turn expert movement coaching into repeatable products,
-          curriculum, and sales systems tied to{" "}
-          <span className="row-pop">209% YoY revenue growth</span>, a{" "}
-          <span className="row-pop">$2,000 certification</span>,{" "}
-          <span className="row-pop">3,500+ customers</span>, and demand strong
-          enough to justify a{" "}
-          <span className="row-pop">third location</span>.
-        </>
-      );
-    case "monster-fitness":
-      return (
-        <>
-          Scaled the sales team while still in{" "}
-          <span className="row-pop">high school</span>, coached{" "}
-          <span className="row-pop">6 sales agents</span>, wrote the playbook,
-          and helped drive{" "}
-          <span className="row-pop">3x annual revenue</span> and{" "}
-          <span className="row-pop">NPS 31 -&gt; 68</span>.
-        </>
-      );
-    default:
-      return project.frontmatter.description;
-  }
-}
-
 export function postToRow(
   post: Post,
-  basePath: "blog" | "work" | "side-quests"
+  basePath: "blog" | "essays" | "work" | "side-quests"
 ): Row {
   return {
     title: post.frontmatter.title,
     subtitle: post.frontmatter.subtitle,
     dek: post.frontmatter.description,
     href: `/${basePath}/${post.slug}`,
-    meta: formatEssayDate(post.frontmatter.date),
+    meta: formatShortDate(post.frontmatter.date),
     tags: parseTags(post.frontmatter.tags),
   };
 }
@@ -168,20 +70,24 @@ export function projectToRow(
   basePath: "projects" | "side-quests" = "projects"
 ): Row {
   const isPortfolioProject = basePath === "projects";
+  const profile = isPortfolioProject
+    ? getProjectProfile(project.slug)
+    : undefined;
 
   return {
     title: project.frontmatter.title,
-    dek: isPortfolioProject
-      ? projectListDek(project)
-      : project.frontmatter.description,
-    href: project.frontmatter.url ?? `/${basePath}/${project.slug}`,
+    dek: profile?.cardDescription ?? project.frontmatter.description,
+    href: `/${basePath}/${project.slug}`,
     meta: isPortfolioProject
       ? project.frontmatter.year ?? ""
-      : project.frontmatter.url
-        ? "Live"
-        : "Read",
+      : "Read",
     tags: parseTags(project.frontmatter.tags),
-    logo: isPortfolioProject ? projectRowLogos[project.slug] : undefined,
+    logo: profile
+      ? {
+          ...profile.brand.primary,
+          secondary: profile.brand.secondary,
+        }
+      : undefined,
     icon: isPortfolioProject ? undefined : sideQuestRowIcons[project.slug],
   };
 }
@@ -190,7 +96,7 @@ export function ManifestPage({
   active,
   children,
 }: {
-  active: NavKey;
+  active: NavKey | null;
   children: ReactNode;
 }) {
   return (
@@ -206,12 +112,16 @@ export function ManifestPage({
   );
 }
 
-export function ManifestNav({ active }: { active: NavKey }) {
+export function ManifestNav({ active }: { active: NavKey | null }) {
   const links: { key: NavKey; href: string; label: string }[] = [
-    { key: "projects", href: "/#work-heading", label: "Work" },
+    {
+      key: "projects",
+      href: active === "home" ? "#work-heading" : "/projects",
+      label: "Work",
+    },
     {
       key: "essays",
-      href: "https://levelwithlucas.lucaschatham.com/archive",
+      href: "/essays",
       label: "Essays",
     },
     { key: "side-quests", href: "/side-quests", label: "Side Quests" },
@@ -248,29 +158,9 @@ export function ManifestNav({ active }: { active: NavKey }) {
               </Link>
             );
           })}
+          <a href="#contact">Contact</a>
         </div>
-        <div className="nav-tools">
-          <ThemeSwitch />
-          <details className="mobile-nav">
-            <summary aria-label="Open navigation">Menu</summary>
-            <div className="mobile-nav-menu">
-              {links.map((item) => {
-                const isActive = item.key === active;
-                return (
-                  <Link
-                    key={item.key}
-                    href={item.href}
-                    prefetch={false}
-                    className={isActive ? "active" : undefined}
-                    aria-current={isActive ? "page" : undefined}
-                  >
-                    {item.label}
-                  </Link>
-                );
-              })}
-            </div>
-          </details>
-        </div>
+        <NavigationTools active={active} links={links} />
       </nav>
     </header>
   );
@@ -279,13 +169,29 @@ export function ManifestNav({ active }: { active: NavKey }) {
 export function Hero() {
   return (
     <section className="hero-cine" aria-labelledby="home-hero-title">
-      <div className="hero-copy">
+      <div className="hero-story">
         <h1 className="name" id="home-hero-title">
           Lucas <b>Chatham</b>
         </h1>
-        <span className="hero-role">
-          Founder <span aria-hidden="true">·</span> Operator
-        </span>
+        <div className="hero-meta">
+          <p className="hero-role">
+            Founder <span aria-hidden="true">·</span> Product and operations
+          </p>
+          <p className="hero-status">
+            Open to select advisory and operating partnerships.
+          </p>
+        </div>
+        <p className="hero-proposition">
+          I turn high-stakes, expert-led work into AI products and operating
+          systems people can understand, run, and trust.
+        </p>
+        <Link
+          className="hero-action hero-action-primary"
+          href="#work-heading"
+        >
+          View selected work
+          <ArrowRightIcon />
+        </Link>
       </div>
       <figure className="hero-portrait">
         <img
@@ -299,24 +205,16 @@ export function Hero() {
           decoding="async"
         />
       </figure>
-    </section>
-  );
-}
-
-export function Lede() {
-  return (
-    <section className="lede" aria-label="Positioning">
-      <p className="proof-line">
-        I build high-trust AI systems people rely on in domains where mistakes
-        have real consequences, from autonomous vehicles to healthcare.
-      </p>
-      <div className="hero-actions" aria-label="Primary actions">
-        <Link className="hero-action hero-action-primary" href="#work-heading">
-          View selected work
-          <ArrowRightIcon />
-        </Link>
-        <a className="hero-action" href="mailto:chathamworks@gmail.com">
-          Email Lucas
+      <div className="hero-evidence">
+        <p className="hero-proof">
+          Ground Control: 6,000+ annotators <span aria-hidden="true">·</span>{" "}
+          20+ tools <span aria-hidden="true">·</span> 5 time zones
+        </p>
+        <a
+          className="hero-action hero-action-secondary"
+          href={CONTACT_MAILTO}
+        >
+          Discuss a hard problem
         </a>
       </div>
     </section>
@@ -386,7 +284,7 @@ export function RowsSection({
       <div className="man-heading">
         <Heading className="h" id={headingId}>
           <span className="l">{heading}</span>
-          {kicker && <span className="n">{kicker}</span>}
+          {kicker && <span className="n" aria-hidden="true">{kicker}</span>}
         </Heading>
         {description && <p className="man-description">{description}</p>}
       </div>
@@ -476,7 +374,7 @@ function RowLogoMark({ logo }: { logo: RowLogo }) {
       {logo.secondary && (
         <>
           <span className="row-logo-arrow" aria-hidden="true">
-            -&gt;
+            →
           </span>
           <RowLogoTile logo={logo.secondary} secondary />
         </>
@@ -494,7 +392,7 @@ function RowLogoTile({
 }) {
   const className = [
     "row-logo-tile",
-    logo.image ? "has-image" : "",
+    "has-image",
     logo.variant === "wide" ? "wide" : "",
     secondary ? "secondary" : "",
   ]
@@ -503,42 +401,47 @@ function RowLogoTile({
 
   return (
     <span className={className} aria-hidden="true">
-      {logo.image ? (
-        <img
-          src={logo.image}
-          alt=""
-          width={logo.variant === "wide" ? 520 : 100}
-          height={logo.variant === "wide" ? 199 : 100}
-          loading="lazy"
-          decoding="async"
-        />
-      ) : (
-        <span className="row-logo-mark">{logo.mark}</span>
-      )}
+      <img
+        src={logo.image}
+        alt=""
+        width={logo.variant === "wide" ? 520 : 100}
+        height={logo.variant === "wide" ? 199 : 100}
+        loading="lazy"
+        decoding="async"
+      />
     </span>
   );
 }
 
 export function SocialFooter() {
   return (
-    <section className="contact-band" aria-labelledby="contact-heading">
-      <div>
+    <section className="contact-band" id="contact" aria-labelledby="contact-heading">
+      <div className="contact-copy">
         <p className="contact-kicker">Have a hard problem?</p>
-        <h2 id="contact-heading">Let&apos;s compare notes.</h2>
+        <h2 id="contact-heading">Tell me what is stuck.</h2>
+        <p className="contact-helper">Two sentences about your problem is plenty.</p>
+        <p className="contact-status">
+          Open to select advisory and operating partnerships.
+        </p>
+        <a className="contact-email" href={CONTACT_MAILTO}>
+          {CONTACT_EMAIL}
+        </a>
       </div>
       <nav className="com" aria-label="Social">
       <a
         href="https://www.linkedin.com/in/lucaschatham/"
         rel="me noopener"
-        aria-label="LinkedIn"
+        target="_blank"
+        aria-label="LinkedIn (opens in a new tab)"
       >
         <span className="ic">
           <LinkedInIcon />
         </span>
         LinkedIn
+        <span aria-hidden="true">↗</span>
       </a>
       <a
-        href="mailto:chathamworks@gmail.com"
+        href={CONTACT_MAILTO}
         rel="me"
         aria-label="Email Lucas Chatham"
       >
@@ -550,39 +453,24 @@ export function SocialFooter() {
       <a
         href="https://github.com/lucaschatham"
         rel="me noopener"
-        aria-label="GitHub"
+        target="_blank"
+        aria-label="GitHub (opens in a new tab)"
       >
         <span className="ic">
           <GitHubIcon />
         </span>
         GitHub
+        <span aria-hidden="true">↗</span>
       </a>
       <a
-        href="https://levelwithlucas.lucaschatham.com/archive"
-        rel="me noopener"
-        aria-label="Blog newsletter"
+        href="/rss"
+        aria-label="Essays RSS feed"
       >
         <span className="ic">
-          <NewsletterIcon />
+          <FeedIcon />
         </span>
-        Blog
+        RSS
       </a>
-      {/* X hidden for now — uncomment to restore.
-      <a href="https://x.com/lukeoutthebox" rel="me noopener" aria-label="X (formerly Twitter)"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span>X</a>
-      */}
-      {/* Podcast is hidden until a real destination exists.
-      <span
-        className="social-disabled"
-        role="link"
-        aria-disabled="true"
-        aria-label="Podcast"
-      >
-        <span className="ic">
-          <PodcastIcon />
-        </span>
-        Podcast
-      </span>
-      */}
       </nav>
     </section>
   );
@@ -595,14 +483,6 @@ export function ManifestFooter() {
       <span>Made in California</span>
     </footer>
   );
-}
-
-function formatEssayDate(dateString: string): string {
-  return new Date(`${dateString}T00:00:00`).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
 }
 
 function ArrowUpRightIcon() {
@@ -659,20 +539,10 @@ function EmailIcon() {
   );
 }
 
-function NewsletterIcon() {
+function FeedIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zM4 6l8 5 8-5H4zm0 12V8.236l8 5 8-5V18H4z" />
-    </svg>
-  );
-}
-
-// Hidden until podcast links return.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function PodcastIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24zm0 4.69a3.41 3.41 0 1 1 0 6.82 3.41 3.41 0 0 1 0-6.82zm0 14.74c-2.84 0-5.36-1.46-6.83-3.66a1.7 1.7 0 0 1 .73-2.5c1.8-.88 3.9-1.39 6.1-1.39 2.2 0 4.3.51 6.1 1.39a1.7 1.7 0 0 1 .73 2.5A8.18 8.18 0 0 1 12 19.43z" />
+      <path d="M5 3a16 16 0 0 1 16 16M5 9a10 10 0 0 1 10 10M6 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z" />
     </svg>
   );
 }

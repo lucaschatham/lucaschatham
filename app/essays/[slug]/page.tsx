@@ -1,25 +1,26 @@
 import { notFound } from "next/navigation";
-import { getPost, getPosts, parseTags } from "@/lib/content";
-import { MDXContent } from "@/components/mdx";
+import type { Metadata } from "next";
 import { ManifestPage } from "@/components/manifest";
+import { MDXContent } from "@/components/mdx";
 import { ReadingProgress } from "@/components/reading-progress";
 import { TagList } from "@/components/tag-list";
-import type { Metadata } from "next";
 import { SITE_URL } from "@/lib/constants";
+import { getPost, getPosts, parseTags } from "@/lib/content";
+import { formatPostTitle } from "@/lib/formatting";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
 
 export async function generateStaticParams() {
-  const posts = getPosts("blog");
-  return posts.map((post) => ({ slug: post.slug }));
+  return getPosts("blog").map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = getPost("blog", slug);
   if (!post) return {};
+
   const title = formatPostTitle(post.frontmatter.title, post.frontmatter.subtitle);
   const tags = parseTags(post.frontmatter.tags);
 
@@ -33,22 +34,51 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: "article",
       publishedTime: post.frontmatter.date,
       tags,
-      url: `${SITE_URL}/blog/${slug}`,
+      url: `${SITE_URL}/essays/${slug}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: post.frontmatter.description,
+      images: [`${SITE_URL}/essays/${slug}/opengraph-image`],
     },
     alternates: {
-      canonical: `${SITE_URL}/blog/${slug}`,
+      canonical: `${SITE_URL}/essays/${slug}`,
     },
   };
 }
 
-export default async function BlogPost({ params }: Props) {
+export default async function EssayPost({ params }: Props) {
   const { slug } = await params;
   const post = getPost("blog", slug);
   if (!post) notFound();
+
   const tags = parseTags(post.frontmatter.tags);
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: formatPostTitle(
+      post.frontmatter.title,
+      post.frontmatter.subtitle
+    ),
+    description: post.frontmatter.description,
+    datePublished: post.frontmatter.date,
+    dateModified: post.frontmatter.date,
+    mainEntityOfPage: `${SITE_URL}/essays/${slug}`,
+    keywords: tags,
+    author: {
+      "@type": "Person",
+      name: "Lucas Chatham",
+      url: SITE_URL,
+    },
+  };
 
   return (
     <ManifestPage active="essays">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <ReadingProgress />
       <article className="content-shell">
         <header className="mb-8">
@@ -76,8 +106,4 @@ export default async function BlogPost({ params }: Props) {
       </article>
     </ManifestPage>
   );
-}
-
-function formatPostTitle(title: string, subtitle?: string) {
-  return subtitle ? `${title}: ${subtitle}` : title;
 }

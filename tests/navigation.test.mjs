@@ -8,9 +8,9 @@ const manifestSource = readFileSync(
   "utf8"
 );
 
-test("site navigation routes Essays to the Beehiiv archive", () => {
+test("site navigation routes Essays to the canonical internal index", () => {
   assert.match(
     manifestSource,
-    /key:\s*"essays"[\s\S]*?href:\s*"https:\/\/levelwithlucas\.lucaschatham\.com\/archive"[\s\S]*?label:\s*"Essays"/
+    /key:\s*"essays"[\s\S]*?href:\s*"\/essays"[\s\S]*?label:\s*"Essays"/
   );
 });

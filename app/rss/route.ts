@@ -9,7 +9,7 @@ export function GET() {
       (post) => `
     <item>
       <title>${escapeXml(post.frontmatter.title)}</title>
-      <link>${SITE_URL}/blog/${post.slug}</link>
+      <link>${SITE_URL}/essays/${post.slug}</link>
       <description>${escapeXml(post.frontmatter.description)}</description>
       <pubDate>${new Date(post.frontmatter.date).toUTCString()}</pubDate>
       <guid>${SITE_URL}/blog/${post.slug}</guid>

@@ -5,7 +5,7 @@ import { parseTags, type Frontmatter } from "@/lib/content";
 type PostCardProps = {
   slug: string;
   frontmatter: Frontmatter;
-  basePath: "blog" | "work" | "side-quests";
+  basePath: "essays" | "work" | "side-quests";
 };
 
 export function PostCard({ slug, frontmatter, basePath }: PostCardProps) {

@@ -273,10 +273,10 @@ const deckPdfUrl = "https://docs.google.com/presentation/d/1hhIpVdlBl8Qxthosrzoj
 
 export function AuroraDeploymentExperience({ tags }: { tags?: string[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const [isPaused, setIsPaused] = useState(true);
   const [isReelVisible, setIsReelVisible] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-  const reelViewportRef = useRef<HTMLDivElement>(null);
+  const stageViewportRef = useRef<HTMLElement>(null);
   const reelHasBeenVisible = useRef(false);
   const touchStart = useRef<{ x: number; y: number } | null>(null);
   const stage = stages[activeIndex];
@@ -291,9 +291,11 @@ export function AuroraDeploymentExperience({ tags }: { tags?: string[] }) {
 
   useEffect(() => {
     const syncFromHash = () => {
-      const requested = window.location.hash.match(/stage-(\d{2})/)?.[1];
+      const requested = window.location.hash.match(/^#stage-(\d{2})$/)?.[1];
       const nextIndex = stages.findIndex((candidate) => candidate.number === requested);
-      if (nextIndex >= 0) setActiveIndex(nextIndex);
+
+      setIsPaused(true);
+      setActiveIndex(nextIndex >= 0 ? nextIndex : 0);
     };
 
     syncFromHash();
@@ -311,7 +313,7 @@ export function AuroraDeploymentExperience({ tags }: { tags?: string[] }) {
   }, []);
 
   useEffect(() => {
-    const target = reelViewportRef.current;
+    const target = stageViewportRef.current;
 
     if (!target || !("IntersectionObserver" in window)) {
       setIsReelVisible(true);
@@ -320,7 +322,7 @@ export function AuroraDeploymentExperience({ tags }: { tags?: string[] }) {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        const isVisible = entry.isIntersecting && entry.intersectionRatio >= 0.5;
+        const isVisible = entry.isIntersecting;
         setIsReelVisible(isVisible);
 
         if (isVisible) {
@@ -329,7 +331,7 @@ export function AuroraDeploymentExperience({ tags }: { tags?: string[] }) {
           setIsPaused(true);
         }
       },
-      { threshold: [0, 0.5, 1] },
+      { threshold: [0] },
     );
 
     observer.observe(target);
@@ -402,8 +404,8 @@ export function AuroraDeploymentExperience({ tags }: { tags?: string[] }) {
         </p>
       </header>
 
-      <section className="aurora-stage" aria-labelledby="aurora-stage-title">
-        <div ref={reelViewportRef} className="aurora-stage-media">
+      <section ref={stageViewportRef} className="aurora-stage" aria-labelledby="aurora-stage-title">
+        <div className="aurora-stage-media">
           <button
             type="button"
             className="aurora-image-wrap aurora-image-reel"
@@ -466,7 +468,8 @@ export function AuroraDeploymentExperience({ tags }: { tags?: string[] }) {
               type="button"
               onClick={togglePlayback}
               disabled={prefersReducedMotion}
-              aria-pressed={isPaused}
+              aria-pressed={isPlaying}
+              aria-label={isPlaying ? "Pause evidence reel" : "Play evidence reel"}
             >
               {isPlaying ? "Pause" : "Play"}
             </button>
