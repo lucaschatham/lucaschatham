@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { NavigationTools } from "@/components/navigation-tools";
 import { TagList } from "@/components/tag-list";
-import { CONTACT_EMAIL, CONTACT_MAILTO } from "@/lib/constants";
+import { CONTACT_MAILTO } from "@/lib/constants";
 import { parseTags, type Post } from "@/lib/content";
 import { formatShortDate } from "@/lib/formatting";
 import { getProjectProfile } from "@/lib/project-manifest";
@@ -121,7 +121,7 @@ export function ManifestNav({ active }: { active: NavKey | null }) {
     },
     {
       key: "essays",
-      href: "/essays",
+      href: "https://levelwithlucas.lucaschatham.com/archive",
       label: "Essays",
     },
     { key: "side-quests", href: "/side-quests", label: "Side Quests" },
@@ -175,15 +175,15 @@ export function Hero() {
         </h1>
         <div className="hero-meta">
           <p className="hero-role">
-            Founder <span aria-hidden="true">·</span> Product and operations
+            Founder <span aria-hidden="true">·</span> Operator
           </p>
           <p className="hero-status">
             Open to select advisory and operating partnerships.
           </p>
         </div>
         <p className="hero-proposition">
-          I turn high-stakes, expert-led work into AI products and operating
-          systems people can understand, run, and trust.
+          I build high-trust AI systems people rely on in domains where mistakes
+          have real consequences, from autonomous vehicles to healthcare.
         </p>
         <Link
           className="hero-action hero-action-primary"
@@ -205,18 +205,6 @@ export function Hero() {
           decoding="async"
         />
       </figure>
-      <div className="hero-evidence">
-        <p className="hero-proof">
-          Ground Control: 6,000+ annotators <span aria-hidden="true">·</span>{" "}
-          20+ tools <span aria-hidden="true">·</span> 5 time zones
-        </p>
-        <a
-          className="hero-action hero-action-secondary"
-          href={CONTACT_MAILTO}
-        >
-          Discuss a hard problem
-        </a>
-      </div>
     </section>
   );
 }
@@ -224,7 +212,10 @@ export function Hero() {
 export function CareerThroughline() {
   return (
     <section className="throughline" aria-labelledby="throughline-heading">
-      <h2 id="throughline-heading">Different industries, same job</h2>
+      <h2 id="throughline-heading">
+        <span className="throughline-heading-line">Different Industries</span>
+        <span className="throughline-heading-line">Same Jobs</span>
+      </h2>
       <p className="throughline-summary">
         I keep finding the same problem: valuable work trapped in someone&apos;s
         head or scattered across messy operations. I make it visible, turn it
@@ -236,6 +227,7 @@ export function CareerThroughline() {
             <span className="throughline-domain">Mapping</span>
             <strong>3 city pilots → 2 countries</strong>
             <span className="throughline-source">Blue Vision Labs / Lyft</span>
+            <span className="throughline-tile-arrow"><ArrowUpRightIcon /></span>
           </Link>
         </li>
         <li>
@@ -243,6 +235,7 @@ export function CareerThroughline() {
             <span className="throughline-domain">AI operations</span>
             <strong>6,000+ annotators · 20+ tools · 5 time zones</strong>
             <span className="throughline-source">iMerit Ground Control</span>
+            <span className="throughline-tile-arrow"><ArrowUpRightIcon /></span>
           </Link>
         </li>
         <li>
@@ -250,6 +243,7 @@ export function CareerThroughline() {
             <span className="throughline-domain">Coaching</span>
             <strong>11+ coaches trained · 209% YoY growth</strong>
             <span className="throughline-source">Gymnazo</span>
+            <span className="throughline-tile-arrow"><ArrowUpRightIcon /></span>
           </Link>
         </li>
       </ul>
@@ -419,13 +413,9 @@ export function SocialFooter() {
       <div className="contact-copy">
         <p className="contact-kicker">Have a hard problem?</p>
         <h2 id="contact-heading">Tell me what is stuck.</h2>
-        <p className="contact-helper">Two sentences about your problem is plenty.</p>
         <p className="contact-status">
           Open to select advisory and operating partnerships.
         </p>
-        <a className="contact-email" href={CONTACT_MAILTO}>
-          {CONTACT_EMAIL}
-        </a>
       </div>
       <nav className="com" aria-label="Social">
       <a
@@ -463,13 +453,16 @@ export function SocialFooter() {
         <span aria-hidden="true">↗</span>
       </a>
       <a
-        href="/rss"
-        aria-label="Essays RSS feed"
+        href="https://x.com/lukeoutthebox"
+        rel="me noopener"
+        target="_blank"
+        aria-label="@lukeoutthebox on X (opens in a new tab)"
       >
         <span className="ic">
-          <FeedIcon />
+          <XIcon />
         </span>
-        RSS
+        @lukeoutthebox
+        <span aria-hidden="true">↗</span>
       </a>
       </nav>
     </section>
@@ -539,10 +532,10 @@ function EmailIcon() {
   );
 }
 
-function FeedIcon() {
+function XIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M5 3a16 16 0 0 1 16 16M5 9a10 10 0 0 1 10 10M6 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z" />
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817-5.966 6.817H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z" />
     </svg>
   );
 }

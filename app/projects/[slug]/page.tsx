@@ -5,7 +5,7 @@ import { MDXContent } from "@/components/mdx";
 import { ManifestPage } from "@/components/manifest";
 import { TagList } from "@/components/tag-list";
 import type { Metadata } from "next";
-import { CONTACT_MAILTO, SITE_URL } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 import {
   getProjectProfile,
   type BrandUnit,
@@ -146,8 +146,7 @@ function ProjectNext({
       </div>
       <div>
         <p className="project-next-label">Have a hard problem?</p>
-        <p>Two sentences about what is stuck is plenty.</p>
-        <a className="hero-action hero-action-primary" href={CONTACT_MAILTO}>
+        <a className="hero-action hero-action-primary" href="#contact">
           Discuss a hard problem
         </a>
       </div>

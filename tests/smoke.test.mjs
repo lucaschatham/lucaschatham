@@ -52,6 +52,9 @@ const expectedWorkOrder = [
   "/projects/imerit",
   "/projects/blue-vision-labs-lyft",
   "/projects/gymnazo",
+  "/projects/daybreaker-health",
+  "/projects/checkfit",
+  "/projects/monster-fitness",
 ];
 
 const projectTemplateHeadings = [
@@ -100,8 +103,6 @@ test("hero source order matches the compact mobile split", () => {
     'className="hero-proposition"',
     'className="hero-action hero-action-primary"',
     'className="hero-portrait"',
-    'className="hero-proof"',
-    'className="hero-action hero-action-secondary"',
   ];
 
   let previousIndex = -1;
@@ -112,10 +113,10 @@ test("hero source order matches the compact mobile split", () => {
   }
 });
 
-test("site navigation routes Essays to the canonical internal index", () => {
+test("site navigation routes Essays directly to Beehiiv", () => {
   assert.match(
     manifestSource,
-    /key:\s*"essays"[\s\S]*?href:\s*"\/essays"[\s\S]*?label:\s*"Essays"/
+    /key:\s*"essays"[\s\S]*?href:\s*"https:\/\/levelwithlucas\.lucaschatham\.com\/archive"[\s\S]*?label:\s*"Essays"/
   );
 });
 
@@ -311,7 +312,7 @@ test("legacy routes redirect permanently to canonical sections", async () => {
   await discardResponse(workProject);
 });
 
-test("homepage features the strongest cleared project proof", async () => {
+test("homepage lists every published work case", async () => {
   const html = await readHtml("/");
   const workHtml = html.slice(html.indexOf('id="work-heading"'));
   let previousIndex = -1;
@@ -321,8 +322,6 @@ test("homepage features the strongest cleared project proof", async () => {
     assert.ok(index > previousIndex, `${href} should appear after the prior work row`);
     previousIndex = index;
   }
-
-  assert.doesNotMatch(workHtml, /href="\/projects\/(?:daybreaker-health|checkfit|monster-fitness)"/);
 });
 
 test("homepage makes primary paths explicit", async () => {
@@ -330,15 +329,14 @@ test("homepage makes primary paths explicit", async () => {
   const visibleText = stripTags(html);
 
   assert.match(html, /<a href="#work-heading">(?:<[^>]+>)*Work<\/a>/i);
-  assert.match(html, /<a href="\/essays">(?:<[^>]+>)*Essays<\/a>/i);
+  assert.match(html, /<a href="https:\/\/levelwithlucas\.lucaschatham\.com\/archive">(?:<[^>]+>)*Essays<\/a>/i);
   assert.match(html, /<a href="\/side-quests">(?:<[^>]+>)*Side Quests<\/a>/i);
   assert.match(html, /<a href="#contact">(?:<[^>]+>)*Contact<\/a>/i);
-  assert.match(visibleText, /Founder · Product and operations/i);
+  assert.match(visibleText, /Founder · Operator/i);
   assert.match(visibleText, /Open to select advisory and operating partnerships\./i);
-  assert.match(visibleText, /I turn high-stakes, expert-led work into AI products and operating systems people can understand, run, and trust\./i);
-  assert.match(visibleText, /Ground Control: 6,000\+ annotators · 20\+ tools · 5 time zones/i);
+  assert.match(visibleText, /I build high-trust AI systems people rely on in domains where mistakes have real consequences, from autonomous vehicles to healthcare\./i);
+  assert.doesNotMatch(manifestSource, /className="hero-proof"/);
   assert.match(html, /href="#work-heading"[^>]*>[\s\S]*?View selected work/i);
-  assert.match(html, /href="mailto:chathamworks@gmail\.com\?subject=Hard%20problem%3A"[^>]*>[\s\S]*?Discuss a hard problem/i);
 });
 
 test("homepage metadata and Person schema match the advisory offer", async () => {
@@ -355,7 +353,8 @@ test("homepage metadata and Person schema match the advisory offer", async () =>
 test("homepage career throughline stays concise", async () => {
   const html = await readHtml("/");
 
-  assert.match(html, /Different industries, same job/);
+  assert.match(html, /<span class="throughline-heading-line">Different Industries<\/span>/);
+  assert.match(html, /<span class="throughline-heading-line">Same Jobs<\/span>/);
   assert.match(html, /valuable work trapped in someone(?:&apos;|&#x27;)s head or scattered across messy operations/);
   assert.match(html, /href="\/projects\/blue-vision-labs-lyft"[\s\S]*?3 city pilots → 2 countries/);
   assert.match(html, /href="\/projects\/imerit"[\s\S]*?6,000\+ annotators · 20\+ tools · 5 time zones/);
@@ -406,20 +405,26 @@ test("portfolio project pages keep the agreed case-study template", async () => 
   }));
 });
 
-test("contact band qualifies the problem and keeps fallbacks visible", async () => {
+test("contact band keeps email private until the Email action is clicked", async () => {
   const html = await readHtml("/");
+  const contactStart = html.indexOf('class="contact-band"');
+  const contactEnd = html.indexOf("</section>", contactStart) + "</section>".length;
+  const visibleContactText = stripTags(html.slice(contactStart, contactEnd));
 
   assert.match(html, /id="contact"/);
   assert.match(html, /Have a hard problem\?/);
   assert.match(html, /Tell me what is stuck\./);
-  assert.match(html, /Two sentences about your problem is plenty\./);
+  assert.doesNotMatch(html, /Two sentences about your problem is plenty\./);
   assert.match(html, /Open to select advisory and operating partnerships\./);
   assert.match(html, /https:\/\/www\.linkedin\.com\/in\/lucaschatham\//);
   assert.match(html, /mailto:chathamworks@gmail\.com\?subject=Hard%20problem%3A/);
-  assert.match(html, />chathamworks@gmail\.com</);
+  assert.equal((manifestSource.match(/href=\{CONTACT_MAILTO\}/g) ?? []).length, 1);
+  assert.doesNotMatch(visibleContactText, /chathamworks@gmail\.com/);
   assert.match(html, /https:\/\/github\.com\/lucaschatham/);
-  assert.doesNotMatch(html, /levelwithlucas\.lucaschatham\.com\/archive/);
-  assert.match(html, /href="\/rss"/);
+  assert.match(html, /https:\/\/x\.com\/lukeoutthebox/);
+  assert.match(html, /@lukeoutthebox/);
+  assert.match(html, /levelwithlucas\.lucaschatham\.com\/archive/);
+  assert.doesNotMatch(html, /href="\/rss"/);
 });
 
 test("robots and RSS endpoints are present", async () => {
