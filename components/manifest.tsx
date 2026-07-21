@@ -276,13 +276,29 @@ export function ManifestNav({ active }: { active: NavKey }) {
 export function Hero() {
   return (
     <section className="hero-cine" aria-labelledby="home-hero-title">
-      <div className="hero-copy">
+      <div className="hero-story">
         <h1 className="name" id="home-hero-title">
           Lucas <b>Chatham</b>
         </h1>
-        <span className="hero-role">
-          Founder <span aria-hidden="true">·</span> Operator
-        </span>
+        <div className="hero-meta">
+          <p className="hero-role">
+            Founder <span aria-hidden="true">·</span> Product and operations
+          </p>
+          <p className="hero-status">
+            Open to select advisory and operating partnerships.
+          </p>
+        </div>
+        <p className="hero-proposition">
+          I turn high-stakes, expert-led work into AI products and operating
+          systems people can understand, run, and trust.
+        </p>
+        <Link
+          className="hero-action hero-action-primary"
+          href="#work-heading"
+        >
+          View selected work
+          <ArrowRightIcon />
+        </Link>
       </div>
       <figure className="hero-portrait">
         <img
@@ -296,24 +312,16 @@ export function Hero() {
           decoding="async"
         />
       </figure>
-    </section>
-  );
-}
-
-export function Lede() {
-  return (
-    <section className="lede" aria-label="Positioning">
-      <p className="proof-line">
-        I build high-trust AI systems people rely on in domains where mistakes
-        have real consequences, from autonomous vehicles to healthcare.
-      </p>
-      <div className="hero-actions" aria-label="Primary actions">
-        <Link className="hero-action hero-action-primary" href="#work-heading">
-          View selected work
-          <ArrowRightIcon />
-        </Link>
-        <a className="hero-action" href={CONTACT_MAILTO}>
-          Email Lucas
+      <div className="hero-evidence">
+        <p className="hero-proof">
+          Ground Control: 6,000+ annotators <span aria-hidden="true">·</span>{" "}
+          20+ tools <span aria-hidden="true">·</span> 5 time zones
+        </p>
+        <a
+          className="hero-action hero-action-secondary"
+          href={CONTACT_MAILTO}
+        >
+          Discuss a hard problem
         </a>
       </div>
     </section>

@@ -1,7 +1,6 @@
 import {
   CareerThroughline,
   Hero,
-  Lede,
   ManifestPage,
   RowsSection,
   projectToRow,
@@ -50,7 +49,6 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
       />
       <Hero />
-      <Lede />
       <CareerThroughline />
       {work.length > 0 && (
         <RowsSection

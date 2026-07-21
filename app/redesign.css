@@ -333,19 +333,25 @@ summary:focus-visible,
 
 .hero-cine {
   display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
-  align-items: center;
-  gap: clamp(36px, 6vw, 80px);
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.88fr);
+  grid-template-rows: auto 1fr;
+  align-items: start;
+  column-gap: clamp(36px, 6vw, 80px);
+  row-gap: 24px;
   margin-top: 64px;
+  padding-bottom: 72px;
+  border-bottom: 1px solid var(--line);
   background: transparent;
   overflow: visible;
 }
 
-.hero-copy {
+.hero-story {
+  grid-column: 1;
+  grid-row: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 0;
+  align-items: flex-start;
+  min-width: 0;
 }
 
 .hero-eyebrow,
@@ -363,7 +369,7 @@ summary:focus-visible,
   position: static;
   margin: 0;
   color: var(--silver-100);
-  font-size: clamp(60px, 8vw, 100px);
+  font-size: clamp(60px, 7vw, 92px);
   font-weight: 400;
   line-height: 0.9;
   letter-spacing: -0.065em;
@@ -376,10 +382,9 @@ summary:focus-visible,
 }
 
 .hero-role {
-  display: block;
-  margin-top: 26px;
+  margin: 0;
   color: var(--gray-400);
-  font-size: clamp(18px, 2vw, 24px);
+  font-size: clamp(17px, 1.7vw, 21px);
   font-weight: 500;
   letter-spacing: -0.025em;
 }
@@ -389,8 +394,38 @@ summary:focus-visible,
   padding: 0 5px;
 }
 
+.hero-meta {
+  display: grid;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.hero-status,
+.hero-proof {
+  margin: 0;
+  color: var(--steel-500);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 550;
+  letter-spacing: 0;
+  line-height: 1.55;
+}
+
+.hero-proposition {
+  max-width: 25ch;
+  margin: clamp(28px, 4vw, 42px) 0 0;
+  color: var(--silver-100);
+  font-size: clamp(25px, 3vw, 35px);
+  font-weight: 560;
+  line-height: 1.12;
+  letter-spacing: -0.045em;
+}
+
 .hero-portrait {
-  min-height: 520px;
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  width: 100%;
+  min-height: 0;
   margin: 0;
   overflow: hidden;
   border-radius: 18px;
@@ -412,31 +447,26 @@ summary:focus-visible,
   transform: scale(1.015);
 }
 
-.lede {
-  max-width: none;
-  margin: 72px 0 0;
-  padding: 0 0 72px;
-  border-bottom: 1px solid var(--line);
-  color: var(--silver-100);
-}
-
-.proof-line {
-  max-width: 760px;
-  margin: 0;
-  color: var(--silver-200);
-  font-size: clamp(25px, 3.25vw, 40px);
-  font-weight: 500;
-  line-height: 1.2;
-  letter-spacing: -0.04em;
-}
-
-.hero-actions {
+.hero-evidence {
+  grid-column: 1;
+  grid-row: 2;
   display: flex;
-  gap: 12px;
-  margin-top: 34px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 18px;
+  align-self: end;
+}
+
+.hero-proof {
+  flex-basis: 100%;
+  color: var(--gray-400);
 }
 
 .hero-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
   min-height: 46px;
   padding: 0 17px;
   border: 1px solid var(--line-strong);
@@ -449,6 +479,15 @@ summary:focus-visible,
   letter-spacing: -0.01em;
   text-transform: none;
   transition: border-color 150ms ease, background 150ms ease, color 150ms ease;
+}
+
+.hero-story > .hero-action {
+  margin-top: 24px;
+}
+
+.hero-action svg {
+  width: 17px;
+  height: 17px;
 }
 
 .hero-action:hover,
@@ -1210,11 +1249,15 @@ summary:focus-visible,
 
   .hero-cine {
     grid-template-columns: 1fr;
-    gap: 24px;
+    grid-template-rows: auto auto auto;
+    gap: 28px;
     margin-top: 28px;
+    padding-bottom: 54px;
   }
 
-  .hero-copy {
+  .hero-story {
+    grid-column: 1;
+    grid-row: 1;
     padding: 0 2px;
   }
 
@@ -1223,11 +1266,22 @@ summary:focus-visible,
   }
 
   .hero-role {
+    font-size: 17px;
+  }
+
+  .hero-meta {
     margin-top: 16px;
   }
 
+  .hero-proposition {
+    max-width: 27ch;
+    margin-top: 30px;
+    font-size: clamp(25px, 7.4vw, 34px);
+  }
+
   .hero-portrait {
-    order: -1;
+    grid-column: 1;
+    grid-row: 2;
     min-height: 0;
     max-height: none;
     border-radius: 14px;
@@ -1235,16 +1289,13 @@ summary:focus-visible,
 
   .hero-portrait img {
     aspect-ratio: 4 / 3;
-    object-position: center 18%;
+    object-position: center 10%;
   }
 
-  .lede {
-    margin-top: 48px;
-    padding-bottom: 54px;
-  }
-
-  .proof-line {
-    font-size: clamp(23px, 7vw, 32px);
+  .hero-evidence {
+    grid-column: 1;
+    grid-row: 3;
+    align-items: flex-start;
   }
 
   .throughline {
@@ -1317,11 +1368,6 @@ summary:focus-visible,
 
   .hero-cine .name {
     font-size: clamp(52px, 18vw, 72px);
-  }
-
-  .hero-actions {
-    display: grid;
-    grid-template-columns: 1fr;
   }
 
   .hero-action {
