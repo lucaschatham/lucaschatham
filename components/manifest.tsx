@@ -209,7 +209,11 @@ export function ManifestPage({
 export function ManifestNav({ active }: { active: NavKey }) {
   const links: { key: NavKey; href: string; label: string }[] = [
     { key: "projects", href: "/#work-heading", label: "Work" },
-    { key: "essays", href: "/essays", label: "Essays" },
+    {
+      key: "essays",
+      href: "https://levelwithlucas.lucaschatham.com/archive",
+      label: "Essays",
+    },
     { key: "side-quests", href: "/side-quests", label: "Side Quests" },
   ];
 
