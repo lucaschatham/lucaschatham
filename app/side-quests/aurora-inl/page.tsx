@@ -3,6 +3,7 @@ import { ManifestPage } from "@/components/manifest";
 import { AuroraDeploymentExperience } from "@/components/aurora-deployment-experience";
 import { getPost, parseTags } from "@/lib/content";
 import { SITE_URL } from "@/lib/constants";
+import "@/app/aurora.css";
 
 const auroraPost = getPost("side-quests", "aurora-inl");
 const auroraTags = parseTags(auroraPost?.frontmatter.tags);

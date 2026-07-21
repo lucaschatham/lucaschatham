@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { NavigationTools } from "@/components/navigation-tools";
 import { TagList } from "@/components/tag-list";
-import { ThemeSwitch } from "@/components/theme-switch";
 import { CONTACT_EMAIL, CONTACT_MAILTO } from "@/lib/constants";
 import { parseTags, type Post } from "@/lib/content";
 
@@ -99,7 +99,7 @@ function projectListDek(project: Post): ReactNode {
       return (
         <>
           Scaled computer-vision data ingestion and mapping operations from{" "}
-          <span className="row-pop">3 cities -&gt; 2 countries</span>, helping
+          <span className="row-pop">3 cities → 2 countries</span>, helping
           produce one of the largest public autonomous-vehicle street-mapping
           datasets of its time,{" "}
           <span className="row-pop">acq&apos;d by Lyft</span>.
@@ -142,7 +142,7 @@ function projectListDek(project: Post): ReactNode {
           <span className="row-pop">6 sales agents</span>, wrote the playbook,
           and helped drive{" "}
           <span className="row-pop">3x annual revenue</span> and{" "}
-          <span className="row-pop">NPS 31 -&gt; 68</span>.
+          <span className="row-pop">NPS 31 → 68</span>.
         </>
       );
     default:
@@ -249,29 +249,7 @@ export function ManifestNav({ active }: { active: NavKey | null }) {
           })}
           <a href="#contact">Contact</a>
         </div>
-        <div className="nav-tools">
-          <ThemeSwitch />
-          <details className="mobile-nav">
-            <summary aria-label="Open navigation">Menu</summary>
-            <div className="mobile-nav-menu">
-              {links.map((item) => {
-                const isActive = item.key === active;
-                return (
-                  <Link
-                    key={item.key}
-                    href={item.href}
-                    prefetch={false}
-                    className={isActive ? "active" : undefined}
-                    aria-current={isActive ? "page" : undefined}
-                  >
-                    {item.label}
-                  </Link>
-                );
-              })}
-              <a href="#contact">Contact</a>
-            </div>
-          </details>
-        </div>
+        <NavigationTools active={active} links={links} />
       </nav>
     </header>
   );
@@ -395,7 +373,7 @@ export function RowsSection({
       <div className="man-heading">
         <Heading className="h" id={headingId}>
           <span className="l">{heading}</span>
-          {kicker && <span className="n">{kicker}</span>}
+          {kicker && <span className="n" aria-hidden="true">{kicker}</span>}
         </Heading>
         {description && <p className="man-description">{description}</p>}
       </div>
@@ -485,7 +463,7 @@ function RowLogoMark({ logo }: { logo: RowLogo }) {
       {logo.secondary && (
         <>
           <span className="row-logo-arrow" aria-hidden="true">
-            -&gt;
+            →
           </span>
           <RowLogoTile logo={logo.secondary} secondary />
         </>
@@ -553,6 +531,7 @@ export function SocialFooter() {
           <LinkedInIcon />
         </span>
         LinkedIn
+        <span aria-hidden="true">↗</span>
       </a>
       <a
         href={CONTACT_MAILTO}
@@ -574,6 +553,7 @@ export function SocialFooter() {
           <GitHubIcon />
         </span>
         GitHub
+        <span aria-hidden="true">↗</span>
       </a>
       <a
         href="/rss"

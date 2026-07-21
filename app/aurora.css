@@ -1,0 +1,516 @@
+/* Aurora-INL side quest */
+.aurora-page {
+  padding: 28px 16px 0;
+}
+
+.aurora-intro {
+  padding: 8px 8px 30px;
+  border-bottom: 1px solid var(--line);
+}
+
+.aurora-kicker,
+.aurora-stage-phase,
+.aurora-brief > header p,
+.aurora-method > p:first-child,
+.aurora-vocabulary > p,
+.aurora-sources > p,
+.aurora-boundary > p,
+.aurora-controls-head > p {
+  color: var(--pulse);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+
+.aurora-intro h1 {
+  margin: 12px 0 14px;
+  color: var(--silver-100);
+  font-size: clamp(38px, 10vw, 56px);
+  font-weight: 350;
+  letter-spacing: -.055em;
+  line-height: .94;
+}
+
+.aurora-lede {
+  max-width: 31ch;
+  color: var(--silver-100);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.28;
+  letter-spacing: -.025em;
+}
+
+.aurora-disclaimer {
+  margin-top: 15px;
+  color: var(--steel-500);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.aurora-stage {
+  padding: 24px 0 0;
+}
+
+.aurora-image-wrap {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+  background: var(--shadow-900);
+  aspect-ratio: 4 / 3;
+}
+
+.aurora-image-reel {
+  display: block;
+  width: 100%;
+  padding: 0;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.aurora-image-wrap img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(.82) contrast(1.08) brightness(.7);
+  transition: transform .45s ease, filter .45s ease;
+}
+
+.aurora-image-reel img { animation: aurora-frame-in .42s ease both; }
+
+.aurora-image-wrap:hover img {
+  transform: scale(1.025);
+  filter: saturate(.96) contrast(1.04) brightness(.78);
+}
+
+.aurora-image-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(18, 19, 22, .1) 24%, rgba(18, 19, 22, .82) 100%);
+  pointer-events: none;
+}
+
+.aurora-image-hint {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  z-index: 1;
+  padding: 6px 7px;
+  border: 1px solid rgba(240, 240, 236, .17);
+  background: rgba(18, 19, 22, .58);
+  margin: 0;
+  color: rgba(240, 240, 236, .72);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.aurora-visual-note {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  z-index: 1;
+  max-width: 25ch;
+  margin: 0;
+  padding: 5px 7px;
+  border: 1px solid rgba(240, 240, 236, .17);
+  background: rgba(18, 19, 22, .58);
+  color: rgba(240, 240, 236, .78);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: .07em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.aurora-image-reel:focus-visible {
+  outline: 2px solid var(--pulse);
+  outline-offset: 3px;
+}
+
+.aurora-caption-rail {
+  display: grid;
+  min-height: 184px;
+  padding: 15px 15px 18px;
+  align-content: start;
+  border: 1px solid var(--line);
+  border-radius: 0 0 8px 8px;
+  background: var(--surface);
+  animation: aurora-caption-in .35s ease both;
+}
+
+.aurora-caption-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.aurora-caption-status,
+.aurora-caption-frame {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: .08em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.aurora-caption-status.fact { color: var(--good); }
+.aurora-caption-status.inference { color: var(--gray-400); }
+.aurora-caption-status.unknown { color: var(--pulse); }
+.aurora-caption-frame { color: var(--steel-500); text-align: right; }
+
+.aurora-caption-rail .aurora-stage-phase { margin-top: 13px; }
+
+.aurora-caption-rail h2 {
+  display: -webkit-box;
+  margin: 6px 0 10px;
+  overflow: hidden;
+  color: var(--silver-100);
+  font-size: clamp(22px, 6.3vw, 30px);
+  font-weight: 480;
+  letter-spacing: -.035em;
+  line-height: 1.06;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.aurora-caption-summary {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  color: var(--gray-400);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.aurora-stage-controls {
+  padding: 16px 0 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.aurora-stage-navigation {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: stretch;
+  gap: 8px;
+}
+
+.aurora-stage-navigation button,
+.aurora-controls-head button {
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--gray-400);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color .15s, color .15s, background .15s;
+}
+
+.aurora-stage-navigation button:hover,
+.aurora-controls-head button:hover:not(:disabled) {
+  border-color: var(--line-strong);
+  background: var(--surface-raised);
+  color: var(--silver-100);
+}
+
+.aurora-stage-navigation p {
+  display: grid;
+  min-width: 72px;
+  margin: 0;
+  place-items: center;
+  color: var(--steel-500);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: .08em;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.aurora-stage-navigation strong {
+  display: block;
+  margin-top: 3px;
+  color: var(--silver-100);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.aurora-progress {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 3px;
+  margin: 14px 0;
+}
+
+.aurora-progress span {
+  height: 2px;
+  background: var(--line);
+}
+
+.aurora-progress span.is-complete { background: var(--line-strong); }
+.aurora-progress span.is-current { background: var(--pulse); box-shadow: 0 0 9px var(--pulse-soft); }
+
+.aurora-controls-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.aurora-controls-head > p { color: var(--steel-500); }
+.aurora-controls-head button:disabled { opacity: .35; cursor: not-allowed; }
+
+.aurora-frame-picker {
+  margin-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.aurora-frame-picker summary {
+  min-height: 44px;
+  padding: 0 2px;
+  color: var(--gray-400);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: .08em;
+  line-height: 44px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.aurora-frame-picker[open] summary { color: var(--silver-100); }
+
+.aurora-stage-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+  margin: 0 0 4px;
+  padding: 0;
+  list-style: none;
+}
+
+.aurora-stage-list button {
+  display: flex;
+  min-height: 44px;
+  width: 100%;
+  padding: 7px 8px;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--steel-500);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  line-height: 1.2;
+  text-align: left;
+  cursor: pointer;
+  transition: background .15s, border-color .15s, color .15s, transform .15s;
+}
+
+.aurora-stage-list button span { color: var(--silver-100); }
+.aurora-stage-list button:hover { color: var(--silver-100); border-color: var(--silver-100); }
+.aurora-stage-list button[aria-current="step"] {
+  border-color: var(--action-bg);
+  background: var(--action-bg);
+  color: var(--action-fg);
+  font-weight: 700;
+  box-shadow: 0 0 14px var(--pulse-soft);
+  transform: scale(1.08);
+}
+.aurora-stage-list button[aria-current="step"] span { color: var(--action-fg); }
+
+.aurora-method h2 {
+  margin: 7px 0 10px;
+  color: var(--silver-100);
+  font-size: 27px;
+  font-weight: 480;
+  letter-spacing: -.035em;
+  line-height: 1.05;
+}
+.aurora-method > p:last-child {
+  color: var(--gray-400);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.aurora-brief {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.aurora-brief > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.aurora-status {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.aurora-status.fact { color: var(--good); }
+.aurora-status.inference { color: var(--gray-400); }
+.aurora-status.unknown { color: var(--pulse); }
+
+.aurora-brief dl { margin: 0; }
+.aurora-brief dl > div { padding: 15px 14px; border-bottom: 1px solid var(--line); }
+.aurora-brief dt {
+  margin-bottom: 7px;
+  color: var(--silver-100);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.aurora-brief dd { margin: 0; color: var(--gray-400); font-size: 14px; line-height: 1.52; }
+
+.aurora-boundary {
+  margin: 14px;
+  padding: 13px;
+  border-left: 2px solid var(--pulse);
+  background: var(--pulse-soft);
+}
+.aurora-boundary > p { margin-bottom: 7px; color: var(--steel-500); }
+.aurora-boundary strong { display: block; color: var(--silver-100); font-size: 14px; line-height: 1.43; }
+
+.aurora-vocabulary,
+.aurora-sources { padding: 4px 14px 14px; }
+.aurora-vocabulary > p,
+.aurora-sources > p { margin: 12px 0 9px; color: var(--steel-500); }
+.aurora-vocabulary details { border-top: 1px solid var(--line); }
+.aurora-vocabulary summary {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  min-height: 44px;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 0;
+  color: var(--gray-400);
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1.35;
+}
+.aurora-vocabulary summary span { color: var(--pulse); font-family: var(--font-mono); font-weight: 600; }
+
+.aurora-sources ul { margin: 0; padding: 0; list-style: none; }
+.aurora-sources li { border-top: 1px solid var(--line); }
+.aurora-sources a {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  padding: 10px 0;
+  color: var(--gray-400);
+  font-size: 12px;
+  line-height: 1.35;
+  text-decoration: none;
+  transition: color .15s;
+}
+.aurora-sources a:hover { color: var(--silver-100); }
+
+.aurora-deck-links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--line);
+}
+.aurora-deck-links a {
+  display: flex;
+  min-height: 55px;
+  align-items: center;
+  padding: 12px;
+  color: var(--silver-100);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  line-height: 1.35;
+  letter-spacing: .06em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background .15s, color .15s;
+}
+.aurora-deck-links a + a { border-left: 1px solid var(--line); }
+.aurora-deck-links a:hover { background: var(--action-bg); color: var(--action-fg); }
+
+.aurora-method { padding: 34px 8px 10px; }
+.aurora-method > p:first-child { color: var(--pulse); }
+
+@keyframes aurora-frame-in {
+  from { opacity: .22; transform: scale(1.016); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes aurora-caption-in {
+  from { opacity: .3; transform: translateY(3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-image-wrap img,
+  .aurora-stage-list button,
+  .aurora-controls-head button,
+  .aurora-stage-navigation button,
+  .aurora-deck-links a,
+  .aurora-sources a { transition: none; }
+  .aurora-image-reel img,
+  .aurora-caption-rail { animation: none; }
+}
+
+.aurora-page {
+  width: min(100%, 896px);
+  margin: 0 auto;
+  padding: 64px 0 0;
+}
+
+.aurora-intro h1 {
+  font-family: var(--font-sans);
+  font-size: clamp(44px, 7vw, 72px);
+  font-weight: 700;
+}
+
+.aurora-kicker,
+.aurora-stage-phase,
+.aurora-brief > header p,
+.aurora-method > p:first-child,
+.aurora-vocabulary > p,
+.aurora-sources > p,
+.aurora-boundary > p,
+.aurora-controls-head > p,
+.aurora-caption-status,
+.aurora-caption-frame,
+.aurora-stage-navigation button,
+.aurora-controls-head button,
+.aurora-frame-picker summary,
+.aurora-stage-list button,
+.aurora-status,
+.aurora-brief dt,
+.aurora-vocabulary summary span,
+.aurora-deck-links a {
+  font-family: var(--font-mono);
+}
+
+@media (max-width: 780px) {
+  .aurora-page {
+    padding-top: 44px;
+  }
+}

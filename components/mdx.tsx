@@ -18,7 +18,31 @@ function Code({
   return <code {...props}>{children}</code>;
 }
 
+function MdxLink({
+  href,
+  children,
+  ...props
+}: React.DetailedHTMLProps<
+  React.AnchorHTMLAttributes<HTMLAnchorElement>,
+  HTMLAnchorElement
+>) {
+  const isExternal = href?.startsWith("http") ?? false;
+
+  return (
+    <a
+      href={href}
+      target={isExternal ? "_blank" : undefined}
+      rel={isExternal ? "noopener noreferrer" : undefined}
+      {...props}
+    >
+      {children}
+      {isExternal && <span aria-hidden="true"> ↗</span>}
+    </a>
+  );
+}
+
 const components = {
+  a: MdxLink,
   code: Code,
 };
 

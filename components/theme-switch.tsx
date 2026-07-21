@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useSyncExternalStore } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
 
 const options = [
@@ -20,32 +20,81 @@ export function ThemeSwitch() {
 
   const ActiveIcon = mounted && resolvedTheme === "light" ? SunIcon : MoonIcon;
 
+  useEffect(() => {
+    function closeDisclosures(event: KeyboardEvent | PointerEvent) {
+      if (event instanceof KeyboardEvent && event.key !== "Escape") return;
+
+      if (
+        event instanceof PointerEvent &&
+        event.target instanceof Node &&
+        document.querySelector(".nav-tools")?.contains(event.target)
+      ) {
+        return;
+      }
+
+      document
+        .querySelectorAll<HTMLDetailsElement>(
+          "details[data-site-disclosure][open]"
+        )
+        .forEach((details) => {
+          details.open = false;
+        });
+    }
+
+    document.addEventListener("keydown", closeDisclosures);
+    document.addEventListener("pointerdown", closeDisclosures);
+    return () => {
+      document.removeEventListener("keydown", closeDisclosures);
+      document.removeEventListener("pointerdown", closeDisclosures);
+    };
+  }, []);
+
+  function coordinateDisclosures() {
+    if (!detailsRef.current?.open) return;
+
+    document
+      .querySelectorAll<HTMLDetailsElement>(
+        "details[data-site-disclosure][open]"
+      )
+      .forEach((details) => {
+        if (details !== detailsRef.current) details.open = false;
+      });
+  }
+
   return (
-    <details className="theme-switch" ref={detailsRef}>
+    <details
+      className="theme-switch"
+      data-site-disclosure
+      ref={detailsRef}
+      onToggle={coordinateDisclosures}
+    >
       <summary aria-label="Choose color theme" title="Choose color theme">
         {mounted ? <ActiveIcon /> : <span className="theme-placeholder" />}
       </summary>
-      <div className="theme-menu" role="menu" aria-label="Color theme">
+      <fieldset className="theme-menu">
+        <legend className="sr-only">Color theme</legend>
         {options.map((option) => {
           const Icon = option.icon;
           return (
-            <button
-              key={option.value}
-              type="button"
-              role="menuitemradio"
-              aria-checked={mounted && theme === option.value}
-              onClick={() => {
-                setTheme(option.value);
-                detailsRef.current?.removeAttribute("open");
-              }}
-            >
+            <label key={option.value}>
+              <input
+                className="theme-radio"
+                type="radio"
+                name="color-theme"
+                value={option.value}
+                checked={mounted && theme === option.value}
+                onChange={() => {
+                  setTheme(option.value);
+                  if (detailsRef.current) detailsRef.current.open = false;
+                }}
+              />
               <Icon />
               <span>{option.label}</span>
               <CheckIcon />
-            </button>
+            </label>
           );
         })}
-      </div>
+      </fieldset>
     </details>
   );
 }

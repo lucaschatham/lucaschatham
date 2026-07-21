@@ -125,7 +125,7 @@ const projectSnapshots: Record<string, ProjectSnapshotItem[]> = {
     },
     {
       label: "Proof",
-      value: "3 cities -> 2 countries",
+      value: "3 cities → 2 countries",
       detail: "Helped produce a major public autonomous-vehicle street dataset.",
     },
   ],
@@ -284,7 +284,7 @@ function ProjectBrandMark({
       {brand.secondary && (
         <>
           <span className="project-brand-arrow" aria-hidden="true">
-            -&gt;
+            →
           </span>
           <BrandTile unit={brand.secondary} secondary />
         </>
