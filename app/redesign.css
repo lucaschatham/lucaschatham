@@ -1130,12 +1130,12 @@ summary:focus-visible,
 
   .hero-cine {
     grid-template-columns: 1fr;
-    gap: 30px;
-    margin-top: 42px;
+    gap: 24px;
+    margin-top: 28px;
   }
 
   .hero-copy {
-    padding: 14px 0 0;
+    padding: 0 2px;
   }
 
   .hero-cine .name {
@@ -1143,13 +1143,19 @@ summary:focus-visible,
   }
 
   .hero-role {
-    margin-top: 20px;
+    margin-top: 16px;
   }
 
   .hero-portrait {
+    order: -1;
     min-height: 0;
-    max-height: 700px;
+    max-height: none;
     border-radius: 14px;
+  }
+
+  .hero-portrait img {
+    aspect-ratio: 4 / 3;
+    object-position: center 18%;
   }
 
   .lede {
@@ -1214,7 +1220,7 @@ summary:focus-visible,
 
 @media (max-width: 480px) {
   .page {
-    width: min(100% - 24px, 1152px);
+    width: min(100% - 32px, 1152px);
   }
 
   .nav a.home-link {

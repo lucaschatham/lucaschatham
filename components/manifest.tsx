@@ -261,7 +261,7 @@ export function Hero() {
         <img
           src="/images/lucas-portrait-clean.jpg"
           srcSet="/images/lucas-portrait-clean-430.jpg 430w, /images/lucas-portrait-clean-860.jpg 860w, /images/lucas-portrait-clean.jpg 1200w"
-          sizes="(max-width: 700px) 100vw, 420px"
+          sizes="(max-width: 780px) calc(100vw - 32px), (max-width: 1200px) 42vw, 500px"
           alt="Portrait of Lucas Chatham"
           width="1200"
           height="1800"
