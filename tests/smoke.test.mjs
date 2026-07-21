@@ -1,5 +1,26 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFileSync, readdirSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+const redesignCss = readFileSync(
+  fileURLToPath(new URL("../app/redesign.css", import.meta.url)),
+  "utf8"
+);
+const manifestSource = readFileSync(
+  fileURLToPath(new URL("../components/manifest.tsx", import.meta.url)),
+  "utf8"
+);
+const auroraSource = readFileSync(
+  fileURLToPath(
+    new URL("../components/aurora-deployment-experience.tsx", import.meta.url)
+  ),
+  "utf8"
+);
+const projectManifestSource = readFileSync(
+  fileURLToPath(new URL("../lib/project-manifest.ts", import.meta.url)),
+  "utf8"
+);
 
 const baseUrl = (process.env.SMOKE_BASE_URL ?? "https://www.lucaschatham.com").replace(
   /\/+$/,
@@ -7,6 +28,7 @@ const baseUrl = (process.env.SMOKE_BASE_URL ?? "https://www.lucaschatham.com").r
 );
 const timeoutMs = Number(process.env.SMOKE_TIMEOUT_MS ?? 15_000);
 const htmlCache = new Map();
+let sitemapPromise;
 
 const expectedSitemapPaths = [
   "/",
@@ -20,15 +42,16 @@ const expectedSitemapPaths = [
   "/projects/blue-vision-labs-lyft",
   "/projects/gymnazo",
   "/projects/monster-fitness",
+  "/essays/forward-deployed-hospitality",
+  "/essays/how-to-crash-a-wedding",
+  "/essays/service-by-the-senses",
+  "/essays/why-stripes-culture-wins",
 ];
 
 const expectedWorkOrder = [
-  "/projects/daybreaker-health",
-  "/projects/checkfit",
   "/projects/imerit",
   "/projects/blue-vision-labs-lyft",
   "/projects/gymnazo",
-  "/projects/monster-fitness",
 ];
 
 const projectTemplateHeadings = [
@@ -38,6 +61,86 @@ const projectTemplateHeadings = [
   "Why It Mattered",
   "What This Proves",
 ];
+
+test("direction D keeps the desktop hero on a shared top baseline", () => {
+  assert.match(
+    redesignCss,
+    /\.hero-cine\s*\{[^}]*\balign-items:\s*start\s*;/s,
+    "the desktop story and portrait should share a top baseline"
+  );
+  assert.match(
+    redesignCss,
+    /\.hero-cine\s*\{[^}]*\bgrid-template-columns:\s*minmax\([^;]+\)\s+minmax\([^;]+\)\s*;/s,
+    "direction D should retain a two-column desktop grid"
+  );
+});
+
+test("navigation retains the documented desktop and mobile heights", () => {
+  assert.match(redesignCss, /\.nav\s*\{[^}]*\bmin-height:\s*80px\s*;/s);
+  assert.match(redesignCss, /\.nav a\s*\{[^}]*\bpadding:\s*0\s*;/s);
+  assert.match(
+    redesignCss,
+    /@media \(max-width: 780px\)\s*\{[\s\S]*?\.nav\s*\{[^}]*\bmin-height:\s*68px\s*;/
+  );
+});
+
+test("mobile direction D uses a top-anchored 4:3 portrait", () => {
+  assert.match(
+    redesignCss,
+    /@media \(max-width: 780px\)\s*\{[\s\S]*?\.hero-portrait img\s*\{[^}]*\baspect-ratio:\s*4\s*\/\s*3\s*;[^}]*\bobject-position:\s*center\s+10%\s*;/,
+    "the mobile portrait should use the locked 4:3 crop and focal point"
+  );
+});
+
+test("hero source order matches the compact mobile split", () => {
+  const markers = [
+    'className="name"',
+    'className="hero-role"',
+    'className="hero-status"',
+    'className="hero-proposition"',
+    'className="hero-action hero-action-primary"',
+    'className="hero-portrait"',
+    'className="hero-proof"',
+    'className="hero-action hero-action-secondary"',
+  ];
+
+  let previousIndex = -1;
+  for (const marker of markers) {
+    const index = manifestSource.indexOf(marker);
+    assert.ok(index > previousIndex, `${marker} should follow the prior hero element`);
+    previousIndex = index;
+  }
+});
+
+test("site navigation routes Essays to the canonical internal index", () => {
+  assert.match(
+    manifestSource,
+    /key:\s*"essays"[\s\S]*?href:\s*"\/essays"[\s\S]*?label:\s*"Essays"/
+  );
+});
+
+test("Aurora keeps explicit playback active while its player is onscreen", () => {
+  assert.match(
+    auroraSource,
+    /<section\s+ref=\{stageViewportRef\}\s+className="aurora-stage"/
+  );
+  assert.match(auroraSource, /const isVisible = entry\.isIntersecting;/);
+});
+
+test("the project manifest covers every published work item", () => {
+  const workDirectory = fileURLToPath(new URL("../content/work", import.meta.url));
+  const contentSlugs = readdirSync(workDirectory)
+    .filter((file) => file.endsWith(".mdx"))
+    .map((file) => file.replace(/\.mdx$/, ""))
+    .sort();
+  const manifestSlugs = [
+    ...projectManifestSource.matchAll(/^\s{4}slug: "([^"]+)",$/gm),
+  ]
+    .map((match) => match[1])
+    .sort();
+
+  assert.deepEqual(manifestSlugs, contentSlugs);
+});
 
 function toUrl(pathOrUrl) {
   return new URL(pathOrUrl, `${baseUrl}/`).href;
@@ -77,12 +180,24 @@ async function readHtml(pathOrUrl) {
   const href = toUrl(pathOrUrl);
   if (htmlCache.has(href)) return htmlCache.get(href);
 
-  const response = await request(href);
-  assert.equal(response.status, 200, `${href} should return 200`);
+  const htmlPromise = (async () => {
+    const response = await request(href);
+    assert.equal(response.status, 200, `${href} should return 200`);
+    return response.text();
+  })();
 
-  const html = await response.text();
-  htmlCache.set(href, html);
-  return html;
+  htmlCache.set(href, htmlPromise);
+  return htmlPromise;
+}
+
+async function readSitemap() {
+  sitemapPromise ??= (async () => {
+    const response = await request("/sitemap.xml");
+    assert.equal(response.status, 200);
+    return response.text();
+  })();
+
+  return sitemapPromise;
 }
 
 function tagContents(html, tagName) {
@@ -127,10 +242,7 @@ function sitemapUrls(xml) {
 }
 
 test("sitemap exposes the important public routes", async () => {
-  const response = await request("/sitemap.xml");
-  assert.equal(response.status, 200);
-
-  const paths = sitemapUrls(await response.text()).map((url) => new URL(url).pathname);
+  const paths = sitemapUrls(await readSitemap()).map((url) => new URL(url).pathname);
 
   for (const path of expectedSitemapPaths) {
     assert.ok(
@@ -141,12 +253,11 @@ test("sitemap exposes the important public routes", async () => {
 });
 
 test("sitemap pages load with canonical URLs, one H1, metadata, and image alts", async () => {
-  const sitemapResponse = await request("/sitemap.xml");
-  const urls = sitemapUrls(await sitemapResponse.text());
+  const urls = sitemapUrls(await readSitemap());
 
   assert.ok(urls.length > 0, "sitemap should contain URLs");
 
-  for (const url of urls) {
+  await Promise.all(urls.map(async (url) => {
     const path = new URL(url).pathname;
     const html = await readHtml(path);
 
@@ -166,20 +277,33 @@ test("sitemap pages load with canonical URLs, one H1, metadata, and image alts",
     for (const image of tags(html, "img")) {
       assert.notEqual(attr(image, "alt"), null, `${url} image should include alt`);
     }
-  }
+  }));
 });
 
-test("legacy routes redirect to current sections", async () => {
-  const blog = await request("/blog", { redirect: "manual" });
-  assert.match(String(blog.status), /^30[78]$/);
-  assert.equal(blog.headers.get("location"), "/essays");
+test("legacy routes redirect permanently to canonical sections", async () => {
+  const blog = await request("/blog?source=legacy", { redirect: "manual" });
+  assert.equal(blog.status, 308);
+  assert.equal(blog.headers.get("location"), "/essays?source=legacy");
 
-  const workProject = await request("/work/imerit", { redirect: "manual" });
-  assert.match(String(workProject.status), /^30[78]$/);
-  assert.equal(workProject.headers.get("location"), "/projects/imerit");
+  const blogPost = await request("/blog/forward-deployed-hospitality?source=legacy", {
+    redirect: "manual",
+  });
+  assert.equal(blogPost.status, 308);
+  assert.equal(
+    blogPost.headers.get("location"),
+    "/essays/forward-deployed-hospitality?source=legacy"
+  );
+
+  const work = await request("/work?source=legacy", { redirect: "manual" });
+  assert.equal(work.status, 308);
+  assert.equal(work.headers.get("location"), "/projects?source=legacy");
+
+  const workProject = await request("/work/imerit?source=legacy", { redirect: "manual" });
+  assert.equal(workProject.status, 308);
+  assert.equal(workProject.headers.get("location"), "/projects/imerit?source=legacy");
 });
 
-test("homepage work list stays reverse chronological", async () => {
+test("homepage features the strongest cleared project proof", async () => {
   const html = await readHtml("/");
   const workHtml = html.slice(html.indexOf('id="work-heading"'));
   let previousIndex = -1;
@@ -189,16 +313,35 @@ test("homepage work list stays reverse chronological", async () => {
     assert.ok(index > previousIndex, `${href} should appear after the prior work row`);
     previousIndex = index;
   }
+
+  assert.doesNotMatch(workHtml, /href="\/projects\/(?:daybreaker-health|checkfit|monster-fitness)"/);
 });
 
 test("homepage makes primary paths explicit", async () => {
   const html = await readHtml("/");
+  const visibleText = stripTags(html);
 
-  assert.match(html, /<a href="\/#work-heading">(?:<[^>]+>)*Work<\/a>/i);
+  assert.match(html, /<a href="#work-heading">(?:<[^>]+>)*Work<\/a>/i);
+  assert.match(html, /<a href="\/essays">(?:<[^>]+>)*Essays<\/a>/i);
   assert.match(html, /<a href="\/side-quests">(?:<[^>]+>)*Side Quests<\/a>/i);
-  assert.match(html, /href="mailto:chathamworks@gmail\.com"[^>]*>[^<]*Email Lucas/i);
-  assert.match(html, /I build high-trust AI systems people rely on in domains where mistakes have real consequences, from autonomous vehicles to healthcare/i);
+  assert.match(html, /<a href="#contact">(?:<[^>]+>)*Contact<\/a>/i);
+  assert.match(visibleText, /Founder · Product and operations/i);
+  assert.match(visibleText, /Open to select advisory and operating partnerships\./i);
+  assert.match(visibleText, /I turn high-stakes, expert-led work into AI products and operating systems people can understand, run, and trust\./i);
+  assert.match(visibleText, /Ground Control: 6,000\+ annotators · 20\+ tools · 5 time zones/i);
   assert.match(html, /href="#work-heading"[^>]*>[\s\S]*?View selected work/i);
+  assert.match(html, /href="mailto:chathamworks@gmail\.com\?subject=Hard%20problem%3A"[^>]*>[\s\S]*?Discuss a hard problem/i);
+});
+
+test("homepage metadata and Person schema match the advisory offer", async () => {
+  const html = await readHtml("/");
+
+  assert.match(html, /<title>Lucas Chatham \| Founder, product operator, and advisor<\/title>/i);
+  assert.match(html, /Lucas Chatham advises founders and executives on high-stakes AI products and operating systems, turning expert-led work into systems teams can run and trust\./i);
+  assert.match(html, /"jobTitle":"Founder, product operator, and advisor"/);
+  assert.match(html, /https:\/\/www\.linkedin\.com\/in\/lucaschatham\//);
+  assert.match(html, /https:\/\/github\.com\/lucaschatham/);
+  assert.match(html, /https:\/\/x\.com\/lukeoutthebox/);
 });
 
 test("homepage career throughline stays concise", async () => {
@@ -230,30 +373,45 @@ test("frontmatter tags use the shared capsule system on lists and detail pages",
 });
 
 test("portfolio project pages keep the agreed case-study template", async () => {
-  const sitemapResponse = await request("/sitemap.xml");
-  const urls = sitemapUrls(await sitemapResponse.text()).filter((url) =>
+  const urls = sitemapUrls(await readSitemap()).filter((url) =>
     new URL(url).pathname.startsWith("/projects/")
   );
 
-  for (const url of urls) {
+  await Promise.all(urls.map(async (url) => {
     const html = await readHtml(new URL(url).pathname);
     const h2s = tagContents(html, "h2");
 
     for (const heading of projectTemplateHeadings) {
       assert.ok(h2s.includes(heading), `${url} should include "${heading}"`);
     }
-  }
+
+    const snapshotIndex = html.indexOf('aria-label="Project snapshot"');
+    const mediaIndex = html.indexOf('class="project-hero-media"');
+    assert.ok(snapshotIndex !== -1, `${url} should expose a project snapshot`);
+    assert.ok(
+      mediaIndex === -1 || snapshotIndex < mediaIndex,
+      `${url} should show snapshot evidence before hero media`
+    );
+    assert.match(html, /class="project-attribution"/);
+    assert.match(html, /class="project-next"/);
+    assert.match(html, /"@type":"CreativeWork"/);
+  }));
 });
 
-test("footer keeps contact and publishing paths visible", async () => {
+test("contact band qualifies the problem and keeps fallbacks visible", async () => {
   const html = await readHtml("/");
 
+  assert.match(html, /id="contact"/);
+  assert.match(html, /Have a hard problem\?/);
+  assert.match(html, /Tell me what is stuck\./);
+  assert.match(html, /Two sentences about your problem is plenty\./);
+  assert.match(html, /Open to select advisory and operating partnerships\./);
   assert.match(html, /https:\/\/www\.linkedin\.com\/in\/lucaschatham\//);
-  assert.match(html, /mailto:chathamworks@gmail\.com/);
+  assert.match(html, /mailto:chathamworks@gmail\.com\?subject=Hard%20problem%3A/);
+  assert.match(html, />chathamworks@gmail\.com</);
   assert.match(html, /https:\/\/github\.com\/lucaschatham/);
-  assert.match(html, /https:\/\/levelwithlucas\.lucaschatham\.com\/archive/);
-  assert.match(html, /aria-label="Blog newsletter"/);
-  assert.match(html, /<span class="ic">[\s\S]*?<\/span>\s*Blog\s*<\/a>/);
+  assert.doesNotMatch(html, /levelwithlucas\.lucaschatham\.com\/archive/);
+  assert.match(html, /href="\/rss"/);
 });
 
 test("robots and RSS endpoints are present", async () => {
@@ -264,5 +422,55 @@ test("robots and RSS endpoints are present", async () => {
   const rss = await request("/rss");
   assert.equal(rss.status, 200);
   assert.match(rss.headers.get("content-type") ?? "", /xml/);
-  assert.match(await rss.text(), /<rss\b/);
+  const xml = await rss.text();
+  assert.match(xml, /<rss\b/);
+  assert.match(xml, /<link>https:\/\/www\.lucaschatham\.com\/essays\/forward-deployed-hospitality<\/link>/);
+  assert.match(xml, /<guid>https:\/\/www\.lucaschatham\.com\/blog\/forward-deployed-hospitality<\/guid>/);
+});
+
+test("essay details use Essays canonicals and Article schema", async () => {
+  const html = await readHtml("/essays/forward-deployed-hospitality");
+
+  assert.equal(
+    normalizeUrl(canonicalHref(html) ?? ""),
+    "https://www.lucaschatham.com/essays/forward-deployed-hospitality"
+  );
+  assert.match(html, /"@type":"Article"/);
+});
+
+test("essay and project details expose route-aware social cards", async () => {
+  for (const path of [
+    "/projects/imerit",
+    "/essays/forward-deployed-hospitality",
+  ]) {
+    const html = await readHtml(path);
+    const meta = tags(html, "meta");
+    const openGraphImage = meta.find(
+      (tag) => attr(tag, "property") === "og:image"
+    );
+    const twitterImage = meta.find(
+      (tag) => attr(tag, "name") === "twitter:image"
+    );
+    const openGraphUrl = attr(openGraphImage ?? "", "content") ?? "";
+    const twitterUrl = attr(twitterImage ?? "", "content") ?? "";
+
+    assert.match(openGraphUrl, new RegExp(`${path}/opengraph-image`));
+    assert.match(twitterUrl, new RegExp(`${path}/opengraph-image`));
+
+    for (const imageUrl of new Set([openGraphUrl, twitterUrl])) {
+      const parsedUrl = new URL(imageUrl);
+      const response = await request(`${parsedUrl.pathname}${parsedUrl.search}`);
+      assert.equal(response.status, 200);
+      assert.match(response.headers.get("content-type") ?? "", /^image\/png/);
+    }
+  }
+});
+
+test("404 pages are noindex and leave navigation inactive", async () => {
+  const response = await request("/this-route-does-not-exist");
+  assert.equal(response.status, 404);
+  const html = await response.text();
+
+  assert.match(html, /<meta\b[^>]*name="robots"[^>]*content="noindex"/i);
+  assert.doesNotMatch(html, /aria-current="page"/);
 });

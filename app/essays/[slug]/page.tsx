@@ -6,6 +6,7 @@ import { ReadingProgress } from "@/components/reading-progress";
 import { TagList } from "@/components/tag-list";
 import { SITE_URL } from "@/lib/constants";
 import { getPost, getPosts, parseTags } from "@/lib/content";
+import { formatPostTitle } from "@/lib/formatting";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -35,6 +36,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       tags,
       url: `${SITE_URL}/essays/${slug}`,
     },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: post.frontmatter.description,
+      images: [`${SITE_URL}/essays/${slug}/opengraph-image`],
+    },
     alternates: {
       canonical: `${SITE_URL}/essays/${slug}`,
     },
@@ -47,9 +54,31 @@ export default async function EssayPost({ params }: Props) {
   if (!post) notFound();
 
   const tags = parseTags(post.frontmatter.tags);
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: formatPostTitle(
+      post.frontmatter.title,
+      post.frontmatter.subtitle
+    ),
+    description: post.frontmatter.description,
+    datePublished: post.frontmatter.date,
+    dateModified: post.frontmatter.date,
+    mainEntityOfPage: `${SITE_URL}/essays/${slug}`,
+    keywords: tags,
+    author: {
+      "@type": "Person",
+      name: "Lucas Chatham",
+      url: SITE_URL,
+    },
+  };
 
   return (
     <ManifestPage active="essays">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <ReadingProgress />
       <article className="content-shell">
         <header className="mb-8">
@@ -77,8 +106,4 @@ export default async function EssayPost({ params }: Props) {
       </article>
     </ManifestPage>
   );
-}
-
-function formatPostTitle(title: string, subtitle?: string) {
-  return subtitle ? `${title}: ${subtitle}` : title;
 }

@@ -4,6 +4,7 @@ import { NavigationTools } from "@/components/navigation-tools";
 import { TagList } from "@/components/tag-list";
 import { CONTACT_EMAIL, CONTACT_MAILTO } from "@/lib/constants";
 import { parseTags, type Post } from "@/lib/content";
+import { formatShortDate } from "@/lib/formatting";
 import { getProjectProfile } from "@/lib/project-manifest";
 
 type NavKey = "home" | "essays" | "projects" | "side-quests";
@@ -26,8 +27,7 @@ type RowIcon = {
 
 type RowLogo = {
   label: string;
-  image?: string;
-  mark?: string;
+  image: string;
   variant?: "square" | "wide";
   secondary?: Omit<RowLogo, "secondary">;
 };
@@ -60,7 +60,7 @@ export function postToRow(
     subtitle: post.frontmatter.subtitle,
     dek: post.frontmatter.description,
     href: `/${basePath}/${post.slug}`,
-    meta: formatEssayDate(post.frontmatter.date),
+    meta: formatShortDate(post.frontmatter.date),
     tags: parseTags(post.frontmatter.tags),
   };
 }
@@ -121,7 +121,7 @@ export function ManifestNav({ active }: { active: NavKey | null }) {
     },
     {
       key: "essays",
-      href: "https://levelwithlucas.lucaschatham.com/archive",
+      href: "/essays",
       label: "Essays",
     },
     { key: "side-quests", href: "/side-quests", label: "Side Quests" },
@@ -392,7 +392,7 @@ function RowLogoTile({
 }) {
   const className = [
     "row-logo-tile",
-    logo.image ? "has-image" : "",
+    "has-image",
     logo.variant === "wide" ? "wide" : "",
     secondary ? "secondary" : "",
   ]
@@ -401,18 +401,14 @@ function RowLogoTile({
 
   return (
     <span className={className} aria-hidden="true">
-      {logo.image ? (
-        <img
-          src={logo.image}
-          alt=""
-          width={logo.variant === "wide" ? 520 : 100}
-          height={logo.variant === "wide" ? 199 : 100}
-          loading="lazy"
-          decoding="async"
-        />
-      ) : (
-        <span className="row-logo-mark">{logo.mark}</span>
-      )}
+      <img
+        src={logo.image}
+        alt=""
+        width={logo.variant === "wide" ? 520 : 100}
+        height={logo.variant === "wide" ? 199 : 100}
+        loading="lazy"
+        decoding="async"
+      />
     </span>
   );
 }
@@ -475,22 +471,6 @@ export function SocialFooter() {
         </span>
         RSS
       </a>
-      {/* X hidden for now — uncomment to restore.
-      <a href="https://x.com/lukeoutthebox" rel="me noopener" aria-label="X (formerly Twitter)"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span>X</a>
-      */}
-      {/* Podcast is hidden until a real destination exists.
-      <span
-        className="social-disabled"
-        role="link"
-        aria-disabled="true"
-        aria-label="Podcast"
-      >
-        <span className="ic">
-          <PodcastIcon />
-        </span>
-        Podcast
-      </span>
-      */}
       </nav>
     </section>
   );
@@ -503,14 +483,6 @@ export function ManifestFooter() {
       <span>Made in California</span>
     </footer>
   );
-}
-
-function formatEssayDate(dateString: string): string {
-  return new Date(`${dateString}T00:00:00`).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
 }
 
 function ArrowUpRightIcon() {
@@ -571,16 +543,6 @@ function FeedIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M5 3a16 16 0 0 1 16 16M5 9a10 10 0 0 1 10 10M6 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z" />
-    </svg>
-  );
-}
-
-// Hidden until podcast links return.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function PodcastIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24zm0 4.69a3.41 3.41 0 1 1 0 6.82 3.41 3.41 0 0 1 0-6.82zm0 14.74c-2.84 0-5.36-1.46-6.83-3.66a1.7 1.7 0 0 1 .73-2.5c1.8-.88 3.9-1.39 6.1-1.39 2.2 0 4.3.51 6.1 1.39a1.7 1.7 0 0 1 .73 2.5A8.18 8.18 0 0 1 12 19.43z" />
     </svg>
   );
 }

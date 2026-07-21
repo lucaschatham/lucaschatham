@@ -512,23 +512,8 @@ button:focus-visible,
   object-fit: contain;
 }
 
-.row-logo-tile:not(.has-image) {
-  background:
-    linear-gradient(135deg, rgba(110, 231, 249, .2), transparent 62%),
-    rgba(240, 240, 236, .035);
-  border-color: rgba(110, 231, 249, .62);
-}
-
 .row-logo-tile.secondary {
   border-color: rgba(255, 0, 191, .5);
-}
-
-.row-logo-mark {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 650;
-  letter-spacing: .08em;
-  color: var(--cream);
 }
 
 .row-logo-arrow {
@@ -710,8 +695,7 @@ button:focus-visible,
   border-bottom: 1px solid var(--line);
 }
 
-.com a,
-.com .social-disabled {
+.com a {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -728,8 +712,7 @@ button:focus-visible,
   transition: color .12s, background .12s, transform .12s;
 }
 
-.com a:last-child,
-.com .social-disabled:last-child {
+.com a:last-child {
   border-right: 0;
 }
 
@@ -748,8 +731,7 @@ button:focus-visible,
   transform: scale(.96);
 }
 
-.com a .ic,
-.com .social-disabled .ic {
+.com a .ic {
   width: 18px;
   height: 18px;
   margin-bottom: 7px;
@@ -762,12 +744,7 @@ button:focus-visible,
   color: var(--silver-100);
 }
 
-.com .social-disabled {
-  cursor: default;
-}
-
-.com a .ic svg,
-.com .social-disabled .ic svg {
+.com a .ic svg {
   width: 100%;
   height: 100%;
   display: block;
@@ -1538,7 +1515,7 @@ summary:focus-visible,
 }
 
 .nav a {
-  padding: 40px 0;
+  padding: 0;
   color: var(--gray-400);
   border-radius: 0;
   transition: color 150ms ease;
@@ -2335,8 +2312,7 @@ summary:focus-visible,
   border: 0;
 }
 
-.com a,
-.com .social-disabled {
+.com a {
   display: inline-flex;
   flex-direction: row;
   gap: 8px;
@@ -2362,8 +2338,7 @@ summary:focus-visible,
   color: var(--silver-100);
 }
 
-.com a .ic,
-.com .social-disabled .ic {
+.com a .ic {
   width: 16px;
   height: 16px;
   margin: 0;

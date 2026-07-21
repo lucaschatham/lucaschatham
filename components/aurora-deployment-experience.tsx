@@ -276,7 +276,7 @@ export function AuroraDeploymentExperience({ tags }: { tags?: string[] }) {
   const [isPaused, setIsPaused] = useState(true);
   const [isReelVisible, setIsReelVisible] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-  const reelViewportRef = useRef<HTMLDivElement>(null);
+  const stageViewportRef = useRef<HTMLElement>(null);
   const reelHasBeenVisible = useRef(false);
   const touchStart = useRef<{ x: number; y: number } | null>(null);
   const stage = stages[activeIndex];
@@ -313,7 +313,7 @@ export function AuroraDeploymentExperience({ tags }: { tags?: string[] }) {
   }, []);
 
   useEffect(() => {
-    const target = reelViewportRef.current;
+    const target = stageViewportRef.current;
 
     if (!target || !("IntersectionObserver" in window)) {
       setIsReelVisible(true);
@@ -322,7 +322,7 @@ export function AuroraDeploymentExperience({ tags }: { tags?: string[] }) {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        const isVisible = entry.isIntersecting && entry.intersectionRatio >= 0.5;
+        const isVisible = entry.isIntersecting;
         setIsReelVisible(isVisible);
 
         if (isVisible) {
@@ -331,7 +331,7 @@ export function AuroraDeploymentExperience({ tags }: { tags?: string[] }) {
           setIsPaused(true);
         }
       },
-      { threshold: [0, 0.5, 1] },
+      { threshold: [0] },
     );
 
     observer.observe(target);
@@ -404,8 +404,8 @@ export function AuroraDeploymentExperience({ tags }: { tags?: string[] }) {
         </p>
       </header>
 
-      <section className="aurora-stage" aria-labelledby="aurora-stage-title">
-        <div ref={reelViewportRef} className="aurora-stage-media">
+      <section ref={stageViewportRef} className="aurora-stage" aria-labelledby="aurora-stage-title">
+        <div className="aurora-stage-media">
           <button
             type="button"
             className="aurora-image-wrap aurora-image-reel"

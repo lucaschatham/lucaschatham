@@ -39,6 +39,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       tags,
       url: `${SITE_URL}/projects/${slug}`,
     },
+    twitter: {
+      card: "summary_large_image",
+      title: project.frontmatter.title,
+      description: project.frontmatter.description,
+      images: [`${SITE_URL}/projects/${slug}/opengraph-image`],
+    },
     alternates: {
       canonical: `${SITE_URL}/projects/${slug}`,
     },
@@ -175,9 +181,7 @@ function ProjectHeroMedia({
   );
 }
 
-function ProjectSnapshot({ items }: { items?: readonly ProjectSnapshotItem[] }) {
-  if (!items?.length) return null;
-
+function ProjectSnapshot({ items }: { items: readonly ProjectSnapshotItem[] }) {
   return (
     <section className="project-snapshot" aria-label="Project snapshot">
       {items.map((item) => (
@@ -195,11 +199,9 @@ function ProjectBrandMark({
   brand,
   slug,
 }: {
-  brand?: ProjectBrand;
+  brand: ProjectBrand;
   slug: string;
 }) {
-  if (!brand) return null;
-
   return (
     <div className={`project-brand project-brand-${slug}`}>
       <BrandTile unit={brand.primary} />
