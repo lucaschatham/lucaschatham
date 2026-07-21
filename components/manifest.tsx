@@ -296,18 +296,35 @@ export function Lede() {
 export function CareerThroughline() {
   return (
     <section className="throughline" aria-labelledby="throughline-heading">
-      <div className="throughline-heading-row">
-        <h2 id="throughline-heading">Career throughline</h2>
-        <span>The pattern</span>
-      </div>
+      <h2 id="throughline-heading">Different industries, same job</h2>
       <p className="throughline-summary">
-        Across AI, mapping, health, coaching, and sales:
+        I keep finding the same problem: valuable work trapped in someone&apos;s
+        head or scattered across messy operations. I make it visible, turn it
+        into a system, and measure whether it works.
       </p>
-      <ol className="throughline-path">
-        <li>Make invisible work legible</li>
-        <li>Turn judgment into systems</li>
-        <li>Scale trust with proof</li>
-      </ol>
+      <ul className="throughline-proofs" aria-label="Selected career evidence">
+        <li>
+          <Link href="/projects/blue-vision-labs-lyft">
+            <span className="throughline-domain">Mapping</span>
+            <strong>3 city pilots → 2 countries</strong>
+            <span className="throughline-source">Blue Vision Labs / Lyft</span>
+          </Link>
+        </li>
+        <li>
+          <Link href="/projects/imerit">
+            <span className="throughline-domain">AI operations</span>
+            <strong>6,000+ annotators · 20+ tools · 5 time zones</strong>
+            <span className="throughline-source">iMerit Ground Control</span>
+          </Link>
+        </li>
+        <li>
+          <Link href="/projects/gymnazo">
+            <span className="throughline-domain">Coaching</span>
+            <strong>11+ coaches trained · 209% YoY growth</strong>
+            <span className="throughline-source">Gymnazo</span>
+          </Link>
+        </li>
+      </ul>
     </section>
   );
 }

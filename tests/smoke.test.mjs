@@ -181,10 +181,11 @@ test("legacy routes redirect to current sections", async () => {
 
 test("homepage work list stays reverse chronological", async () => {
   const html = await readHtml("/");
+  const workHtml = html.slice(html.indexOf('id="work-heading"'));
   let previousIndex = -1;
 
   for (const href of expectedWorkOrder) {
-    const index = html.indexOf(`href="${href}"`);
+    const index = workHtml.indexOf(`href="${href}"`);
     assert.ok(index > previousIndex, `${href} should appear after the prior work row`);
     previousIndex = index;
   }
@@ -203,11 +204,12 @@ test("homepage makes primary paths explicit", async () => {
 test("homepage career throughline stays concise", async () => {
   const html = await readHtml("/");
 
-  assert.match(html, /Across AI, mapping, health, coaching, and sales:/);
-  assert.match(html, /Make invisible work legible/);
-  assert.match(html, /Turn judgment into systems/);
-  assert.match(html, /Scale trust with proof/);
-  assert.doesNotMatch(html, /THE PATTERN/);
+  assert.match(html, /Different industries, same job/);
+  assert.match(html, /valuable work trapped in someone(?:&apos;|&#x27;)s head or scattered across messy operations/);
+  assert.match(html, /href="\/projects\/blue-vision-labs-lyft"[\s\S]*?3 city pilots → 2 countries/);
+  assert.match(html, /href="\/projects\/imerit"[\s\S]*?6,000\+ annotators · 20\+ tools · 5 time zones/);
+  assert.match(html, /href="\/projects\/gymnazo"[\s\S]*?11\+ coaches trained · 209% YoY growth/);
+  assert.doesNotMatch(html, /The pattern|Make invisible work legible|Turn judgment into systems|Scale trust with proof/i);
 });
 
 test("frontmatter tags use the shared capsule system on lists and detail pages", async () => {
