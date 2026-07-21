@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { TagList } from "@/components/tag-list";
 import { ThemeSwitch } from "@/components/theme-switch";
+import { CONTACT_EMAIL, CONTACT_MAILTO } from "@/lib/constants";
 import { parseTags, type Post } from "@/lib/content";
 
 type NavKey = "home" | "essays" | "projects" | "side-quests";
@@ -311,7 +312,7 @@ export function Lede() {
           View selected work
           <ArrowRightIcon />
         </Link>
-        <a className="hero-action" href="mailto:chathamworks@gmail.com">
+        <a className="hero-action" href={CONTACT_MAILTO}>
           Email Lucas
         </a>
       </div>
@@ -517,16 +518,24 @@ function RowLogoTile({
 
 export function SocialFooter() {
   return (
-    <section className="contact-band" aria-labelledby="contact-heading">
-      <div>
+    <section className="contact-band" id="contact" aria-labelledby="contact-heading">
+      <div className="contact-copy">
         <p className="contact-kicker">Have a hard problem?</p>
-        <h2 id="contact-heading">Let&apos;s compare notes.</h2>
+        <h2 id="contact-heading">Tell me what is stuck.</h2>
+        <p className="contact-helper">Two sentences about your problem is plenty.</p>
+        <p className="contact-status">
+          Open to select advisory and operating partnerships.
+        </p>
+        <a className="contact-email" href={CONTACT_MAILTO}>
+          {CONTACT_EMAIL}
+        </a>
       </div>
       <nav className="com" aria-label="Social">
       <a
         href="https://www.linkedin.com/in/lucaschatham/"
         rel="me noopener"
-        aria-label="LinkedIn"
+        target="_blank"
+        aria-label="LinkedIn (opens in a new tab)"
       >
         <span className="ic">
           <LinkedInIcon />
@@ -534,7 +543,7 @@ export function SocialFooter() {
         LinkedIn
       </a>
       <a
-        href="mailto:chathamworks@gmail.com"
+        href={CONTACT_MAILTO}
         rel="me"
         aria-label="Email Lucas Chatham"
       >
@@ -546,7 +555,8 @@ export function SocialFooter() {
       <a
         href="https://github.com/lucaschatham"
         rel="me noopener"
-        aria-label="GitHub"
+        target="_blank"
+        aria-label="GitHub (opens in a new tab)"
       >
         <span className="ic">
           <GitHubIcon />
@@ -554,14 +564,13 @@ export function SocialFooter() {
         GitHub
       </a>
       <a
-        href="https://levelwithlucas.lucaschatham.com/archive"
-        rel="me noopener"
-        aria-label="Blog newsletter"
+        href="/rss"
+        aria-label="Essays RSS feed"
       >
         <span className="ic">
-          <NewsletterIcon />
+          <FeedIcon />
         </span>
-        Blog
+        RSS
       </a>
       {/* X hidden for now — uncomment to restore.
       <a href="https://x.com/lukeoutthebox" rel="me noopener" aria-label="X (formerly Twitter)"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span>X</a>
@@ -655,10 +664,10 @@ function EmailIcon() {
   );
 }
 
-function NewsletterIcon() {
+function FeedIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zM4 6l8 5 8-5H4zm0 12V8.236l8 5 8-5V18H4z" />
+      <path d="M5 3a16 16 0 0 1 16 16M5 9a10 10 0 0 1 10 10M6 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z" />
     </svg>
   );
 }

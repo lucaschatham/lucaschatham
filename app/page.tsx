@@ -23,14 +23,19 @@ const personSchema = {
   name: "Lucas Chatham",
   url: SITE_URL,
   image: `${SITE_URL}/images/lucas-portrait-clean.jpg`,
-  sameAs: ["https://x.com/lukeoutthebox"],
+  jobTitle: "Founder, product operator, and advisor",
+  sameAs: [
+    "https://www.linkedin.com/in/lucaschatham/",
+    "https://github.com/lucaschatham",
+    "https://x.com/lukeoutthebox",
+  ],
   address: {
     "@type": "PostalAddress",
     addressRegion: "CA",
     addressCountry: "US",
   },
   description:
-    "Product leader for enterprise AI, data operations, and high-stakes customer workflows.",
+    "Lucas Chatham advises founders and executives on high-stakes AI products and operating systems.",
 };
 
 export default function Home() {
