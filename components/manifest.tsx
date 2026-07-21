@@ -14,6 +14,12 @@ type Row = {
   meta: string;
   tags?: string[];
   logo?: RowLogo;
+  icon?: RowIcon;
+};
+
+type RowIcon = {
+  label: string;
+  image: string;
 };
 
 type RowLogo = {
@@ -53,6 +59,25 @@ const projectRowLogos: Record<string, RowLogo> = {
     label: "Monster Fitness",
     image: "/images/brands/monster-fitness-logo.png",
     variant: "wide",
+  },
+};
+
+const sideQuestRowIcons: Record<string, RowIcon> = {
+  "aurora-inl": {
+    label: "Laboratory flask",
+    image: "/images/side-quests/icons/lab.webp",
+  },
+  "diy-gym": {
+    label: "Dumbbell",
+    image: "/images/side-quests/icons/gym.webp",
+  },
+  "home-remodel-custom-furniture": {
+    label: "Hand tools",
+    image: "/images/side-quests/icons/tools.webp",
+  },
+  "remnote-connect": {
+    label: "Connected links",
+    image: "/images/side-quests/icons/link.webp",
   },
 };
 
@@ -157,6 +182,7 @@ export function projectToRow(
         : "Read",
     tags: parseTags(project.frontmatter.tags),
     logo: isPortfolioProject ? projectRowLogos[project.slug] : undefined,
+    icon: isPortfolioProject ? undefined : sideQuestRowIcons[project.slug],
   };
 }
 
@@ -332,6 +358,7 @@ export function CareerThroughline() {
 export function RowsSection({
   heading,
   kicker,
+  description,
   rows,
   headingLevel = 2,
   allHref,
@@ -340,6 +367,7 @@ export function RowsSection({
 }: {
   heading: string;
   kicker: string;
+  description?: string;
   rows: Row[];
   headingLevel?: 1 | 2;
   allHref?: string;
@@ -351,10 +379,13 @@ export function RowsSection({
 
   return (
     <section className="man" aria-labelledby={headingId}>
-      <Heading className="h" id={headingId}>
-        <span className="l">{heading}</span>
-        {kicker && <span className="n">{kicker}</span>}
-      </Heading>
+      <div className="man-heading">
+        <Heading className="h" id={headingId}>
+          <span className="l">{heading}</span>
+          {kicker && <span className="n">{kicker}</span>}
+        </Heading>
+        {description && <p className="man-description">{description}</p>}
+      </div>
       {rows.map((row) => (
         <ManifestRow key={`${row.href}-${row.title}`} row={row} />
       ))}
@@ -379,7 +410,10 @@ function ManifestRow({ row }: { row: Row }) {
       <div className="row-main">
         {row.logo && <RowLogoMark logo={row.logo} />}
         <div className="t">
-          {row.title}
+          <span className="row-title-line">
+            {row.icon && <RowIconMark icon={row.icon} />}
+            <span>{row.title}</span>
+          </span>
           {row.subtitle && <span className="st">{row.subtitle}</span>}
           <TagList tags={row.tags} placement="row" />
           <span className="s">{row.dek}</span>
@@ -409,6 +443,21 @@ function ManifestRow({ row }: { row: Row }) {
     <Link className={className} href={row.href} prefetch={false}>
       {content}
     </Link>
+  );
+}
+
+function RowIconMark({ icon }: { icon: RowIcon }) {
+  return (
+    <span className="side-quest-icon" aria-hidden="true" title={icon.label}>
+      <img
+        src={icon.image}
+        alt=""
+        width="500"
+        height="500"
+        loading="lazy"
+        decoding="async"
+      />
+    </span>
   );
 }
 

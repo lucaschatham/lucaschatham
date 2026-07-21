@@ -572,9 +572,13 @@ summary:focus-visible,
   border-bottom: 1px solid var(--line);
 }
 
-.man .h {
+.man-heading {
   grid-column: 1 / -1;
   margin: 0 0 12px;
+}
+
+.man .h {
+  margin: 0;
   color: var(--steel-500);
   font-family: var(--font-sans);
   font-size: 14px;
@@ -602,6 +606,16 @@ summary:focus-visible,
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+}
+
+.man-description {
+  max-width: 54ch;
+  margin: 12px 0 0;
+  color: var(--gray-400);
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.55;
 }
 
 #work-heading {
@@ -669,6 +683,34 @@ summary:focus-visible,
   font-weight: 650;
   letter-spacing: -0.035em;
   line-height: 1.2;
+}
+
+.row-title-line {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.side-quest-icon {
+  display: inline-grid;
+  width: 62px;
+  height: 62px;
+  flex: 0 0 62px;
+  place-items: center;
+}
+
+.side-quest-icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.2));
+  transition: transform 180ms ease;
+}
+
+.r:hover .side-quest-icon img,
+.r:focus-visible .side-quest-icon img {
+  transform: translateY(-3px) rotate(-2deg) scale(1.04);
 }
 
 .r .t .st {
