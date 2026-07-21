@@ -99,7 +99,6 @@ test("hero source order matches the compact mobile split", () => {
   const markers = [
     'className="name"',
     'className="hero-role"',
-    'className="hero-status"',
     'className="hero-proposition"',
     'className="hero-action hero-action-primary"',
     'className="hero-portrait"',
@@ -333,7 +332,10 @@ test("homepage makes primary paths explicit", async () => {
   assert.match(html, /<a href="\/side-quests">(?:<[^>]+>)*Side Quests<\/a>/i);
   assert.match(html, /<a href="#contact">(?:<[^>]+>)*Contact<\/a>/i);
   assert.match(visibleText, /Founder · Operator/i);
-  assert.match(visibleText, /Open to select advisory and operating partnerships\./i);
+  assert.doesNotMatch(
+    visibleText,
+    /Open to select advisory and operating partnerships\./i
+  );
   assert.match(visibleText, /I build high-trust AI systems people rely on in domains where mistakes have real consequences, from autonomous vehicles to healthcare\./i);
   assert.doesNotMatch(manifestSource, /className="hero-proof"/);
   assert.match(html, /href="#work-heading"[^>]*>[\s\S]*?View selected work/i);
@@ -415,7 +417,10 @@ test("contact band keeps email private until the Email action is clicked", async
   assert.match(html, /Have a hard problem\?/);
   assert.match(html, /Tell me what is stuck\./);
   assert.doesNotMatch(html, /Two sentences about your problem is plenty\./);
-  assert.match(html, /Open to select advisory and operating partnerships\./);
+  assert.doesNotMatch(
+    html,
+    /Open to select advisory and operating partnerships\./
+  );
   assert.match(html, /https:\/\/www\.linkedin\.com\/in\/lucaschatham\//);
   assert.match(html, /mailto:chathamworks@gmail\.com\?subject=Hard%20problem%3A/);
   assert.equal((manifestSource.match(/href=\{CONTACT_MAILTO\}/g) ?? []).length, 1);
