@@ -176,6 +176,10 @@ async function request(pathOrUrl, init = {}) {
   }
 }
 
+async function discardResponse(response) {
+  await response.body?.cancel();
+}
+
 async function readHtml(pathOrUrl) {
   const href = toUrl(pathOrUrl);
   if (htmlCache.has(href)) return htmlCache.get(href);
@@ -284,6 +288,7 @@ test("legacy routes redirect permanently to canonical sections", async () => {
   const blog = await request("/blog?source=legacy", { redirect: "manual" });
   assert.equal(blog.status, 308);
   assert.equal(blog.headers.get("location"), "/essays?source=legacy");
+  await discardResponse(blog);
 
   const blogPost = await request("/blog/forward-deployed-hospitality?source=legacy", {
     redirect: "manual",
@@ -293,14 +298,17 @@ test("legacy routes redirect permanently to canonical sections", async () => {
     blogPost.headers.get("location"),
     "/essays/forward-deployed-hospitality?source=legacy"
   );
+  await discardResponse(blogPost);
 
   const work = await request("/work?source=legacy", { redirect: "manual" });
   assert.equal(work.status, 308);
   assert.equal(work.headers.get("location"), "/projects?source=legacy");
+  await discardResponse(work);
 
   const workProject = await request("/work/imerit?source=legacy", { redirect: "manual" });
   assert.equal(workProject.status, 308);
   assert.equal(workProject.headers.get("location"), "/projects/imerit?source=legacy");
+  await discardResponse(workProject);
 });
 
 test("homepage features the strongest cleared project proof", async () => {
@@ -462,6 +470,7 @@ test("essay and project details expose route-aware social cards", async () => {
       const response = await request(`${parsedUrl.pathname}${parsedUrl.search}`);
       assert.equal(response.status, 200);
       assert.match(response.headers.get("content-type") ?? "", /^image\/png/);
+      await discardResponse(response);
     }
   }
 });
