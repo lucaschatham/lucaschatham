@@ -177,9 +177,6 @@ export function Hero() {
           <p className="hero-role">
             Founder <span aria-hidden="true">·</span> Operator
           </p>
-          <p className="hero-status">
-            Open to select advisory and operating partnerships.
-          </p>
         </div>
         <p className="hero-proposition">
           I build high-trust AI systems people rely on in domains where mistakes
@@ -413,9 +410,6 @@ export function SocialFooter() {
       <div className="contact-copy">
         <p className="contact-kicker">Have a hard problem?</p>
         <h2 id="contact-heading">Tell me what is stuck.</h2>
-        <p className="contact-status">
-          Open to select advisory and operating partnerships.
-        </p>
       </div>
       <nav className="com" aria-label="Social">
       <a
