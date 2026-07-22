@@ -114,11 +114,7 @@ export function ManifestPage({
 
 export function ManifestNav({ active }: { active: NavKey | null }) {
   const links: { key: NavKey; href: string; label: string }[] = [
-    {
-      key: "projects",
-      href: active === "home" ? "#work-heading" : "/projects",
-      label: "Work",
-    },
+    { key: "projects", href: "/#work-heading", label: "Work" },
     {
       key: "essays",
       href: "https://levelwithlucas.lucaschatham.com/archive",

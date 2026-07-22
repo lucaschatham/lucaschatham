@@ -327,7 +327,7 @@ test("homepage makes primary paths explicit", async () => {
   const html = await readHtml("/");
   const visibleText = stripTags(html);
 
-  assert.match(html, /<a href="#work-heading">(?:<[^>]+>)*Work<\/a>/i);
+  assert.match(html, /<a href="\/#work-heading">(?:<[^>]+>)*Work<\/a>/i);
   assert.match(html, /<a href="https:\/\/levelwithlucas\.lucaschatham\.com\/archive">(?:<[^>]+>)*Essays<\/a>/i);
   assert.match(html, /<a href="\/side-quests">(?:<[^>]+>)*Side Quests<\/a>/i);
   assert.match(html, /<a href="#contact">(?:<[^>]+>)*Contact<\/a>/i);
@@ -339,6 +339,17 @@ test("homepage makes primary paths explicit", async () => {
   assert.match(visibleText, /I build high-trust AI systems people rely on in domains where mistakes have real consequences, from autonomous vehicles to healthcare\./i);
   assert.doesNotMatch(manifestSource, /className="hero-proof"/);
   assert.match(html, /href="#work-heading"[^>]*>[\s\S]*?View selected work/i);
+});
+
+test("Work navigation always targets the homepage work section", () => {
+  assert.match(
+    manifestSource,
+    /key:\s*"projects",\s*href:\s*"\/#work-heading",\s*label:\s*"Work"/s
+  );
+  assert.doesNotMatch(
+    manifestSource,
+    /href:\s*active\s*===\s*"home"\s*\?\s*"#work-heading"\s*:\s*"\/projects"/
+  );
 });
 
 test("homepage metadata and Person schema match the advisory offer", async () => {
