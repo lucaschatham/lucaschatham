@@ -407,62 +407,63 @@ export function SocialFooter() {
         <h2 id="contact-heading">Contact →</h2>
       </div>
       <nav className="com" aria-label="Social">
-      <a
-        href="https://www.linkedin.com/in/lucaschatham/"
-        rel="me noopener"
-        target="_blank"
-        aria-label="LinkedIn (opens in a new tab)"
-      >
-        <span className="ic">
-          <LinkedInIcon />
-        </span>
-        LinkedIn
-        <span aria-hidden="true">↗</span>
-      </a>
-      <a
-        href={CONTACT_MAILTO}
-        rel="me"
-        aria-label="Email Lucas Chatham"
-      >
-        <span className="ic">
-          <EmailIcon />
-        </span>
-        Email
-      </a>
-      <a
-        href="https://github.com/lucaschatham"
-        rel="me noopener"
-        target="_blank"
-        aria-label="GitHub (opens in a new tab)"
-      >
-        <span className="ic">
-          <GitHubIcon />
-        </span>
-        GitHub
-        <span aria-hidden="true">↗</span>
-      </a>
-      <a
-        href="https://levelwithlucas.lucaschatham.com/subscribe"
-        rel="noopener"
-        target="_blank"
-        aria-label="Newsletter (opens in a new tab)"
-      >
-        <span className="ic">
-          <NewsletterIcon />
-        </span>
-        Newsletter
-        <span aria-hidden="true">↗</span>
-      </a>
-      <a
-        href="https://x.com/lukeoutthebox"
-        rel="me noopener"
-        target="_blank"
-        aria-label="@lukeoutthebox on X (opens in a new tab)"
-      >
-        <span className="ic">
-          <XIcon />
-        </span>
-      </a>
+        <a
+          className="contact-cta"
+          href={CONTACT_MAILTO}
+          rel="me"
+          aria-label="Email Lucas Chatham"
+        >
+          <span className="ic">
+            <EmailIcon />
+          </span>
+          Email
+        </a>
+        <a
+          href="https://www.linkedin.com/in/lucaschatham/"
+          rel="me noopener"
+          target="_blank"
+          aria-label="LinkedIn (opens in a new tab)"
+        >
+          <span className="ic">
+            <LinkedInIcon />
+          </span>
+          LinkedIn
+          <span aria-hidden="true">↗</span>
+        </a>
+        <a
+          href="https://github.com/lucaschatham"
+          rel="me noopener"
+          target="_blank"
+          aria-label="GitHub (opens in a new tab)"
+        >
+          <span className="ic">
+            <GitHubIcon />
+          </span>
+          GitHub
+          <span aria-hidden="true">↗</span>
+        </a>
+        <a
+          href="https://levelwithlucas.lucaschatham.com/subscribe"
+          rel="noopener"
+          target="_blank"
+          aria-label="Newsletter (opens in a new tab)"
+        >
+          <span className="ic">
+            <NewsletterIcon />
+          </span>
+          Newsletter
+          <span aria-hidden="true">↗</span>
+        </a>
+        <a
+          href="https://x.com/lukeoutthebox"
+          rel="me noopener"
+          target="_blank"
+          aria-label="@lukeoutthebox on X (opens in a new tab)"
+        >
+          <span className="ic">
+            <XIcon />
+          </span>
+        </a>
       </nav>
     </section>
   );

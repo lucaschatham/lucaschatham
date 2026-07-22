@@ -2309,6 +2309,7 @@ summary:focus-visible,
   font-weight: 600;
   letter-spacing: 0;
   text-transform: none;
+  transition: border-color 150ms ease, background 150ms ease, color 150ms ease, transform 120ms ease;
 }
 
 .com a:last-child {
@@ -2319,6 +2320,23 @@ summary:focus-visible,
   border-color: var(--line-strong);
   background: var(--surface);
   color: var(--silver-100);
+}
+
+.com a.contact-cta {
+  border-color: var(--action-bg);
+  background: var(--action-bg);
+  color: var(--action-fg);
+}
+
+.com a.contact-cta:hover,
+.com a.contact-cta:focus-visible {
+  border-color: var(--action-bg-hover);
+  background: var(--action-bg-hover);
+  color: var(--action-fg);
+}
+
+.com a.contact-cta:active {
+  transform: scale(.97);
 }
 
 .com a .ic {

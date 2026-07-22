@@ -451,6 +451,22 @@ test("contact band shows the concise heading and complete action set", async () 
   assert.doesNotMatch(html, /href="\/rss"/);
 });
 
+test("email is the primary contact action", () => {
+  const emailIndex = manifestSource.indexOf('aria-label="Email Lucas Chatham"');
+  const linkedInIndex = manifestSource.indexOf(
+    'aria-label="LinkedIn (opens in a new tab)"'
+  );
+
+  assert.ok(emailIndex !== -1, "the email action should be present");
+  assert.ok(linkedInIndex !== -1, "the LinkedIn action should be present");
+  assert.ok(emailIndex < linkedInIndex, "email should be the first contact action");
+  assert.match(
+    manifestSource,
+    /<a\s+className="contact-cta"\s+href=\{CONTACT_MAILTO\}/,
+    "email should use the primary contact CTA treatment"
+  );
+});
+
 test("robots and RSS endpoints are present", async () => {
   const robots = await request("/robots.txt");
   assert.equal(robots.status, 200);
