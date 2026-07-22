@@ -175,8 +175,8 @@ export function Hero() {
           </p>
         </div>
         <p className="hero-proposition">
-          I build high-trust AI systems people rely on in domains where mistakes
-          have real consequences, from autonomous vehicles to healthcare.
+          I design and build AI systems you can trust when mistakes cost lives,
+          money, or time, from autonomous vehicles to healthcare.
         </p>
         <Link
           className="hero-action hero-action-primary"
