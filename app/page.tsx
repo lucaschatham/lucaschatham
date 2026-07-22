@@ -52,7 +52,7 @@ export default function Home() {
       {work.length > 0 && (
         <RowsSection
           heading="work"
-          kicker="PROOF"
+          kicker=""
           rows={work}
         />
       )}

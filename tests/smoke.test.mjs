@@ -332,6 +332,7 @@ test("homepage makes primary paths explicit", async () => {
   assert.match(html, /<a href="\/side-quests">(?:<[^>]+>)*Side Quests<\/a>/i);
   assert.match(html, /<a href="#contact">(?:<[^>]+>)*Contact<\/a>/i);
   assert.match(visibleText, /Founder · Operator/i);
+  assert.doesNotMatch(visibleText, /\bPROOF\b/);
   assert.doesNotMatch(
     visibleText,
     /Open to select advisory and operating partnerships\./i
