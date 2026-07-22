@@ -404,8 +404,7 @@ export function SocialFooter() {
   return (
     <section className="contact-band" id="contact" aria-labelledby="contact-heading">
       <div className="contact-copy">
-        <p className="contact-kicker">Have a hard problem?</p>
-        <h2 id="contact-heading">Tell me what is stuck.</h2>
+        <h2 id="contact-heading">Contact →</h2>
       </div>
       <nav className="com" aria-label="Social">
       <a
@@ -440,6 +439,18 @@ export function SocialFooter() {
           <GitHubIcon />
         </span>
         GitHub
+        <span aria-hidden="true">↗</span>
+      </a>
+      <a
+        href="https://levelwithlucas.lucaschatham.com/subscribe"
+        rel="noopener"
+        target="_blank"
+        aria-label="Newsletter (opens in a new tab)"
+      >
+        <span className="ic">
+          <NewsletterIcon />
+        </span>
+        Newsletter
         <span aria-hidden="true">↗</span>
       </a>
       <a
@@ -516,6 +527,14 @@ function EmailIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2Zm0 4.2-8 5-8-5V6l8 5 8-5v2.2Z" />
+    </svg>
+  );
+}
+
+function NewsletterIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm1 4v5h5V7H6Zm7 0v2h5V7h-5Zm0 4v2h5v-2h-5Zm-7 3v2h12v-2H6Zm0 4v1h12v-1H6Z" />
     </svg>
   );
 }

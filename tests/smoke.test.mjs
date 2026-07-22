@@ -419,15 +419,16 @@ test("portfolio project pages keep the agreed case-study template", async () => 
   }));
 });
 
-test("contact band keeps email private until the Email action is clicked", async () => {
+test("contact band shows the concise heading and complete action set", async () => {
   const html = await readHtml("/");
   const contactStart = html.indexOf('class="contact-band"');
   const contactEnd = html.indexOf("</section>", contactStart) + "</section>".length;
   const visibleContactText = stripTags(html.slice(contactStart, contactEnd));
 
   assert.match(html, /id="contact"/);
-  assert.match(html, /Have a hard problem\?/);
-  assert.match(html, /Tell me what is stuck\./);
+  assert.match(html, /<h2 id="contact-heading">Contact →<\/h2>/);
+  assert.doesNotMatch(visibleContactText, /Have a hard problem\?/);
+  assert.doesNotMatch(visibleContactText, /Tell me what is stuck\./);
   assert.doesNotMatch(html, /Two sentences about your problem is plenty\./);
   assert.doesNotMatch(
     html,
@@ -441,6 +442,11 @@ test("contact band keeps email private until the Email action is clicked", async
   assert.match(html, /https:\/\/x\.com\/lukeoutthebox/);
   assert.match(html, /aria-label="@lukeoutthebox on X \(opens in a new tab\)"/);
   assert.doesNotMatch(visibleContactText, /@lukeoutthebox/);
+  assert.match(
+    html,
+    /href="https:\/\/levelwithlucas\.lucaschatham\.com\/subscribe"/
+  );
+  assert.match(visibleContactText, /Newsletter/);
   assert.match(html, /levelwithlucas\.lucaschatham\.com\/archive/);
   assert.doesNotMatch(html, /href="\/rss"/);
 });
