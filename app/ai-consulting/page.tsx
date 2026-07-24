@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ManifestPage } from "@/components/manifest";
 import { SITE_URL } from "@/lib/constants";
-import { MaturityAssessment } from "./maturity-assessment";
+import { MaturityFramework } from "./maturity-framework";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -134,7 +134,7 @@ export default function AIConsultingPage() {
           </p>
           <div className={styles.heroActions}>
             <a className={styles.primaryButton} href="#maturity">
-              Find your stage <span aria-hidden="true">↓</span>
+              See where you are <span aria-hidden="true">↓</span>
             </a>
             <a className={styles.textLink} href={contactHref}>
               Bring me a workflow <span aria-hidden="true">↗</span>
@@ -188,16 +188,16 @@ export default function AIConsultingPage() {
 
         <section className={styles.maturity} id="maturity">
           <div className={styles.sectionHeading}>
-            <p className={styles.sectionLabel}>Self-assessment / 03</p>
+            <p className={styles.sectionLabel}>Digital + AI maturity / 03</p>
             <div>
-              <h2>Find your place on the AI Operating Maturity Matrix.</h2>
+              <h2>Place your company on the maturity framework.</h2>
               <p>
-                Answer five questions about how your organization works today.
-                Get a stage, capability profile, and practical next move.
+                Read left to right. Pick the stage that best describes how work
+                gets done today, then use its next move as your starting point.
               </p>
             </div>
           </div>
-          <MaturityAssessment />
+          <MaturityFramework />
         </section>
 
         <section className={styles.section} id="engagements">
@@ -329,4 +329,3 @@ export default function AIConsultingPage() {
     </ManifestPage>
   );
 }
-

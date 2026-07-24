@@ -4,28 +4,21 @@ import test from "node:test";
 
 const read = (path) => readFile(new URL(path, import.meta.url), "utf8");
 
-test("AI consulting page defines the complete maturity model", async () => {
-  const assessment = await read("../app/ai-consulting/maturity-assessment.tsx");
+test("AI consulting page defines a four-stage maturity framework", async () => {
+  const framework = await read("../app/ai-consulting/maturity-framework.tsx");
 
   for (const stage of [
-    "AI Curious",
-    "AI Assisted",
-    "Workflow Enabled",
-    "Operationally Embedded",
-    "AI Native",
+    "Experimenting",
+    "Standardizing",
+    "Operationalizing",
+    "Transforming",
   ]) {
-    assert.match(assessment, new RegExp(stage));
+    assert.match(framework, new RegExp(stage));
   }
 
-  for (const dimension of [
-    "People",
-    "Process",
-    "Systems",
-    "Governance",
-    "Measurement",
-  ]) {
-    assert.match(assessment, new RegExp(`dimension: "${dimension}"`));
-  }
+  assert.equal((framework.match(/number:/g) ?? []).length, 4);
+  assert.match(framework, /Some of us use ChatGPT sometimes/);
+  assert.match(framework, /AI changes how the business operates and competes/);
 });
 
 test("AI consulting page presents concrete offers and a contact path", async () => {
@@ -38,14 +31,16 @@ test("AI consulting page presents concrete offers and a contact path", async () 
   assert.match(page, /mailto:chathamworks@gmail\.com/);
 });
 
-test("assessment supports scoring, keyboard input, and an emailed result", async () => {
-  const assessment = await read("../app/ai-consulting/maturity-assessment.tsx");
+test("maturity framework is an immediately visible static visual", async () => {
+  const framework = await read("../app/ai-consulting/maturity-framework.tsx");
+  const page = await read("../app/ai-consulting/page.tsx");
 
-  assert.match(assessment, /Math\.round/);
-  assert.match(assessment, /<fieldset/);
-  assert.match(assessment, /ArrowRight/);
-  assert.match(assessment, /Email me this assessment/);
-  assert.match(assessment, /mailto:chathamworks@gmail\.com/);
+  assert.doesNotMatch(framework, /"use client"/);
+  assert.doesNotMatch(framework, /<fieldset/);
+  assert.doesNotMatch(framework, /<button/);
+  assert.match(framework, /You are here if/);
+  assert.match(framework, /Next move/);
+  assert.match(page, /See where you are/);
 });
 
 test("site navigation and sitemap expose AI consulting", async () => {
@@ -58,4 +53,3 @@ test("site navigation and sitemap expose AI consulting", async () => {
   );
   assert.match(sitemap, /AI_CONSULTING_URL/);
 });
-
