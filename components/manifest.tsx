@@ -7,7 +7,12 @@ import { parseTags, type Post } from "@/lib/content";
 import { formatShortDate } from "@/lib/formatting";
 import { getProjectProfile } from "@/lib/project-manifest";
 
-type NavKey = "home" | "essays" | "projects" | "side-quests";
+type NavKey =
+  | "home"
+  | "essays"
+  | "projects"
+  | "side-quests"
+  | "ai-consulting";
 
 type Row = {
   title: string;
@@ -121,6 +126,11 @@ export function ManifestNav({ active }: { active: NavKey | null }) {
       label: "Essays",
     },
     { key: "side-quests", href: "/side-quests", label: "Side Quests" },
+    {
+      key: "ai-consulting",
+      href: "/ai-consulting",
+      label: "AI Consulting",
+    },
   ];
 
   const homeActive = active === "home";
