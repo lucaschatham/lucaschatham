@@ -138,7 +138,6 @@ export default function AIConsultingPage() {
     <ManifestPage active="ai-consulting">
       <div className={styles.consulting}>
         <section className={styles.hero}>
-          <p className={styles.eyebrow}>AI that works like your best operator</p>
           <h1>
             Turn one expensive workflow into a measurable AI system in six
             weeks.
@@ -156,16 +155,6 @@ export default function AIConsultingPage() {
             <a className={styles.textLink} href="#maturity">
               Find your stage <span aria-hidden="true">↓</span>
             </a>
-          </div>
-
-          <div className={styles.guarantee}>
-            <span className={styles.guaranteeMark} aria-hidden="true">
-              ✓
-            </span>
-            <p>
-              We agree on the baseline before we start. If the pilot does not
-              beat the metric, I waive the final invoice.
-            </p>
           </div>
         </section>
 
@@ -185,7 +174,6 @@ export default function AIConsultingPage() {
 
         <section className={styles.offer} id="workflow-pilot">
           <div className={styles.offerIntro}>
-            <p className={styles.sectionLabel}>The offer / 02</p>
             <h2>AI Workflow Pilot</h2>
             <p className={styles.offerMeta}>
               4 to 6 weeks <span>·</span> One workflow <span>·</span> One
@@ -215,15 +203,6 @@ export default function AIConsultingPage() {
         </section>
 
         <section className={styles.proofSection}>
-          <div className={styles.proofHeading}>
-            <p className={styles.sectionLabel}>
-              Operating history, not client testimonials / 03
-            </p>
-            <p>
-              I built these systems in operating roles. The project pages show
-              the work.
-            </p>
-          </div>
           <div className={styles.proofGrid}>
             {proof.map((item) => (
               <Link className={styles.proofCard} href={item.href} key={item.metric}>
@@ -237,15 +216,12 @@ export default function AIConsultingPage() {
         </section>
 
         <section className={styles.processSection}>
-          <div className={styles.sectionHeading}>
-            <p className={styles.sectionLabel}>How the work runs / 04</p>
-            <div>
-              <h2>Four steps. One measured result.</h2>
-              <p>
-                Your team sees the work, owns the decisions, and keeps the
-                system when the pilot ends.
-              </p>
-            </div>
+          <div className={styles.simpleHeading}>
+            <h2>Four steps. One measured result.</h2>
+            <p>
+              Your team sees the work, owns the decisions, and keeps the system
+              when the pilot ends.
+            </p>
           </div>
 
           <ol className={styles.process}>
@@ -264,15 +240,8 @@ export default function AIConsultingPage() {
         </section>
 
         <section className={styles.faqSection}>
-          <div className={styles.sectionHeading}>
-            <p className={styles.sectionLabel}>Common objections / 05</p>
-            <div>
-              <h2>Straight answers.</h2>
-              <p>
-                The first workflow should reduce risk and prove value. It should
-                not create another program to manage.
-              </p>
-            </div>
+          <div className={styles.simpleHeading}>
+            <h2>Straight answers.</h2>
           </div>
           <div className={styles.faq}>
             {questions.map((item, index) => (
@@ -289,7 +258,6 @@ export default function AIConsultingPage() {
 
         <section className={styles.cta} id="contact">
           <div>
-            <p className={styles.eyebrow}>One useful conversation</p>
             <h2>Turn one workflow into a measurable AI system.</h2>
             <p>
               Bring the workflow, its owner, and the result you want. I will
@@ -301,10 +269,6 @@ export default function AIConsultingPage() {
               Book a 20-minute workflow triage
               <span aria-hidden="true">→</span>
             </a>
-            <p>
-              We set the baseline first. If the pilot does not beat the metric,
-              I waive the final invoice.
-            </p>
           </div>
         </section>
       </div>

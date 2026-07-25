@@ -33,6 +33,24 @@ test("AI consulting page presents one flagship offer and a contact path", async 
   assert.match(page, /mailto:chathamworks@gmail\.com/);
 });
 
+test("AI consulting page omits redundant section copy", async () => {
+  const page = await read("../app/ai-consulting/page.tsx");
+
+  for (const copy of [
+    "AI that works like your best operator",
+    "final invoice",
+    "The offer / 02",
+    "How the work runs / 04",
+    "Operating history, not client testimonials / 03",
+    "I built these systems in operating roles",
+    "Common objections / 05",
+    "The first workflow should reduce risk and prove value",
+    "One useful conversation",
+  ]) {
+    assert.doesNotMatch(page, new RegExp(copy));
+  }
+});
+
 test("maturity framework lets visitors inspect each stage", async () => {
   const framework = await read("../app/ai-consulting/maturity-framework.tsx");
   const page = await read("../app/ai-consulting/page.tsx");
