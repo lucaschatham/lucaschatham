@@ -1,7 +1,7 @@
 ---
 title: iMerit
-hero: As product owner, I led the strategy, scaling, and continuous improvement of Ground Control, partnering with engineers, designers, and QA to build an enterprise AI data-operations platform. I worked directly with enterprise customers including Netflix, Amazon, and John Deere, translating their needs into real-time visibility into quality, throughput, governance, and exceptions across 6,000+ annotators, 20+ tools, and five time zones.
-description: Product owner for Ground Control, an enterprise-grade analytics and governance platform I created and helped sell directly to customers including Amazon, Netflix, and John Deere.
+hero: As product owner, I led the strategy, scaling, and continuous improvement of Ground Control, partnering with engineers, designers, and QA to build an enterprise AI data-operations platform. I worked directly with enterprise customers including Netflix, Amazon, John Deere, and Cruise, translating their needs into real-time visibility into quality, throughput, governance, and exceptions across 6,000+ individual annotators, 20+ labeling tools, and 150+ concurrent projects for 80+ enterprise customers.
+description: Product owner for Ground Control, an enterprise AI data-operations platform delivering real-time visibility across 6,000+ individual annotators and 80+ enterprise customers including Amazon, Netflix, John Deere, and Cruise.
 date: 2024-01-01
 year: "2022-2024"
 published: true
@@ -13,7 +13,15 @@ imageAlt: Ground Control architecture connecting internal, customer, and partner
 
 Ground Control was the enterprise-grade AI data-operations platform I created as product owner at iMerit. It gave customers one place to see throughput, quality, anomalies, workforce risk, and customer-specific governance across distributed annotation programs.
 
-The platform unified fragmented annotation data across 6,000+ annotators, 20+ labeling tools, and 5 time zones so internal teams and enterprise customers could understand what was happening before delivery, quality, or compliance broke down.
+The platform unified fragmented annotation data across 6,000+ individual annotators, 20+ labeling tools, and 5 time zones, covering 80+ enterprise customers and 150+ unique projects running at any given time. Internal teams and enterprise customers could finally understand what was happening before delivery, quality, or compliance broke down.
+
+What the product did:
+
+- Turned fragmented labeling activity into shared operating dashboards for delivery, quality, and customer teams.
+- Standardized metrics across projects, tools, customers, and time zones.
+- Captured edge cases and anomalies from browser-based labeling environments.
+- Supported role-based access, data lifecycle management, audit trails, encryption, and custom customer configurations.
+- Gave enterprise customers evidence that data work was moving, exceptions were being handled, and risk was visible.
 
 I also helped take Ground Control directly to market with enterprise customers. Alongside iMerit's go-to-market and delivery teams, I translated complex operating needs into configurable workflows, metrics, governance controls, and customer-ready proof that teams could trust, adopt, and scale.
 
@@ -22,19 +30,12 @@ Ground Control supported customer and internal operating programs across autonom
 - Amazon
 - Netflix
 - John Deere / Blue River
+- Cruise
 - Athena
 - UV Eye
 - Nuro
 - Bosch
 - Internal finance and delivery operations
-
-## What the Product Did
-
-- Turned fragmented labeling activity into shared operating dashboards for delivery, quality, and customer teams.
-- Standardized metrics across projects, tools, customers, and time zones.
-- Captured edge cases and anomalies from browser-based labeling environments.
-- Supported role-based access, data lifecycle management, audit trails, encryption, and custom customer configurations.
-- Gave enterprise customers evidence that data work was moving, exceptions were being handled, and risk was visible.
 
 ## My Role
 
@@ -47,8 +48,6 @@ The work was not just dashboard shipping. It required turning messy customer ask
   <figcaption>The 2024 roadmap translated a messy analytics platform into concrete product tracks: integrations, compliance, governance, documentation, and categorization.</figcaption>
 </figure>
 
-## Product Scope
-
 The hardest product problem was not a single feature. It was turning many one-off operational requests into an enterprise platform that could flex by customer without becoming impossible to maintain.
 
 That meant writing requirements for configurable workflows, clarifying ownership across technical and delivery teams, defining success metrics, and separating what should be custom from what needed to become reusable product infrastructure.
@@ -58,9 +57,14 @@ That meant writing requirements for configurable workflows, clarifying ownership
   <figcaption>Governance became a product surface: access, audit trails, encryption, lifecycle controls, custom integrations, and customer-specific configurations.</figcaption>
 </figure>
 
-## Edge Case System
+The clearest example was the Edge Case Module. The product needed to help teams capture a screenshot or event from a labeling workflow, route it into the right review path, preserve metadata, and make the resolved case usable for training and delivery improvement.
 
-One of the clearest examples was the Edge Case Module. The product needed to help teams capture a screenshot or event from a labeling workflow, route it into the right review path, preserve metadata, and make the resolved case usable for training and delivery improvement.
+The product insight was that a captured edge case is not one thing. It is two, and they demand opposite responses:
+
+- **Genuinely novel data.** Something that has never appeared in the dataset before, which a customer's engineering team needs to see because it changes what the model has to handle.
+- **An under-trained annotator.** The data is ordinary, but the annotator has misread the labeling guidelines and does not know how to interpret what they are looking at.
+
+Separating the two turned the module into a recursive improvement loop. Novel data reached the engineering teams who needed it. Guideline misreads went back into annotator training and into sharper labeling guidelines, so the humans in the loop got better over time and the instructions they worked from got clearer.
 
 <figure className="work-visual">
   <img src="/images/work/imerit/ground-control-edge-case-module-v2.webp" alt="Ground Control screenshot-governance workflow for allowlisted and blacklisted customers across Custom Configuration, AWS, and the Edge Case Module" />
@@ -69,14 +73,24 @@ One of the clearest examples was the Edge Case Module. The product needed to hel
 
 <figure className="work-visual">
   <img src="/images/work/imerit/ground-control-edge-case-workflow.webp" alt="Ground Control Edge Case Module workflow from labeling tool through expert review, client feedback, resolution, and training" />
-  <figcaption>The workflow connected labelers, subject matter experts, clients, resolution steps, and training loops. The platform tracked 4,500+ edge cases captured, reviewed, and resolved.</figcaption>
+  <figcaption>The workflow connected labelers, subject matter experts, clients, resolution steps, and training loops.</figcaption>
 </figure>
 
-## Result
+## How We Measured Success
 
-Ground Control gave teams earlier visibility into quality and throughput problems across large-scale annotation programs. It helped identify broken workflows and low-performing segments before they damaged delivery.
+Before building dashboards, I defined what a working platform had to prove. These were the bars the work was measured against:
 
-The platform supported enterprise revenue through customer programs with Amazon, Netflix, John Deere, and Cruise. It captured and resolved 2,500+ unique dataset anomalies for Cruise, contributed more than $3 million in revenue impact, and scaled data platform operations by roughly 50%.
+- **Real-time visibility had to exist at all.** Operating truth lived in spreadsheets. One wrong cell propagated into every dependent sheet and report, and teams made delivery decisions on data that had already broken. Bad data in, bad data out, with a domino effect nobody could trace. Giving internal teams and customers a live shared view was the first bar, because nothing like it existed.
+- **One definition, everywhere.** Throughput and quality had to mean the same thing across every project, tool, customer, and time zone, instead of per-team spreadsheets that disagreed at delivery review.
+- **Edge cases classified, not just captured.** Every case had to be sorted into novel data or guideline misread, then routed accordingly. Capture volume alone was not the measure.
+- **Governance a customer could audit.** Access, audit trails, encryption, lifecycle controls, and customer-specific configuration had to hold up in an enterprise review, not just in a deck.
+- **Configurable without forking.** New customer requirements had to be absorbed as configuration on shared primitives. If a customer needed custom code, the platform had failed the test.
+
+Ground Control delivered that visibility in production. It orchestrated 6,000+ individual annotators across 80+ enterprise customers and 150+ concurrent projects in real time, visible to internal teams and customers at the same moment, and replaced spreadsheet reporting as the system of record.
+
+The Edge Case Module captured, reviewed, and resolved 4,500+ dataset edge cases. Classifying each one by cause is what made the loop work in both directions. Catching guideline drift early cut individual annotation time by roughly 15% over the course of a pilot, mostly by shortening how long annotators spent learning to interpret ambiguous instructions.
+
+Commercially, the platform supported enterprise accounts totaling more than $20 million in aggregate revenue, including Amazon, Netflix, John Deere, and Cruise. Its clearest role was decision support: giving delivery and go-to-market teams the evidence to guide contract renewal decisions, and justifying the value of lower-dollar pilot projects that had to prove themselves before they could expand.
 
 ## Why It Mattered
 

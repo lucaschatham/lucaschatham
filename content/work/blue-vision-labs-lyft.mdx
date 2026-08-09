@@ -30,7 +30,14 @@ The work required constant tradeoffs across hardware reliability, field conditio
   <figcaption>The core operating problem was making camera-based mapping reliable in moving vehicles, then scaling that capture process beyond controlled demos.</figcaption>
 </figure>
 
-## Result
+## How We Measured Success
+
+A mapping program is only as good as the data that survives the trip back. Four things had to hold:
+
+- **Capture had to survive real conditions.** Heat, tunnels, bad lighting, mounting variation, and driver behavior all had to be handled by the rig, not designed around.
+- **Collected had to mean usable.** Volume was not the metric. Data had to be good enough for the downstream mapping pipeline to actually consume.
+- **Cost had to stay below dedicated mapping vehicles.** The entire premise was camera phones in ordinary fleet vehicles instead of specialized lidar rigs.
+- **Privacy had to hold across two jurisdictions.** Street-level camera capture in the U.S. and U.K. had to satisfy both, not just one.
 
 The program scaled from 3 city centers to 2 countries and helped create up-to-date city-scale 3D maps for simulation, localization, trajectory analysis, and autonomous-vehicle development.
 
