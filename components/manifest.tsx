@@ -38,10 +38,6 @@ type RowLogo = {
 };
 
 const sideQuestRowIcons: Record<string, RowIcon> = {
-  "aurora-inl": {
-    label: "Laboratory flask",
-    image: "/images/side-quests/icons/lab.webp",
-  },
   "diy-gym": {
     label: "Dumbbell",
     image: "/images/side-quests/icons/gym.webp",
@@ -120,11 +116,6 @@ export function ManifestPage({
 export function ManifestNav({ active }: { active: NavKey | null }) {
   const links: { key: NavKey; href: string; label: string }[] = [
     { key: "projects", href: "/#work-heading", label: "Work" },
-    {
-      key: "essays",
-      href: "https://levelwithlucas.lucaschatham.com/archive",
-      label: "Essays",
-    },
     { key: "side-quests", href: "/side-quests", label: "Side Quests" },
     {
       key: "ai-consulting",

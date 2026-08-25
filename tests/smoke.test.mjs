@@ -11,12 +11,6 @@ const manifestSource = readFileSync(
   fileURLToPath(new URL("../components/manifest.tsx", import.meta.url)),
   "utf8"
 );
-const auroraSource = readFileSync(
-  fileURLToPath(
-    new URL("../components/aurora-deployment-experience.tsx", import.meta.url)
-  ),
-  "utf8"
-);
 const projectManifestSource = readFileSync(
   fileURLToPath(new URL("../lib/project-manifest.ts", import.meta.url)),
   "utf8"
@@ -35,7 +29,6 @@ const expectedSitemapPaths = [
   "/essays",
   "/projects",
   "/side-quests",
-  "/side-quests/aurora-inl",
   "/projects/daybreaker-health",
   "/projects/checkfit",
   "/projects/imerit",
@@ -112,19 +105,11 @@ test("hero source order matches the compact mobile split", () => {
   }
 });
 
-test("site navigation routes Essays directly to Beehiiv", () => {
-  assert.match(
+test("site navigation omits Essays from the top tab", () => {
+  assert.doesNotMatch(
     manifestSource,
     /key:\s*"essays"[\s\S]*?href:\s*"https:\/\/levelwithlucas\.lucaschatham\.com\/archive"[\s\S]*?label:\s*"Essays"/
   );
-});
-
-test("Aurora keeps explicit playback active while its player is onscreen", () => {
-  assert.match(
-    auroraSource,
-    /<section\s+ref=\{stageViewportRef\}\s+className="aurora-stage"/
-  );
-  assert.match(auroraSource, /const isVisible = entry\.isIntersecting;/);
 });
 
 test("the project manifest covers every published work item", () => {
@@ -328,7 +313,7 @@ test("homepage makes primary paths explicit", async () => {
   const visibleText = stripTags(html);
 
   assert.match(html, /<a href="\/#work-heading">(?:<[^>]+>)*Work<\/a>/i);
-  assert.match(html, /<a href="https:\/\/levelwithlucas\.lucaschatham\.com\/archive">(?:<[^>]+>)*Essays<\/a>/i);
+  assert.doesNotMatch(html, /<a href="https:\/\/levelwithlucas\.lucaschatham\.com\/archive">(?:<[^>]+>)*Essays<\/a>/i);
   assert.match(html, /<a href="\/side-quests">(?:<[^>]+>)*Side Quests<\/a>/i);
   assert.match(html, /<a href="#contact">(?:<[^>]+>)*Contact<\/a>/i);
   assert.match(visibleText, /Founder · Operator/i);
@@ -386,11 +371,6 @@ test("frontmatter tags use the shared capsule system on lists and detail pages",
   assert.match(detailHtml, /class="tag-list tag-list--detail"/);
   assert.match(detailHtml, /<li class="tag-capsule">Training<\/li>/);
   assert.match(detailHtml, /<meta\b[^>]*name="keywords"[^>]*content="Training"/i);
-
-  const customDetailHtml = await readHtml("/side-quests/aurora-inl");
-  assert.match(customDetailHtml, /class="tag-list tag-list--detail"/);
-  assert.match(customDetailHtml, /<li class="tag-capsule">Nuclear<\/li>/);
-  assert.match(customDetailHtml, /<li class="tag-capsule">Systems<\/li>/);
 });
 
 test("portfolio project pages keep the agreed case-study template", async () => {

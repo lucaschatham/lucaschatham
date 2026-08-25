@@ -42,7 +42,6 @@ test("habit tracker remains unpublished", () => {
 
 test("every public side quest has a local 3d icon", () => {
   const expectedIcons = {
-    "aurora-inl": "lab",
     "diy-gym": "gym",
     "home-remodel-custom-furniture": "tools",
     "remnote-connect": "link",

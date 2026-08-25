@@ -12,8 +12,8 @@ const homeSource = readFileSync(
   "utf8"
 );
 
-test("site navigation routes Essays directly to Beehiiv", () => {
-  assert.match(
+test("site navigation omits Essays from the top tab", () => {
+  assert.doesNotMatch(
     manifestSource,
     /key:\s*"essays"[\s\S]*?href:\s*"https:\/\/levelwithlucas\.lucaschatham\.com\/archive"[\s\S]*?label:\s*"Essays"/
   );
