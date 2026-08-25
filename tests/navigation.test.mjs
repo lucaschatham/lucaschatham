@@ -12,6 +12,11 @@ const homeSource = readFileSync(
   "utf8"
 );
 
+test("homepage omits the career throughline section", () => {
+  assert.doesNotMatch(homeSource, /CareerThroughline|Different Industries|Same Jobs/);
+  assert.doesNotMatch(manifestSource, /CareerThroughline|throughline-heading/);
+});
+
 test("site navigation omits Essays from the top tab", () => {
   assert.doesNotMatch(
     manifestSource,

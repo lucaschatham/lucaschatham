@@ -13,6 +13,9 @@ function readProjectFile(relativePath) {
 const sideQuestsPage = readProjectFile("app/side-quests/page.tsx");
 const manifest = readProjectFile("components/manifest.tsx");
 const habitTracker = readProjectFile("content/side-quests/habit-tracker.mdx");
+const homeRemodel = readProjectFile(
+  "content/side-quests/home-remodel-custom-furniture.mdx"
+);
 
 function readWebpCanvas(relativePath) {
   const image = readFileSync(
@@ -40,11 +43,25 @@ test("habit tracker remains unpublished", () => {
   assert.match(habitTracker, /^published:\s*false$/m);
 });
 
+test("home remodel is preserved but hidden from the public collection", () => {
+  assert.match(homeRemodel, /^published:\s*false$/m);
+});
+
+test("RemNote Connect is no longer published as a side quest", () => {
+  assert.equal(
+    existsSync(
+      fileURLToPath(
+        new URL("../content/side-quests/remnote-connect.mdx", import.meta.url)
+      )
+    ),
+    false
+  );
+  assert.doesNotMatch(manifest, /"remnote-connect"\s*:/);
+});
+
 test("every public side quest has a local 3d icon", () => {
   const expectedIcons = {
     "diy-gym": "gym",
-    "home-remodel-custom-furniture": "tools",
-    "remnote-connect": "link",
   };
 
   for (const [slug, icon] of Object.entries(expectedIcons)) {

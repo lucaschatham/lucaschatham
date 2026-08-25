@@ -349,18 +349,6 @@ test("homepage metadata and Person schema match the advisory offer", async () =>
   assert.match(html, /https:\/\/x\.com\/lukeoutthebox/);
 });
 
-test("homepage career throughline stays concise", async () => {
-  const html = await readHtml("/");
-
-  assert.match(html, /<span class="throughline-heading-line">Different Industries<\/span>/);
-  assert.match(html, /<span class="throughline-heading-line">Same Jobs<\/span>/);
-  assert.match(html, /valuable work trapped in someone(?:&apos;|&#x27;)s head or scattered across messy operations/);
-  assert.match(html, /href="\/projects\/blue-vision-labs-lyft"[\s\S]*?3 city pilots → 2 countries/);
-  assert.match(html, /href="\/projects\/imerit"[\s\S]*?6,000\+ annotators · 20\+ tools · 5 time zones/);
-  assert.match(html, /href="\/projects\/gymnazo"[\s\S]*?11\+ coaches trained · 209% YoY growth/);
-  assert.doesNotMatch(html, /The pattern|Make invisible work legible|Turn judgment into systems|Scale trust with proof/i);
-});
-
 test("frontmatter tags use the shared capsule system on lists and detail pages", async () => {
   const indexHtml = await readHtml("/side-quests");
   assert.match(indexHtml, /class="tag-list tag-list--row"/);
