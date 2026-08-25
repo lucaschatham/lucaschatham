@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 const manifestSource = readFileSync(
@@ -36,6 +36,20 @@ test("homepage places the open source collection directly after work", () => {
 });
 
 test("open source collection explains the term and links verified projects", () => {
+  const nuclearAtlasIndex = homeSource.indexOf('title: "Nuclear Atlas"');
+  const edsIndex = homeSource.indexOf(
+    'title: "Independent Ehlers-Danlos Research Collaborative"'
+  );
+  const westCoastSwingIndex = homeSource.indexOf(
+    'title: "Operation Learn West Coast Swing"'
+  );
+
+  assert.ok(nuclearAtlasIndex >= 0, "Nuclear Atlas should be listed");
+  assert.ok(edsIndex > nuclearAtlasIndex, "EDS should follow Nuclear Atlas");
+  assert.ok(
+    westCoastSwingIndex > edsIndex,
+    "EDS should occupy the second position in the collection"
+  );
   assert.match(
     homeSource,
     /Open source projects are free, open, and available to everyone/
@@ -50,10 +64,28 @@ test("open source collection explains the term and links verified projects", () 
     /https:\/\/github\.com\/lucaschatham\/operation-learn-west-coast-swing/
   );
   assert.match(homeSource, /https:\/\/github\.com\/lucaschatham\/remnoteconnect/);
+  assert.match(
+    homeSource,
+    /https:\/\/github\.com\/lucaschatham\/independent-eds-research-collaborative/
+  );
   assert.match(homeSource, /\/images\/open-source\/nuclear-atlas-radioactive\.png/);
   assert.match(homeSource, /\/images\/open-source\/west-coast-swing-footprints\.png/);
+  assert.match(
+    homeSource,
+    /west-coast-swing-footprints\.png[\s\S]*tone:\s*"dark-mode-bright"/
+  );
   assert.match(homeSource, /\/images\/open-source\/remnote-connect-link\.png/);
   assert.match(homeSource, /Each claim links back to its source/);
   assert.match(homeSource, /learners and teachers can verify and improve it/);
   assert.match(homeSource, /your data stays on your computer/);
+  assert.match(homeSource, /Independent Ehlers-Danlos Research Collaborative/);
+  assert.match(homeSource, /This public research plan brings patient experience and expert review together/);
+  assert.match(homeSource, /meta:\s*"Public Plan"/);
+  assert.ok(
+    existsSync(
+      fileURLToPath(
+        new URL("../public/images/side-quests/icons/lab.webp", import.meta.url)
+      )
+    )
+  );
 });

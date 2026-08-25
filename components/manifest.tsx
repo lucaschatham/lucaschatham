@@ -28,6 +28,7 @@ type Row = {
 type RowIcon = {
   label: string;
   image: string;
+  tone?: "dark-mode-bright";
 };
 
 type RowLogo = {
@@ -287,7 +288,15 @@ function ManifestRow({ row }: { row: Row }) {
 
 function RowIconMark({ icon }: { icon: RowIcon }) {
   return (
-    <span className="side-quest-icon" aria-hidden="true" title={icon.label}>
+    <span
+      className={
+        icon.tone === "dark-mode-bright"
+          ? "side-quest-icon side-quest-icon--dark-mode-bright"
+          : "side-quest-icon"
+      }
+      aria-hidden="true"
+      title={icon.label}
+    >
       <img
         src={icon.image}
         alt=""
