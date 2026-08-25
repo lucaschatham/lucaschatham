@@ -1,5 +1,4 @@
 import {
-  CareerThroughline,
   Hero,
   ManifestPage,
   RowsSection,
@@ -83,7 +82,6 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
       />
       <Hero />
-      <CareerThroughline />
       {work.length > 0 && (
         <RowsSection
           heading="work"

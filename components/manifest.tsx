@@ -42,14 +42,6 @@ const sideQuestRowIcons: Record<string, RowIcon> = {
     label: "Dumbbell",
     image: "/images/side-quests/icons/gym.webp",
   },
-  "home-remodel-custom-furniture": {
-    label: "Hand tools",
-    image: "/images/side-quests/icons/tools.webp",
-  },
-  "remnote-connect": {
-    label: "Connected links",
-    image: "/images/side-quests/icons/link.webp",
-  },
 };
 
 export function postToRow(
@@ -199,48 +191,6 @@ export function Hero() {
           decoding="async"
         />
       </figure>
-    </section>
-  );
-}
-
-export function CareerThroughline() {
-  return (
-    <section className="throughline" aria-labelledby="throughline-heading">
-      <h2 id="throughline-heading">
-        <span className="throughline-heading-line">Different Industries</span>
-        <span className="throughline-heading-line">Same Jobs</span>
-      </h2>
-      <p className="throughline-summary">
-        I keep finding the same problem: valuable work trapped in someone&apos;s
-        head or scattered across messy operations. I make it visible, turn it
-        into a system, and measure whether it works.
-      </p>
-      <ul className="throughline-proofs" aria-label="Selected career evidence">
-        <li>
-          <Link href="/projects/blue-vision-labs-lyft">
-            <span className="throughline-domain">Mapping</span>
-            <strong>3 city pilots → 2 countries</strong>
-            <span className="throughline-source">Blue Vision Labs / Lyft</span>
-            <span className="throughline-tile-arrow"><ArrowUpRightIcon /></span>
-          </Link>
-        </li>
-        <li>
-          <Link href="/projects/imerit">
-            <span className="throughline-domain">AI operations</span>
-            <strong>6,000+ annotators · 20+ tools · 5 time zones</strong>
-            <span className="throughline-source">iMerit Ground Control</span>
-            <span className="throughline-tile-arrow"><ArrowUpRightIcon /></span>
-          </Link>
-        </li>
-        <li>
-          <Link href="/projects/gymnazo">
-            <span className="throughline-domain">Coaching</span>
-            <strong>11+ coaches trained · 209% YoY growth</strong>
-            <span className="throughline-source">Gymnazo</span>
-            <span className="throughline-tile-arrow"><ArrowUpRightIcon /></span>
-          </Link>
-        </li>
-      </ul>
     </section>
   );
 }
