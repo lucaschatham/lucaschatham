@@ -322,9 +322,10 @@ test("homepage makes primary paths explicit", async () => {
     visibleText,
     /Open to select advisory and operating partnerships\./i
   );
-  assert.match(visibleText, /I design and build AI systems you can trust when mistakes cost lives, money, or time, from autonomous vehicles to healthcare\./i);
+  assert.match(visibleText, /I design and build high-stakes AI systems people trust\./i);
   assert.doesNotMatch(manifestSource, /className="hero-proof"/);
-  assert.match(html, /href="#work-heading"[^>]*>[\s\S]*?View selected work/i);
+  assert.match(html, /href="#contact"[^>]*>[\s\S]*?Contact/i);
+  assert.doesNotMatch(visibleText, /View selected work/i);
 });
 
 test("Work navigation always targets the homepage work section", () => {
