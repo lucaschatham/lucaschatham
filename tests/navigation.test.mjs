@@ -31,15 +31,22 @@ test("homepage places the open source collection directly after work", () => {
 });
 
 test("open source collection explains the term and links verified projects", () => {
-  assert.match(homeSource, /Open source means the instructions behind a tool are public/);
+  assert.match(
+    homeSource,
+    /Open source projects are free, open, and available to everyone/
+  );
+  assert.match(
+    homeSource,
+    /The projects below I’ve either authored or helped move forward\./
+  );
   assert.match(homeSource, /https:\/\/github\.com\/lucaschatham\/nuclear-atlas/);
   assert.match(
     homeSource,
     /https:\/\/github\.com\/lucaschatham\/operation-learn-west-coast-swing/
   );
   assert.match(homeSource, /https:\/\/github\.com\/lucaschatham\/remnoteconnect/);
-  assert.match(homeSource, /\/images\/open-source\/nuclear-atlas-map-pin\.png/);
-  assert.match(homeSource, /\/images\/open-source\/west-coast-swing-music\.png/);
+  assert.match(homeSource, /\/images\/open-source\/nuclear-atlas-radioactive\.png/);
+  assert.match(homeSource, /\/images\/open-source\/west-coast-swing-footprints\.png/);
   assert.match(homeSource, /\/images\/open-source\/remnote-connect-link\.png/);
   assert.match(homeSource, /Each claim links back to its source/);
   assert.match(homeSource, /learners and teachers can verify and improve it/);
