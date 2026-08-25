@@ -18,8 +18,8 @@ const openSourceProjects = [
     meta: "MIT",
     tags: ["Open Data", "Nuclear Energy"],
     icon: {
-      label: "3D map pin",
-      image: "/images/open-source/nuclear-atlas-map-pin.png",
+      label: "3D radioactive sign",
+      image: "/images/open-source/nuclear-atlas-radioactive.png",
     },
   },
   {
@@ -29,8 +29,8 @@ const openSourceProjects = [
     meta: "CC BY-SA 4.0",
     tags: ["Open Curriculum", "Dance"],
     icon: {
-      label: "3D music note",
-      image: "/images/open-source/west-coast-swing-music.png",
+      label: "3D footprints",
+      image: "/images/open-source/west-coast-swing-footprints.png",
     },
   },
   {
@@ -94,7 +94,7 @@ export default function Home() {
       <RowsSection
         heading="Open Source"
         kicker=""
-        description="Open source means the instructions behind a tool are public, so anyone can inspect them, use them, suggest improvements, or build on them. These are projects I’ve built or helped move forward."
+        description="Open source projects are free, open, and available to everyone, which means anyone can inspect them, use them, suggest improvements, or build on them. The projects below I’ve either authored or helped move forward."
         rows={openSourceProjects}
       />
     </ManifestPage>

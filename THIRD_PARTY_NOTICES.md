@@ -26,8 +26,13 @@ SOFTWARE.
 
 ## 3dicons
 
-The Open Source project icons use Map Pin, Music, and Link renders from
+The Open Source project icons use the Link render from
 [3dicons](https://3dicons.co/) by Vijay Verma. The collection is released
 under the [CC0 1.0 Universal license](https://creativecommons.org/publicdomain/zero/1.0/).
 The local copies have only had their white canvas removed for placement on the
 site.
+
+The Nuclear Atlas and Operation Learn West Coast Swing icons use the Radioactive
+and Footprints 3D renders from
+[Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji), released
+under the MIT License.
