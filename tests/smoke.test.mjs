@@ -324,7 +324,10 @@ test("homepage makes primary paths explicit", async () => {
   );
   assert.match(visibleText, /I design and build high-stakes AI systems people trust\./i);
   assert.doesNotMatch(manifestSource, /className="hero-proof"/);
-  assert.match(html, /href="#contact"[^>]*>[\s\S]*?Contact/i);
+  assert.match(
+    manifestSource,
+    /className="hero-action hero-action-primary"\s+href=\{CONTACT_MAILTO\}/
+  );
   assert.doesNotMatch(visibleText, /View selected work/i);
 });
 
@@ -405,7 +408,7 @@ test("contact band shows the concise heading and complete action set", async () 
   );
   assert.match(html, /https:\/\/www\.linkedin\.com\/in\/lucaschatham\//);
   assert.match(html, /mailto:chathamworks@gmail\.com\?subject=Hard%20problem%3A/);
-  assert.equal((manifestSource.match(/href=\{CONTACT_MAILTO\}/g) ?? []).length, 1);
+  assert.equal((manifestSource.match(/href=\{CONTACT_MAILTO\}/g) ?? []).length, 2);
   assert.doesNotMatch(visibleContactText, /chathamworks@gmail\.com/);
   assert.match(html, /https:\/\/github\.com\/lucaschatham/);
   assert.match(html, /https:\/\/x\.com\/lukeoutthebox/);
