@@ -168,14 +168,13 @@ export function Hero() {
           </p>
         </div>
         <p className="hero-proposition">
-          I design and build AI systems you can trust when mistakes cost lives,
-          money, or time, from autonomous vehicles to healthcare.
+          I design and build high-stakes AI systems people trust.
         </p>
         <Link
           className="hero-action hero-action-primary"
-          href="#work-heading"
+          href="#contact"
         >
-          View selected work
+          Contact
           <ArrowRightIcon />
         </Link>
       </div>
