@@ -23,3 +23,11 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+## 3dicons
+
+The Open Source project icons use Map Pin, Music, and Link renders from
+[3dicons](https://3dicons.co/) by Vijay Verma. The collection is released
+under the [CC0 1.0 Universal license](https://creativecommons.org/publicdomain/zero/1.0/).
+The local copies have only had their white canvas removed for placement on the
+site.

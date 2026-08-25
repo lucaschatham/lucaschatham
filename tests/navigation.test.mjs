@@ -7,10 +7,41 @@ const manifestSource = readFileSync(
   fileURLToPath(new URL("../components/manifest.tsx", import.meta.url)),
   "utf8"
 );
+const homeSource = readFileSync(
+  fileURLToPath(new URL("../app/page.tsx", import.meta.url)),
+  "utf8"
+);
 
 test("site navigation routes Essays directly to Beehiiv", () => {
   assert.match(
     manifestSource,
     /key:\s*"essays"[\s\S]*?href:\s*"https:\/\/levelwithlucas\.lucaschatham\.com\/archive"[\s\S]*?label:\s*"Essays"/
   );
+});
+
+test("homepage places the open source collection directly after work", () => {
+  const workIndex = homeSource.indexOf('heading="work"');
+  const openSourceIndex = homeSource.indexOf('heading="Open Source"');
+
+  assert.ok(workIndex >= 0, "homepage should include the work section");
+  assert.ok(
+    openSourceIndex > workIndex,
+    "open source should follow the complete work section"
+  );
+});
+
+test("open source collection explains the term and links verified projects", () => {
+  assert.match(homeSource, /Open source means the instructions behind a tool are public/);
+  assert.match(homeSource, /https:\/\/github\.com\/lucaschatham\/nuclear-atlas/);
+  assert.match(
+    homeSource,
+    /https:\/\/github\.com\/lucaschatham\/operation-learn-west-coast-swing/
+  );
+  assert.match(homeSource, /https:\/\/github\.com\/lucaschatham\/remnoteconnect/);
+  assert.match(homeSource, /\/images\/open-source\/nuclear-atlas-map-pin\.png/);
+  assert.match(homeSource, /\/images\/open-source\/west-coast-swing-music\.png/);
+  assert.match(homeSource, /\/images\/open-source\/remnote-connect-link\.png/);
+  assert.match(homeSource, /Each claim links back to its source/);
+  assert.match(homeSource, /learners and teachers can verify and improve it/);
+  assert.match(homeSource, /your data stays on your computer/);
 });

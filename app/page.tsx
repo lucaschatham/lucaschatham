@@ -10,6 +10,41 @@ import { orderPortfolioProjects } from "@/lib/portfolio-order";
 import { SITE_URL } from "@/lib/constants";
 import type { Metadata } from "next";
 
+const openSourceProjects = [
+  {
+    title: "Nuclear Atlas",
+    dek: "Nuclear Atlas brings scattered nuclear industry facts into one searchable map. Each claim links back to its source so people can check the evidence themselves.",
+    href: "https://github.com/lucaschatham/nuclear-atlas",
+    meta: "MIT",
+    tags: ["Open Data", "Nuclear Energy"],
+    icon: {
+      label: "3D map pin",
+      image: "/images/open-source/nuclear-atlas-map-pin.png",
+    },
+  },
+  {
+    title: "Operation Learn West Coast Swing",
+    dek: "This is a free, structured guide for learning West Coast Swing, plus a dataset of moves and teaching materials. Every visual links to where it came from, so learners and teachers can verify and improve it.",
+    href: "https://github.com/lucaschatham/operation-learn-west-coast-swing",
+    meta: "CC BY-SA 4.0",
+    tags: ["Open Curriculum", "Dance"],
+    icon: {
+      label: "3D music note",
+      image: "/images/open-source/west-coast-swing-music.png",
+    },
+  },
+  {
+    title: "RemNote Connect",
+    dek: "RemNote Connect lets other tools talk to your notes without sending them to someone else’s server. That means you can use scripts, terminal commands, or AI helpers while your data stays on your computer.",
+    href: "https://github.com/lucaschatham/remnoteconnect",
+    meta: "MIT",
+    tags: ["Local First", "Learning"],
+    icon: {
+      label: "3D chain link",
+      image: "/images/open-source/remnote-connect-link.png",
+    },
+  },
+];
 export const metadata: Metadata = {
   alternates: {
     canonical: SITE_URL,
@@ -56,6 +91,12 @@ export default function Home() {
           rows={work}
         />
       )}
+      <RowsSection
+        heading="Open Source"
+        kicker=""
+        description="Open source means the instructions behind a tool are public, so anyone can inspect them, use them, suggest improvements, or build on them. These are projects I’ve built or helped move forward."
+        rows={openSourceProjects}
+      />
     </ManifestPage>
   );
 }
