@@ -22,6 +22,17 @@ const openSourceProjects = [
     },
   },
   {
+    title: "Independent Ehlers-Danlos Research Collaborative",
+    dek: "This public research plan brings patient experience and expert review together to study why Ehlers-Danlos syndrome affects people so differently. It proposes an AI-assisted dataset and evidence navigator that show their sources, uncertainty, and review status.",
+    href: "https://github.com/lucaschatham/independent-eds-research-collaborative",
+    meta: "Public Plan",
+    tags: ["Rare Disease", "AI Research"],
+    icon: {
+      label: "3D laboratory flask",
+      image: "/images/side-quests/icons/lab.webp",
+    },
+  },
+  {
     title: "Operation Learn West Coast Swing",
     dek: "This is a free, structured guide for learning West Coast Swing, plus a dataset of moves and teaching materials. Every visual links to where it came from, so learners and teachers can verify and improve it.",
     href: "https://github.com/lucaschatham/operation-learn-west-coast-swing",
@@ -30,6 +41,7 @@ const openSourceProjects = [
     icon: {
       label: "3D footprints",
       image: "/images/open-source/west-coast-swing-footprints.png",
+      tone: "dark-mode-bright" as const,
     },
   },
   {

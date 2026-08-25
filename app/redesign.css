@@ -1946,6 +1946,13 @@ summary:focus-visible,
   transition: transform 180ms ease;
 }
 
+.dark .side-quest-icon--dark-mode-bright img {
+  filter:
+    brightness(2.8)
+    saturate(0.75)
+    drop-shadow(0 10px 14px rgba(0, 0, 0, 0.28));
+}
+
 .r:hover .side-quest-icon img,
 .r:focus-visible .side-quest-icon img {
   transform: translateY(-3px) rotate(-2deg) scale(1.04);
