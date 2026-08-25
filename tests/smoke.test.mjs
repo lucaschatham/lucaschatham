@@ -353,7 +353,7 @@ test("frontmatter tags use the shared capsule system on lists and detail pages",
   const indexHtml = await readHtml("/side-quests");
   assert.match(indexHtml, /class="tag-list tag-list--row"/);
   assert.match(indexHtml, /<li class="tag-capsule">Training<\/li>/);
-  assert.match(indexHtml, /<li class="tag-capsule">Open Source<\/li>/);
+  assert.doesNotMatch(indexHtml, /RemNoteConnect|home-remodel-custom-furniture/);
 
   const detailHtml = await readHtml("/side-quests/diy-gym");
   assert.match(detailHtml, /class="tag-list tag-list--detail"/);
