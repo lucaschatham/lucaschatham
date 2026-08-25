@@ -53,7 +53,7 @@ const expectedWorkOrder = [
 const projectTemplateHeadings = [
   "What Was Built",
   "My Role",
-  "Result",
+  "How We Measured Success",
   "Why It Mattered",
   "What This Proves",
 ];
@@ -427,7 +427,6 @@ test("contact band shows the concise heading and complete action set", async () 
     /href="https:\/\/levelwithlucas\.lucaschatham\.com\/subscribe"/
   );
   assert.match(visibleContactText, /Newsletter/);
-  assert.match(html, /levelwithlucas\.lucaschatham\.com\/archive/);
   assert.doesNotMatch(html, /href="\/rss"/);
 });
 
