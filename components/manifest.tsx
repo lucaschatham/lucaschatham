@@ -171,13 +171,13 @@ export function Hero() {
         <p className="hero-proposition">
           I design and build high-stakes AI systems people trust.
         </p>
-        <Link
+        <a
           className="hero-action hero-action-primary"
-          href="#contact"
+          href={CONTACT_MAILTO}
         >
           Contact
           <ArrowRightIcon />
-        </Link>
+        </a>
       </div>
       <figure className="hero-portrait">
         <img
