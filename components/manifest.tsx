@@ -11,8 +11,7 @@ type NavKey =
   | "home"
   | "essays"
   | "projects"
-  | "side-quests"
-  | "ai-consulting";
+  | "side-quests";
 
 type Row = {
   title: string;
@@ -110,11 +109,6 @@ export function ManifestNav({ active }: { active: NavKey | null }) {
   const links: { key: NavKey; href: string; label: string }[] = [
     { key: "projects", href: "/#work-heading", label: "Work" },
     { key: "side-quests", href: "/side-quests", label: "Side Quests" },
-    {
-      key: "ai-consulting",
-      href: "/ai-consulting",
-      label: "AI Consulting",
-    },
   ];
 
   const homeActive = active === "home";
