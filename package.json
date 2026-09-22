@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "node scripts/materialize-briefings.mjs && next build",
     "start": "next start",
     "lint": "eslint .",
     "test:smoke": "node --test tests/smoke.test.mjs",

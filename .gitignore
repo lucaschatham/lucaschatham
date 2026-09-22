@@ -8,3 +8,4 @@ out/
 .claude/
 artifacts/
 tsconfig.tsbuildinfo
+public/briefings/

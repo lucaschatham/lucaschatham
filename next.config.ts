@@ -1,7 +1,18 @@
 import type { NextConfig } from "next";
+import { fileURLToPath } from "node:url";
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  async headers() {
+    return [{
+      source: "/briefings/:path*",
+      headers: [
+        { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive, nosnippet" },
+        { key: "Referrer-Policy", value: "no-referrer" },
+        { key: "X-Content-Type-Options", value: "nosniff" },
+      ],
+    }];
+  },
   async redirects() {
     return [
       {
@@ -27,7 +38,7 @@ const nextConfig: NextConfig = {
     ];
   },
   turbopack: {
-    root: new URL(".", import.meta.url).pathname,
+    root: fileURLToPath(new URL(".", import.meta.url)),
   },
 };
 
