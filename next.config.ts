@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 import { fileURLToPath } from "node:url";
 
+const labelReviewOrigin = "https://label-review-7b3.lucaschatham.com";
+
 const nextConfig: NextConfig = {
   output: "standalone",
   async headers() {
@@ -13,11 +15,34 @@ const nextConfig: NextConfig = {
       ],
     }];
   },
+  async rewrites() {
+    // The independently deployed app uses these root-relative paths. Fallback
+    // rewrites keep existing website files and routes ahead of the app proxy.
+    return {
+      fallback: [
+        {
+          source: "/alcohol-by-volume-automated-label-check",
+          destination: `${labelReviewOrigin}/`,
+        },
+        ...["assets", "ocr", "samples"].map((directory) => ({
+          source: `/${directory}/:path*`,
+          destination: `${labelReviewOrigin}/${directory}/:path*`,
+        })),
+        {
+          source: "/api/warning-appearance",
+          destination: `${labelReviewOrigin}/api/warning-appearance`,
+        },
+      ],
+    };
+  },
   async redirects() {
     return [
       {
-        source: "/alcohol-by-volume-automated-label-check",
-        destination: "https://label-review-7b3.lucaschatham.com/",
+        // Preserve the website's www canonical host while allowing the app
+        // and its dependencies to load directly on the requested apex URL.
+        source: "/:path((?!alcohol-by-volume-automated-label-check/?$|(?:assets|ocr|samples)(?:/|$)|api/warning-appearance/?$).*)",
+        has: [{ type: "host", value: "lucaschatham.com" }],
+        destination: "https://www.lucaschatham.com/:path",
         permanent: false,
       },
       {
