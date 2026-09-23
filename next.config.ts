@@ -16,6 +16,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/alcohol-by-volume-automated-label-check",
+        destination: "https://label-review-7b3.lucaschatham.com/",
+        permanent: false,
+      },
+      {
         source: "/blog",
         destination: "/essays",
         permanent: true,
